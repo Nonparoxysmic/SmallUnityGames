@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ToggleOnClick : MonoBehaviour
+public class ToggleOnClickTESTING : MonoBehaviour
 {
     SpriteRenderer sr;
     public Sprite xSprite;
