@@ -2,17 +2,15 @@
 
 public class ToggleOnClickTESTING : MonoBehaviour
 {
-    SpriteRenderer sr;
-    public Sprite xSprite;
-    public Sprite oSprite;
+    //SpriteRenderer sr;
     int currentSprite;
     public Animator animatorTest;
 
     // Start is called before the first frame update
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
-        sr.sprite = null;
+        //sr = GetComponent<SpriteRenderer>();
+        //sr.sprite = null;
         currentSprite = 0;
     }
 
@@ -21,21 +19,18 @@ public class ToggleOnClickTESTING : MonoBehaviour
     {
         if (currentSprite == 0)
         {
-            sr.sprite = xSprite;
             currentSprite = 1;
-            if (animatorTest != null) animatorTest.SetInteger("Letter", 1);
+            if (animatorTest != null) animatorTest.SetInteger("Letter", currentSprite);
         }
         else if (currentSprite == 1)
         {
-            sr.sprite = oSprite;
             currentSprite = 2;
-            if (animatorTest != null) animatorTest.SetInteger("Letter", 2);
+            if (animatorTest != null) animatorTest.SetInteger("Letter", currentSprite);
         }
         else
         {
-            sr.sprite = null;
             currentSprite = 0;
-            if (animatorTest != null) animatorTest.SetInteger("Letter", 0);
+            if (animatorTest != null) animatorTest.SetInteger("Letter", currentSprite);
         }
     }
 }
