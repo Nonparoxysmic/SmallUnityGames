@@ -2,8 +2,13 @@
 
 public class ToggleOnClick : MonoBehaviour
 {
-    public BoxState bs;
-    Letter letterToSet = Letter.Blank;
+    BoxState bs;
+    Letter letterToSet;
+
+    private void Start()
+    {
+        bs = GetComponent<BoxState>();
+    }
 
     void OnMouseDown()
     {
