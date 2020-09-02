@@ -56,6 +56,7 @@ public class LineDrawer : MonoBehaviour
     void CreateLine(float x0, float y0, float x1, float y1)
     {
         GameObject newLine = Instantiate(lineBase);
+        newLine.transform.SetParent(gameObject.transform);
         newLine.name = "Line" + lines.Count.ToString();
         Vector3[] positions = new Vector3[2];
         positions[0] = new Vector3(x0, y0, 0);
