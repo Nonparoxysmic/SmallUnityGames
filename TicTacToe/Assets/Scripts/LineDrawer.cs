@@ -59,8 +59,8 @@ public class LineDrawer : MonoBehaviour
         newLine.transform.SetParent(gameObject.transform);
         newLine.name = "Line" + lines.Count.ToString();
         Vector3[] positions = new Vector3[2];
-        positions[0] = new Vector3(x0, y0, 0);
-        positions[1] = new Vector3(x1, y1, 0);
+        positions[0] = new Vector3(x0, y0, -5);
+        positions[1] = new Vector3(x1, y1, -5);
         newLine.GetComponent<LineRenderer>().SetPositions(positions);
         lines.Add(newLine);
     }
