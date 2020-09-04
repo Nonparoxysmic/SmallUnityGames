@@ -9,6 +9,11 @@ public class LineDrawer : MonoBehaviour
 
     void Start()
     {
+        if (lineBase == null)
+        {
+            lineBase = new GameObject("error");
+        }
+
         gs = GetComponent<GridState>();
         lines = new List<GameObject>();
     }

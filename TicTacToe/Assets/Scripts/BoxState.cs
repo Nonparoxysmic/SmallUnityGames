@@ -8,7 +8,7 @@ public class BoxState : MonoBehaviour
     GridState gs;
     int gridX;
     int gridY;
-    [HideInInspector] public Letter CurrentLetter;
+    [HideInInspector] public Letter CurrentLetter { get; private set; }
 
     void Start()
     {

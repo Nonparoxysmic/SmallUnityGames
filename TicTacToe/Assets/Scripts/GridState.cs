@@ -8,6 +8,11 @@ public class GridState : MonoBehaviour
 
     void Start()
     {
+        if (boxPrefab == null)
+        {
+            boxPrefab = new GameObject("error");
+        }
+
         GridLetters = new Letter[3, 3];
         ld = GetComponent<LineDrawer>();
 
