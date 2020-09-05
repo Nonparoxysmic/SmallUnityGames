@@ -16,6 +16,11 @@ public class ToggleOnClick : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (st.lineHasBeenDrawn)
+        {
+            return;
+        }
+
         //if (bs.CurrentLetter == Letter.Blank) letterToSet = Letter.X;
         //else if (bs.CurrentLetter == Letter.X) letterToSet = Letter.O;
         //else if (bs.CurrentLetter == Letter.O) letterToSet = Letter.Blank;

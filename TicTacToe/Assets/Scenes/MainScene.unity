@@ -306,6 +306,7 @@ MonoBehaviour:
   xSprite: {fileID: 21300030, guid: 9c40b8a39046ce043ae9350d3d7fa38a, type: 3}
   oSprite: {fileID: 21300030, guid: fc38265c4bfdf284d8632999214355fc, type: 3}
   currentLetter: 0
+  lineHasBeenDrawn: 0
 --- !u!212 &1496634124
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -343,15 +344,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300014, guid: 9c40b8a39046ce043ae9350d3d7fa38a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1496634125
