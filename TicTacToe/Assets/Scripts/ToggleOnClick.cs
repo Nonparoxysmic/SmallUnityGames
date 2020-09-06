@@ -21,19 +21,10 @@ public class ToggleOnClick : MonoBehaviour
             return;
         }
 
-        //if (bs.CurrentLetter == Letter.Blank) letterToSet = Letter.X;
-        //else if (bs.CurrentLetter == Letter.X) letterToSet = Letter.O;
-        //else if (bs.CurrentLetter == Letter.O) letterToSet = Letter.Blank;
         if (bs.CurrentLetter == Letter.Blank)
         {
             bs.SetLetter(st.currentLetter);
             st.ToggleSprite();
         }
-        else
-        {
-            //bs.SetLetter(Letter.Blank);
-        }
-
-        //bs.SetLetter(letterToSet);
     }
 }

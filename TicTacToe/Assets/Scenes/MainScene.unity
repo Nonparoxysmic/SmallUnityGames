@@ -307,6 +307,7 @@ MonoBehaviour:
   oSprite: {fileID: 21300030, guid: fc38265c4bfdf284d8632999214355fc, type: 3}
   currentLetter: 0
   lineHasBeenDrawn: 0
+  bgObject: {fileID: 1357983134}
 --- !u!212 &1496634124
 SpriteRenderer:
   m_ObjectHideFlags: 0

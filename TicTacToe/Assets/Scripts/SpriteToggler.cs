@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpriteToggler : MonoBehaviour
 {
@@ -10,9 +12,15 @@ public class SpriteToggler : MonoBehaviour
     [HideInInspector] public bool lineHasBeenDrawn;
     int numberOfLetters;
 
+    public GameObject bgObject;
+    SpriteRenderer bgsr;
+
+    public float delaySeconds = 4.0f;
+
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        bgsr = bgObject.GetComponent<SpriteRenderer>();
 
         if (Random.value >= 0.5)
         {
@@ -33,6 +41,7 @@ public class SpriteToggler : MonoBehaviour
         {
             lineHasBeenDrawn = true;
             sr.color = Color.green;
+            StartCoroutine(WaitAndReset());
             return;
         }
 
@@ -40,6 +49,7 @@ public class SpriteToggler : MonoBehaviour
         if (numberOfLetters >= 9)
         {
             sr.sprite = null;
+            StartCoroutine(WaitAndReset());
             return;
         }
 
@@ -53,5 +63,12 @@ public class SpriteToggler : MonoBehaviour
             sr.sprite = xSprite;
             currentLetter = Letter.X;
         }
+    }
+
+    IEnumerator WaitAndReset()
+    {
+        bgsr.enabled = false;
+        yield return new WaitForSeconds(delaySeconds);
+        SceneManager.LoadScene(0);
     }
 }
