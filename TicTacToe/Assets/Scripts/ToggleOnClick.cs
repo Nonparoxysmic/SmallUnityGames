@@ -14,7 +14,7 @@ public class ToggleOnClick : MonoBehaviour
         bs = GetComponent<BoxState>();
     }
 
-    void OnMouseDown()
+    public void OnMouseDown()
     {
         if (st.lineHasBeenDrawn)
         {

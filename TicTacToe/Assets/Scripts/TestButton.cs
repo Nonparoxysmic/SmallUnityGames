@@ -7,7 +7,7 @@ public class TestButton : MonoBehaviour
     GameObject gsObj;
     GridState gs;
 
-    public GameObject currentLetterSelection;
+    GameObject currentLetterSelection;
     SpriteToggler st;
 
     void Start()
@@ -35,6 +35,9 @@ public class TestButton : MonoBehaviour
             selectedLetter = gridLetters[gridX, gridY];
         } while (selectedLetter != Letter.Blank);
 
-        Debug.Log("Place letter at x:" + gridX + ", y:" + gridY);
+        int boxNumber = 6 - 3 * gridY + gridX;
+        string boxName = "Box" + boxNumber;
+        GameObject selectedBox = GameObject.Find(boxName);
+        selectedBox.GetComponent<ToggleOnClick>().OnMouseDown();
     }
 }
