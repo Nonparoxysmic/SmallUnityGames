@@ -10,17 +10,15 @@ public class SpriteToggler : MonoBehaviour
     SpriteRenderer sr;
 
     [HideInInspector] public bool lineHasBeenDrawn;
-    int numberOfLetters;
+    public int numberOfLetters;
 
     public GameObject bgObject;
-    SpriteRenderer bgsr;
 
     public float delaySeconds = 4.0f;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
-        bgsr = bgObject.GetComponent<SpriteRenderer>();
 
         if (Random.value >= 0.5)
         {
@@ -67,7 +65,6 @@ public class SpriteToggler : MonoBehaviour
 
     IEnumerator WaitAndReset()
     {
-        bgsr.enabled = false;
         yield return new WaitForSeconds(delaySeconds);
         SceneManager.LoadScene(0);
     }
