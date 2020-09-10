@@ -60,12 +60,14 @@ public class LineDrawer : MonoBehaviour
 
     void CreateLine(float x0, float y0, float x1, float y1)
     {
+        float baseX = gameObject.transform.position.x;
+        float baseY = gameObject.transform.position.y;
         GameObject newLine = Instantiate(lineBase);
         newLine.transform.SetParent(gameObject.transform);
         newLine.name = "Line" + lines.Count.ToString();
         Vector3[] positions = new Vector3[2];
-        positions[0] = new Vector3(x0, y0, -5);
-        positions[1] = new Vector3(x1, y1, -5);
+        positions[0] = new Vector3(baseX + x0, baseY + y0, -5);
+        positions[1] = new Vector3(baseX + x1, baseY + y1, -5);
         newLine.GetComponent<LineRenderer>().SetPositions(positions);
         lines.Add(newLine);
     }
