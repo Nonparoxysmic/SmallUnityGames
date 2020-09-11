@@ -3,7 +3,6 @@
 public class ToggleOnClick : MonoBehaviour
 {
     BoxState bs;
-    //Letter letterToSet;
     public GameObject currentLetterSelection;
     SpriteToggler st;
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GridState : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class GridState : MonoBehaviour
         GameObject newBox = Instantiate(boxPrefab);
         newBox.transform.SetParent(gameObject.transform);
         newBox.name = n;
-        newBox.transform.position = new Vector2(x, y);
+        newBox.transform.position = new Vector2(gameObject.transform.position.x + x, gameObject.transform.position.y + y);
+        newBox.GetComponent<BoxState>().gridX = (int)Math.Round(x / 2.0) + 1;
+        newBox.GetComponent<BoxState>().gridY = (int)Math.Round(y / 2.0) + 1;
     }
 }
