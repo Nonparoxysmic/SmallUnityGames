@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor.Events;
 using UnityEngine;
 
 public class TriangleScript : MonoBehaviour
@@ -14,6 +15,8 @@ public class TriangleScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        tts.ToggleTest(gameObject);
+        //tts.ToggleTest(gameObject);
+
+        tts.unityEventTest.Invoke();
     }
 }
