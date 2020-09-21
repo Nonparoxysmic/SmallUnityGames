@@ -17,6 +17,6 @@ public class TriangleScript : MonoBehaviour
     {
         //tts.ToggleTest(gameObject);
 
-        tts.unityEventTest.Invoke();
+        tts.unityEventTest.Invoke(gameObject);
     }
 }
