@@ -39,9 +39,4 @@ public class ToggleTestScript : MonoBehaviour
         }
         Debug.Log("Toggled by " + toggler.name);
     }
-
-    void ToggleTest2()
-    {
-        ToggleTest(gameObject);
-    }
 }
