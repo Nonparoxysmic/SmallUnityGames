@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MyEventTest : UnityEvent<GameObject> { }
+[Serializable] public class MyEventTest : UnityEvent<GameObject> { }
 
 public class ToggleTestScript : MonoBehaviour
 {
@@ -22,7 +22,7 @@ public class ToggleTestScript : MonoBehaviour
         {
             unityEventTest = new MyEventTest();
         }
-        unityEventTest.AddListener(ToggleTest);
+        //unityEventTest.AddListener(ToggleTest);
     }
 
     public void ToggleTest(GameObject toggler)

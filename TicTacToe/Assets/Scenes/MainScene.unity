@@ -263,6 +263,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xSprite: {fileID: 21300030, guid: 9c40b8a39046ce043ae9350d3d7fa38a, type: 3}
   oSprite: {fileID: 21300030, guid: fc38265c4bfdf284d8632999214355fc, type: 3}
+  unityEventTest:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 496185416}
+        m_MethodName: ToggleTest
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 496185415}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!212 &496185417
 SpriteRenderer:
   m_ObjectHideFlags: 0
