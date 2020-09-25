@@ -1,15 +1,17 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Events;
-
-[Serializable] public class MyEventTest : UnityEvent<GameObject> { }
 
 public class TriangleScript : MonoBehaviour
 {
-    public MyEventTest triangleEvent;
+    ToggleTestScript tts;
+
+    private void Start()
+    {
+        tts = gameObject.transform.parent.gameObject.GetComponent<ToggleTestScript>();
+    }
 
     private void OnMouseDown()
     {
-        triangleEvent.Invoke(gameObject);
+        tts.toggleEvent.Invoke(gameObject);
     }
 }

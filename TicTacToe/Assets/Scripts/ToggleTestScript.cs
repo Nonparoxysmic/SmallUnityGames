@@ -1,5 +1,8 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
+
+public class MyEventTest : UnityEvent<GameObject> { }
 
 public class ToggleTestScript : MonoBehaviour
 {
@@ -8,10 +11,17 @@ public class ToggleTestScript : MonoBehaviour
     Letter currentSprite;
     SpriteRenderer sr;
 
+    public MyEventTest toggleEvent;
+
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         currentSprite = Letter.X;
+        if (toggleEvent == null)
+        {
+            toggleEvent = new MyEventTest();
+        }
+        toggleEvent.AddListener(ToggleTest);
     }
 
     public void ToggleTest(GameObject toggler)
