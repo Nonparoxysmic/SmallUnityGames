@@ -11,13 +11,14 @@ public class BoardCreator : MonoBehaviour
         if (boxPrefab == null)
         {
             Debug.LogError(gameObject.name + ": Box Prefab reference is not set in the Inspector.");
+            boxPrefab = new GameObject();
         }
         boardState = GetComponent<BoardState>();
         if (boardState == null)
         {
             Debug.LogError(gameObject.name + ": Board State component not found.");
         }
-        Debug.Log("Start");
+        //Debug.Log("Start");
     }
 
     public void CreateGameBoard(int width, int height, int victoryNumber)
@@ -28,7 +29,7 @@ public class BoardCreator : MonoBehaviour
             return;
         }
 
-        Debug.Log("CreateGameBoard");
+        //Debug.Log("CreateGameBoard");
         // This is being called before Start()
         //boardState.InitializeBoardState(width, height, victoryNumber);
 

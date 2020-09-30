@@ -10,6 +10,11 @@ public class TESTBoardCreator : MonoBehaviour
 
     void Start()
     {
+        if (gameBoardPrefab == null)
+        {
+            Debug.LogError(gameObject.name + ": Prefab reference not set in the Inspector.");
+            gameBoardPrefab = new GameObject();
+        }
         int baseX = (int)Math.Round(gameObject.transform.parent.transform.position.x);
         int baseY = (int)Math.Round(gameObject.transform.parent.transform.position.y);
         GameObject newObject = Instantiate(gameBoardPrefab, new Vector3(baseX, baseY, 100), Quaternion.identity, gameObject.transform.parent.transform);

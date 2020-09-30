@@ -6,6 +6,7 @@ public class MainBoardScript : MonoBehaviour
     BoxGroupScript boxGroupScript;
     [SerializeField] GameObject boxGroupPrefab;
     GameObject currentBoxGroup;
+    TestGM gm;
 
     void Start()
     {
@@ -14,7 +15,7 @@ public class MainBoardScript : MonoBehaviour
             Debug.LogError(gameObject.name + ": Prefab reference not set in the Inspector.");
             boxGroupPrefab = new GameObject();
         }
-        NewBoxGroup();
+        gm = GameObject.Find("GameMaster").GetComponent<TestGM>();
     }
 
     public void NewBoxGroup()
@@ -32,14 +33,11 @@ public class MainBoardScript : MonoBehaviour
 
     public void OnBoxClicked(int boxNumber)
     {
-        // Temporary behavior for testing
-        if (boxGroupScript.GetBoxLetter(boxNumber) == Letter.X)
-        {
-            boxGroupScript.SetBoxLetter(boxNumber, Letter.O);
-        }
-        else
-        {
-            boxGroupScript.SetBoxLetter(boxNumber, Letter.X);
-        }
+        gm.OnBoxClicked(boxNumber);
+    }
+
+    public void SetBoxLetter(int boxNumber, Letter newLetter)
+    {
+        boxGroupScript.SetBoxLetter(boxNumber, newLetter);
     }
 }

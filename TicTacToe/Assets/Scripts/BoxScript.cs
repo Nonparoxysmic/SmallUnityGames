@@ -14,24 +14,19 @@ public class BoxScript : MonoBehaviour
         parentScript = gameObject.transform.parent.GetComponent<BoxGroupScript>();
     }
 
-    void OnMouseDown()
-    {
-        parentScript.OnBoxClicked(boxNumber);
-    }
-
     public void SetBoxNumber(int num)
     {
         boxNumber = num;
+    }
+
+    void OnMouseDown()
+    {
+        parentScript.OnBoxClicked(boxNumber);
     }
 
     public void SetLetter(Letter newLetter)
     {
         currentLetter = newLetter;
         animator.SetInteger("Letter", (int)currentLetter);
-    }
-
-    public Letter GetLetter()
-    {
-        return currentLetter;
     }
 }

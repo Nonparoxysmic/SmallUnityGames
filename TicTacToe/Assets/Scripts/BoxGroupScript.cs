@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Experimental.Audio.Google;
 
 public class BoxGroupScript : MonoBehaviour
 {
@@ -30,11 +29,6 @@ public class BoxGroupScript : MonoBehaviour
     public void SetBoxLetter(int boxNumber, Letter newLetter)
     {
         boxes[boxNumber].GetComponent<BoxScript>().SetLetter(newLetter);
-    }
-
-    public Letter GetBoxLetter(int boxNumber)
-    {
-        return boxes[boxNumber].GetComponent<BoxScript>().GetLetter();
     }
 
     public void OnBoxClicked(int boxNumber)
