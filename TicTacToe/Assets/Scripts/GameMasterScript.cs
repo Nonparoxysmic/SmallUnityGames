@@ -1,13 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
-public class TestGM : MonoBehaviour
+public class GameMasterScript : MonoBehaviour
 {
+    GameDifficulty difficulty;
+    int numberOfMoves;
     Letter playerLetter;
     Letter computerLetter;
     Letter[] letterGrid;
     MainBoardScript mbs;
-
+    
     void Start()
     {
         mbs = GameObject.Find("Main Board").GetComponent<MainBoardScript>();
@@ -18,8 +20,8 @@ public class TestGM : MonoBehaviour
     {
         playerLetter = (Letter)UnityEngine.Random.Range(1, 3);
         computerLetter = (Letter)((int)playerLetter % 2 + 1);
+        numberOfMoves = 0;
         letterGrid = new Letter[9];
-        Debug.Log("Player letter is " + playerLetter + ", Computer letter is " + computerLetter);
         mbs.NewBoxGroup();
     }
 
@@ -32,36 +34,36 @@ public class TestGM : MonoBehaviour
     {
         if (letterGrid[boxNumber] != Letter.Blank) return;
         SetBoxLetter(boxNumber, playerLetter);
-        int computerMove = ComputerMoveBox();
+        int computerMove = ComputerMoveBox(difficulty);
         if ((computerMove < 0) || (computerMove > 8)) return;
         SetBoxLetter(computerMove, computerLetter);
     }
 
     public void SetBoxLetter(int boxNumber, Letter newLetter)
     {
+        numberOfMoves++;
         letterGrid[boxNumber] = newLetter;
         mbs.SetBoxLetter(boxNumber, newLetter);
     }
 
-    int ComputerMoveBox()
+    int ComputerMoveBox(GameDifficulty gd)
     {
-        int numOfBlank = 0;
-        for (int i = 0; i < 9; i++)
-        {
-            if (letterGrid[i] == Letter.Blank)
-            {
-                numOfBlank++;
-            }
-        }
-        if (numOfBlank == 0)
-        {
-            return -1;
-        }
-        int tryBox;
+        if ((int)gd > 0) return -1; // Temporary until difficulty implemented
+
+        if (numberOfMoves >= 9) return -1;
+
+        int randomBlankBoxNumber;
         do
         {
-            tryBox = UnityEngine.Random.Range(0, 9);
-        } while (letterGrid[tryBox] != Letter.Blank);
-        return tryBox;
+            randomBlankBoxNumber = UnityEngine.Random.Range(0, 9);
+        } while (letterGrid[randomBlankBoxNumber] != Letter.Blank);
+        return randomBlankBoxNumber;
+    }
+
+    int FindWinningMove(Letter letterToPlay, Letter[] grid)
+    {
+
+
+        return -1; // Temporary
     }
 }

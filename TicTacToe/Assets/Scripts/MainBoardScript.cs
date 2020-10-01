@@ -6,7 +6,7 @@ public class MainBoardScript : MonoBehaviour
     BoxGroupScript boxGroupScript;
     [SerializeField] GameObject boxGroupPrefab;
     GameObject currentBoxGroup;
-    TestGM gm;
+    GameMasterScript gm;
 
     void Start()
     {
@@ -15,7 +15,7 @@ public class MainBoardScript : MonoBehaviour
             Debug.LogError(gameObject.name + ": Prefab reference not set in the Inspector.");
             boxGroupPrefab = new GameObject();
         }
-        gm = GameObject.Find("GameMaster").GetComponent<TestGM>();
+        gm = GameObject.Find("GameMaster").GetComponent<GameMasterScript>();
     }
 
     public void NewBoxGroup()

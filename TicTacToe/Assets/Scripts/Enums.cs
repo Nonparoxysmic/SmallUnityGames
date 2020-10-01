@@ -1,8 +1,16 @@
-﻿public enum GameState
+﻿public enum GameDifficulty
+{
+    Easy,
+    Medium,
+    Hard
+}
+
+public enum GameState
 {
     Start,
     PlayerTurn,
-    CompTurn
+    CompTurn,
+    End
 }
 
 public enum Letter
