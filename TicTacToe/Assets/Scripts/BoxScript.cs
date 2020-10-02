@@ -4,14 +4,15 @@ using UnityEngine;
 public class BoxScript : MonoBehaviour
 {
     Animator animator;
-    BoxGroupScript parentScript;
+    GameMasterScript gm;
     int boxNumber;
     Letter currentLetter;
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        parentScript = gameObject.transform.parent.GetComponent<BoxGroupScript>();
+        gm = GameObject.Find("GameMaster").GetComponent<GameMasterScript>();
+        gm.boxUpdated.AddListener(UpdateBox);
     }
 
     public void SetBoxNumber(int num)
@@ -21,10 +22,18 @@ public class BoxScript : MonoBehaviour
 
     void OnMouseDown()
     {
-        parentScript.OnBoxClicked(boxNumber);
+        gm.boxClicked.Invoke(boxNumber);
     }
 
-    public void SetLetter(Letter newLetter)
+    void UpdateBox(int newNumber, Letter newLetter)
+    {
+        if (newNumber == boxNumber)
+        {
+            SetLetter(newLetter);
+        }
+    }
+
+    void SetLetter(Letter newLetter)
     {
         currentLetter = newLetter;
         animator.SetInteger("Letter", (int)currentLetter);

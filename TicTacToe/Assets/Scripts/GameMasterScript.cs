@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class GameMasterScript : MonoBehaviour
 {
-    GameDifficulty difficulty;
+    public BoxClickedEvent boxClicked;
+    public BoxUpdatedEvent boxUpdated;
     int numberOfMoves;
     Letter playerLetter;
     Letter computerLetter;
@@ -13,6 +14,11 @@ public class GameMasterScript : MonoBehaviour
     void Start()
     {
         mbs = GameObject.Find("Main Board").GetComponent<MainBoardScript>();
+
+        if (boxClicked == null) boxClicked = new BoxClickedEvent();
+        boxClicked.AddListener(OnBoxClicked);
+        if (boxUpdated == null) boxUpdated = new BoxUpdatedEvent();
+
         NewGame();
     }
 
@@ -30,11 +36,11 @@ public class GameMasterScript : MonoBehaviour
         NewGame();
     }
 
-    public void OnBoxClicked(int boxNumber)
+    void OnBoxClicked(int boxNumber)
     {
         if (letterGrid[boxNumber] != Letter.Blank) return;
         SetBoxLetter(boxNumber, playerLetter);
-        int computerMove = ComputerMoveBox(difficulty);
+        int computerMove = ComputerMoveBox();
         if ((computerMove < 0) || (computerMove > 8)) return;
         SetBoxLetter(computerMove, computerLetter);
     }
@@ -43,12 +49,12 @@ public class GameMasterScript : MonoBehaviour
     {
         numberOfMoves++;
         letterGrid[boxNumber] = newLetter;
-        mbs.SetBoxLetter(boxNumber, newLetter);
+        boxUpdated.Invoke(boxNumber, newLetter);
     }
 
-    int ComputerMoveBox(GameDifficulty gd)
+    int ComputerMoveBox()
     {
-        if ((int)gd > 0) return -1; // Temporary until difficulty implemented
+        //if ((int)gd > 0) return -1; // Temporary until difficulty implemented
 
         if (numberOfMoves >= 9) return -1;
 
@@ -60,10 +66,10 @@ public class GameMasterScript : MonoBehaviour
         return randomBlankBoxNumber;
     }
 
-    int FindWinningMove(Letter letterToPlay, Letter[] grid)
-    {
+    //int FindWinningMove(Letter letterToPlay, Letter[] grid)
+    //{
 
 
-        return -1; // Temporary
-    }
+    //    return -1; // Temporary
+    //}
 }
