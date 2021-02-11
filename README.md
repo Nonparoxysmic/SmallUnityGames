@@ -1,6 +1,5 @@
 # SmallUnityGames
-A collection of small Unity games that don't merit their own separate repositories<br>
-Made in Unity 2018.4.25f1
+A collection of small Unity games that don't merit their own separate repositories
 
-Games so far:<br>
-* TicTacToe (development in progress)
+Games so far:
+* TicTacToe [Unity 2019.4.19f1] (development in progress)
