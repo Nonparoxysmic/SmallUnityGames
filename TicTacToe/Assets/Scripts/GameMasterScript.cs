@@ -41,11 +41,14 @@ public class GameMasterScript : MonoBehaviour
 
     void OnBoxClicked(int boxNumber)
     {
+        if (numberOfMoves >= 9) return;
         if (letterGrid[boxNumber] != Letter.Blank) return;
         SetBoxLetter(boxNumber, playerLetter);
+        StopIfGameOver(playerLetter, letterGrid);
         int computerMove = ComputerMoveBox();
         if ((computerMove < 0) || (computerMove > 8)) return;
         SetBoxLetter(computerMove, computerLetter);
+        StopIfGameOver(computerLetter, letterGrid);
     }
 
     public void SetBoxLetter(int boxNumber, Letter newLetter)
@@ -78,16 +81,51 @@ public class GameMasterScript : MonoBehaviour
         return winningMove;
     }
 
+    bool FindGameOver(Letter letterToPlay, Letter[] grid)
+    {
+        for (int line = 0; line < 8; line++)
+        {
+            CheckLine(letterToPlay, grid, line, out int goodBoxes, out _, out _);
+            if (goodBoxes == 3)
+            {
+                Debug.Log("Three in a row in line " + line);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void StopIfGameOver(Letter letterToPlay, Letter[] grid)
+    {
+        if (FindGameOver(letterToPlay, grid))
+        {
+            numberOfMoves = 99;
+        }
+    }
+
     int FindWinningMove(Letter letterToPlay, Letter[] grid)
     {
-        for (int line = 0; line <= 8; line++)
+        for (int line = 0; line < 8; line++)
         {
-            if (CheckLineForWin(letterToPlay, grid, line, out int move)) return move;
+            if (CheckLineForWinningMove(letterToPlay, grid, line, out int move)) return move;
         }
         return -1;
     }
 
-    bool CheckLineForWin(Letter letterToPlay, Letter[] grid, int lineNum, out int move)
+    bool CheckLineForWinningMove(Letter letterToPlay, Letter[] grid, int lineNum, out int move)
+    {
+        CheckLine(letterToPlay, grid, lineNum, out int goodBoxes, out int emptyBoxes, out int theEmptyBox);
+
+        if (goodBoxes == 2 && emptyBoxes == 1)
+        {
+            move = theEmptyBox;
+            return true;
+        }
+        move = -1;
+        return false;
+    }
+
+    void CheckLine(Letter letterToPlay, Letter[] grid, int lineNum, out int goodBoxes, out int emptyBoxes, out int theEmptyBox)
     {
         List<int> boxes = new List<int>();
         switch (lineNum)
@@ -124,43 +162,33 @@ public class GameMasterScript : MonoBehaviour
                 break;
             case 6:
                 boxes.Add(0);
-                boxes.Add(1);
-                boxes.Add(2);
-                break;
-            case 7:
-                boxes.Add(0);
                 boxes.Add(4);
                 boxes.Add(8);
                 break;
-            case 8:
+            case 7:
                 boxes.Add(2);
                 boxes.Add(4);
                 boxes.Add(6);
                 break;
             default:
-                move = -1;
-                return false;
+                break;
         }
 
-        int goodBoxes = 0;
-        int emptyBoxes = 0;
-        int theEmptyBox = -1;
+        int _goodBoxes = 0;
+        int _emptyBoxes = 0;
+        int _theEmptyBox = -1;
         foreach (int box in boxes)
         {
-            if (grid[box] == letterToPlay) goodBoxes++;
+            if (grid[box] == letterToPlay) _goodBoxes++;
             if (grid[box] == Letter.Blank)
             {
-                emptyBoxes++;
-                theEmptyBox = box;
+                _emptyBoxes++;
+                _theEmptyBox = box;
             }
         }
-        
-        if (goodBoxes == 2 && emptyBoxes == 1)
-        {
-            move = theEmptyBox;
-            return true;
-        }
-        move = -1;
-        return false;
+
+        goodBoxes = _goodBoxes;
+        emptyBoxes = _emptyBoxes;
+        theEmptyBox = _theEmptyBox;
     }
 }
