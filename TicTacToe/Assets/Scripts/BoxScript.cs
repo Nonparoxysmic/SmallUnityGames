@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BoxScript : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class BoxScript : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         gm.boxClicked.Invoke(boxNumber);
     }
 

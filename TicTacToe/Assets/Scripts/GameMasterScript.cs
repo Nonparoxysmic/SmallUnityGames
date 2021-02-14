@@ -6,37 +6,34 @@ public class GameMasterScript : MonoBehaviour
 {
     public BoxClickedEvent boxClicked;
     public BoxUpdatedEvent boxUpdated;
-    [SerializeField]
-    GameDifficulty difficulty;
+    [HideInInspector] public GameDifficulty difficulty;
     int numberOfMoves;
-    Letter playerLetter;
+    [HideInInspector] public Letter playerLetter;
     Letter computerLetter;
     Letter[] letterGrid;
     MainBoardScript mbs;
+    MenuScript menu;
     
     void Start()
     {
         mbs = GameObject.Find("Main Board").GetComponent<MainBoardScript>();
+        menu = this.GetComponent<MenuScript>();
 
         if (boxClicked == null) boxClicked = new BoxClickedEvent();
         boxClicked.AddListener(OnBoxClicked);
         if (boxUpdated == null) boxUpdated = new BoxUpdatedEvent();
 
-        NewGame();
+        //NewGame();
     }
 
-    void NewGame()
+    public void NewGame()
     {
         playerLetter = (Letter)UnityEngine.Random.Range(1, 3);
+        menu.UpdatePlayerLetter();
         computerLetter = (Letter)((int)playerLetter % 2 + 1);
         numberOfMoves = 0;
         letterGrid = new Letter[9];
         mbs.NewBoxGroup();
-    }
-
-    void OnMouseDown()
-    {
-        NewGame();
     }
 
     void OnBoxClicked(int boxNumber)
@@ -49,6 +46,11 @@ public class GameMasterScript : MonoBehaviour
         if ((computerMove < 0) || (computerMove > 8)) return;
         SetBoxLetter(computerMove, computerLetter);
         StopIfGameOver(computerLetter, letterGrid);
+        if ((int)difficulty == 2 && numberOfMoves < 9)
+        {
+            SetBoxLetter(RandomMove(), computerLetter);
+            StopIfGameOver(computerLetter, letterGrid);
+        }
     }
 
     public void SetBoxLetter(int boxNumber, Letter newLetter)
