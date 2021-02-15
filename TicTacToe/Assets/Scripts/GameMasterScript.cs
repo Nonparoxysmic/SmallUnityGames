@@ -11,23 +11,26 @@ public class GameMasterScript : MonoBehaviour
     [HideInInspector] public Letter playerLetter;
     Letter computerLetter;
     Letter[] letterGrid;
+    GameObject mainBoard;
     MainBoardScript mbs;
     MenuScript menu;
+    [SerializeField] GameObject linePrefab;
     
     void Start()
     {
+        mainBoard = GameObject.Find("Main Board");
         mbs = GameObject.Find("Main Board").GetComponent<MainBoardScript>();
-        menu = this.GetComponent<MenuScript>();
+        menu = GetComponent<MenuScript>();
 
         if (boxClicked == null) boxClicked = new BoxClickedEvent();
         boxClicked.AddListener(OnBoxClicked);
         if (boxUpdated == null) boxUpdated = new BoxUpdatedEvent();
-
-        //NewGame();
     }
 
     public void NewGame()
     {
+        GameObject previousLine = GameObject.Find("Line");
+        if (previousLine != null) Destroy(previousLine);
         playerLetter = (Letter)UnityEngine.Random.Range(1, 3);
         menu.UpdatePlayerLetter();
         computerLetter = (Letter)((int)playerLetter % 2 + 1);
@@ -83,23 +86,70 @@ public class GameMasterScript : MonoBehaviour
         return winningMove;
     }
 
-    bool FindGameOver(Letter letterToPlay, Letter[] grid)
+    void DrawLine(int lineNum)
+    {
+        GameObject line = Instantiate(linePrefab, new Vector2(0.0f, 0.0f), Quaternion.identity, mainBoard.transform);
+        line.name = "Line";
+        float x0, x1, y0, y1;
+        float lineRadius = 3.5f;
+        switch (lineNum)
+        {
+            case 0:
+            case 1:
+            case 2:
+                x0 = -lineRadius;
+                x1 = lineRadius;
+                y0 = 2 - 2 * lineNum;
+                y1 = y0;
+                break;
+            case 3:
+            case 4:
+            case 5:
+                y0 = -lineRadius;
+                y1 = lineRadius;
+                x0 = 2 * (lineNum - 4);
+                x1 = x0;
+                break;
+            case 6:
+                x0 = -lineRadius;
+                y0 = lineRadius;
+                x1 = lineRadius;
+                y1 = -lineRadius;
+                break;
+            case 7:
+                x0 = -lineRadius;
+                y0 = -lineRadius;
+                x1 = lineRadius;
+                y1 = lineRadius;
+                break;
+            default:
+                return;
+        }
+        float baseX = mainBoard.transform.position.x;
+        float baseY = mainBoard.transform.position.y;
+        Vector3[] positions = new Vector3[2];
+        positions[0] = new Vector3(baseX + x0, baseY + y0, -5);
+        positions[1] = new Vector3(baseX + x1, baseY + y1, -5);
+        line.GetComponent<LineRenderer>().SetPositions(positions);
+    }
+
+    bool FindGameOver(Letter letterPlayed, Letter[] grid)
     {
         for (int line = 0; line < 8; line++)
         {
-            CheckLine(letterToPlay, grid, line, out int goodBoxes, out _, out _);
+            CheckLine(letterPlayed, grid, line, out int goodBoxes, out _, out _);
             if (goodBoxes == 3)
             {
-                Debug.Log("Three in a row in line " + line);
+                DrawLine(line);
                 return true;
             }
         }
         return false;
     }
 
-    void StopIfGameOver(Letter letterToPlay, Letter[] grid)
+    void StopIfGameOver(Letter letterPlayed, Letter[] grid)
     {
-        if (FindGameOver(letterToPlay, grid))
+        if (FindGameOver(letterPlayed, grid))
         {
             numberOfMoves = 99;
         }
