@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,22 +7,22 @@ public class GameMasterScript : MonoBehaviour
 {
     public BoxClickedEvent boxClicked;
     public BoxUpdatedEvent boxUpdated;
-    [HideInInspector] public GameDifficulty difficulty;
-    int numberOfMoves;
-    [HideInInspector] public Letter playerLetter;
-    Letter computerLetter;
-    Letter[] letterGrid;
+    [SerializeField] GameObject linePrefab;
     GameObject mainBoard;
     MainBoardScript mbs;
     MenuScript menu;
-    [SerializeField] GameObject linePrefab;
+    [HideInInspector] public GameDifficulty difficulty;
+    GameState gameState;
+    Letter playerLetter;
+    Letter computerLetter;
+    Letter[] letterGrid;
+    int numberOfMoves;
     
     void Start()
     {
         mainBoard = GameObject.Find("Main Board");
         mbs = GameObject.Find("Main Board").GetComponent<MainBoardScript>();
         menu = GetComponent<MenuScript>();
-
         if (boxClicked == null) boxClicked = new BoxClickedEvent();
         boxClicked.AddListener(OnBoxClicked);
         if (boxUpdated == null) boxUpdated = new BoxUpdatedEvent();
@@ -32,27 +33,32 @@ public class GameMasterScript : MonoBehaviour
         GameObject previousLine = GameObject.Find("Line");
         if (previousLine != null) Destroy(previousLine);
         playerLetter = (Letter)UnityEngine.Random.Range(1, 3);
-        menu.UpdatePlayerLetter();
+        menu.UpdatePlayerLetter(playerLetter);
         computerLetter = (Letter)((int)playerLetter % 2 + 1);
         numberOfMoves = 0;
         letterGrid = new Letter[9];
         mbs.NewBoxGroup();
+        gameState = (GameState)UnityEngine.Random.Range(1, 3);
+        if (gameState == GameState.CompTurn)
+        {
+            StartCoroutine(ComputerTurn(0.0f));
+        }
     }
 
     void OnBoxClicked(int boxNumber)
     {
-        if (numberOfMoves >= 9) return;
         if (letterGrid[boxNumber] != Letter.Blank) return;
-        SetBoxLetter(boxNumber, playerLetter);
-        StopIfGameOver(playerLetter, letterGrid);
-        int computerMove = ComputerMoveBox();
-        if ((computerMove < 0) || (computerMove > 8)) return;
-        SetBoxLetter(computerMove, computerLetter);
-        StopIfGameOver(computerLetter, letterGrid);
-        if ((int)difficulty == 2 && numberOfMoves < 9)
+        if (gameState == GameState.PlayerTurn)
         {
-            SetBoxLetter(RandomMove(), computerLetter);
-            StopIfGameOver(computerLetter, letterGrid);
+            gameState = GameState.CompTurn;
+
+            SetBoxLetter(boxNumber, playerLetter);
+            EndStateIfGameOver(playerLetter, letterGrid);
+
+            if (gameState == GameState.CompTurn)
+            {
+                StartCoroutine(ComputerTurn(1.0f));
+            }
         }
     }
 
@@ -61,29 +67,6 @@ public class GameMasterScript : MonoBehaviour
         numberOfMoves++;
         letterGrid[boxNumber] = newLetter;
         boxUpdated.Invoke(boxNumber, newLetter);
-    }
-
-    int ComputerMoveBox()
-    {
-        if (numberOfMoves >= 9) return -1;
-        if ((int)difficulty == 0) return RandomMove();
-        return WinOrRandomMove();
-    }
-
-    int RandomMove()
-    {
-        int randomBlankBoxNumber;
-        do {
-            randomBlankBoxNumber = UnityEngine.Random.Range(0, 9);
-        } while (letterGrid[randomBlankBoxNumber] != Letter.Blank);
-        return randomBlankBoxNumber;
-    }
-
-    int WinOrRandomMove()
-    {
-        int winningMove = FindWinningMove(computerLetter, letterGrid);
-        if (winningMove < 0) return RandomMove();
-        return winningMove;
     }
 
     void DrawLine(int lineNum)
@@ -144,37 +127,16 @@ public class GameMasterScript : MonoBehaviour
                 return true;
             }
         }
+        if (numberOfMoves >= 9) return true;
         return false;
     }
 
-    void StopIfGameOver(Letter letterPlayed, Letter[] grid)
+    void EndStateIfGameOver(Letter letterPlayed, Letter[] grid)
     {
         if (FindGameOver(letterPlayed, grid))
         {
-            numberOfMoves = 99;
+            gameState = GameState.End;
         }
-    }
-
-    int FindWinningMove(Letter letterToPlay, Letter[] grid)
-    {
-        for (int line = 0; line < 8; line++)
-        {
-            if (CheckLineForWinningMove(letterToPlay, grid, line, out int move)) return move;
-        }
-        return -1;
-    }
-
-    bool CheckLineForWinningMove(Letter letterToPlay, Letter[] grid, int lineNum, out int move)
-    {
-        CheckLine(letterToPlay, grid, lineNum, out int goodBoxes, out int emptyBoxes, out int theEmptyBox);
-
-        if (goodBoxes == 2 && emptyBoxes == 1)
-        {
-            move = theEmptyBox;
-            return true;
-        }
-        move = -1;
-        return false;
     }
 
     void CheckLine(Letter letterToPlay, Letter[] grid, int lineNum, out int goodBoxes, out int emptyBoxes, out int theEmptyBox)
@@ -225,7 +187,6 @@ public class GameMasterScript : MonoBehaviour
             default:
                 break;
         }
-
         int _goodBoxes = 0;
         int _emptyBoxes = 0;
         int _theEmptyBox = -1;
@@ -238,9 +199,63 @@ public class GameMasterScript : MonoBehaviour
                 _theEmptyBox = box;
             }
         }
-
         goodBoxes = _goodBoxes;
         emptyBoxes = _emptyBoxes;
         theEmptyBox = _theEmptyBox;
+    }
+
+    IEnumerator ComputerTurn(float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        int computerBoxChoice = -1;
+        switch (difficulty)
+        {
+            case GameDifficulty.Easy:
+                computerBoxChoice = GetRandomMove();
+                break;
+            case GameDifficulty.Medium:
+                if (!FindWinningMove(computerLetter, out computerBoxChoice))
+                {
+                    computerBoxChoice = GetRandomMove();
+                }
+                break;
+            case GameDifficulty.Hard:
+                if (!FindWinningMove(computerLetter, out computerBoxChoice))
+                {
+                    if (!FindWinningMove(playerLetter, out computerBoxChoice))
+                    {
+                        computerBoxChoice = GetRandomMove();
+                    }
+                }
+                break;
+        }
+        SetBoxLetter(computerBoxChoice, computerLetter);
+        EndStateIfGameOver(computerLetter, letterGrid);
+        if (gameState == GameState.CompTurn) gameState = GameState.PlayerTurn;
+    }
+
+    int GetRandomMove()
+    {
+        int randomBlankBoxNumber;
+        do
+        {
+            randomBlankBoxNumber = UnityEngine.Random.Range(0, 9);
+        } while (letterGrid[randomBlankBoxNumber] != Letter.Blank);
+        return randomBlankBoxNumber;
+    }
+
+    bool FindWinningMove(Letter letterToPlay, out int box)
+    {
+        for (int line = 0; line < 8; line++)
+        {
+            CheckLine(letterToPlay, letterGrid, line, out int goodBoxes, out int emptyBoxes, out int theEmptyBox);
+            if (goodBoxes == 2 && emptyBoxes == 1)
+            {
+                box = theEmptyBox;
+                return true;
+            }
+        }
+        box = -1;
+        return false;
     }
 }

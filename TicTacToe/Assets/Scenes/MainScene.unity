@@ -867,7 +867,7 @@ GameObject:
   - component: {fileID: 806207643}
   - component: {fileID: 806207642}
   m_Layer: 5
-  m_Name: Text
+  m_Name: DifficultyButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1752,8 +1752,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e326e05acaa4b6d4599cad2748668dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficultyButtonText: {fileID: 806207640}
-  playerLetterText: {fileID: 2127529586}
+  difficultyButtonText: {fileID: 0}
+  playerLetterText: {fileID: 0}
 --- !u!1 &2103376007
 GameObject:
   m_ObjectHideFlags: 0

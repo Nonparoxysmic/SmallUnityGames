@@ -7,14 +7,16 @@ public class MenuScript : MonoBehaviour
     GameMasterScript gm;
     GameObject menuPanel;
     GameObject uiPanel;
-    [SerializeField] GameObject difficultyButtonText;
-    [SerializeField] GameObject playerLetterText;
+    GameObject difficultyButtonText;
+    GameObject playerLetterText;
 
     private void Start()
     {
         gm = GameObject.Find("GameMaster").GetComponent<GameMasterScript>();
         menuPanel = GameObject.Find("MenuPanel");
         uiPanel = GameObject.Find("uiPanel");
+        difficultyButtonText = GameObject.Find("DifficultyButtonText");
+        playerLetterText = GameObject.Find("PlayerLetterText");
         uiPanel.SetActive(false);
         difficultyButtonText.GetComponent<Text>().text = "DIFFICULTY: " + gm.difficulty;
     }
@@ -39,8 +41,8 @@ public class MenuScript : MonoBehaviour
         difficultyButtonText.GetComponent<Text>().text = "DIFFICULTY: " + newDifficulty;
     }
 
-    public void UpdatePlayerLetter()
+    public void UpdatePlayerLetter(Letter newLetter)
     {
-        playerLetterText.GetComponent<Text>().text = "Your Letter: " + gm.playerLetter;
+        playerLetterText.GetComponent<Text>().text = "Your Letter: " + newLetter;
     }
 }
