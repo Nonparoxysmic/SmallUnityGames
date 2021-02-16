@@ -38,6 +38,12 @@ public class BoxScript : MonoBehaviour
     void SetLetter(Letter newLetter)
     {
         currentLetter = newLetter;
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (newLetter == gm.playerLetter)
+        {
+            sr.color = new Color(0f, 0f, 1f);
+        }
+        else sr.color = new Color(1f, 0f, 0f);
         animator.SetInteger("Letter", (int)currentLetter);
     }
 }

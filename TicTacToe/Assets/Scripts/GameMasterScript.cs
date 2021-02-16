@@ -13,7 +13,7 @@ public class GameMasterScript : MonoBehaviour
     MenuScript menu;
     [HideInInspector] public GameDifficulty difficulty;
     GameState gameState;
-    Letter playerLetter;
+    [HideInInspector] public Letter playerLetter;
     Letter computerLetter;
     Letter[] letterGrid;
     int numberOfMoves;
