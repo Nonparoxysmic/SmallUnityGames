@@ -1,23 +1,24 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ToggleVisible : MonoBehaviour
 {
-    SpriteRenderer sr;
+    Image image;
 
     private void Awake()
     {
-        sr = transform.gameObject.GetComponent<SpriteRenderer>();
-        if (sr == null)
-        {
-            Debug.LogError("ToggleVisible: Missing SpriteRenderer component in object \"" + transform.gameObject.name + "\"");
-            sr = transform.gameObject.AddComponent<SpriteRenderer>();
-        }
+        image = transform.gameObject.GetComponent<Image>();
     }
 
-    private void OnMouseDown()
+    public void OnClick()
     {
-        if (EventSystem.current.IsPointerOverGameObject()) return;
-        sr.enabled = !sr.enabled;
+        if (image.color.a < 0.5f)
+        {
+            image.color = new Color(image.color.r, image.color.g, image.color.b, 1);
+        }
+        else
+        {
+            image.color = new Color(image.color.r, image.color.g, image.color.b, 0);
+        }
     }
 }
