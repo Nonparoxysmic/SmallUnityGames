@@ -10,6 +10,13 @@ public enum GameDifficulty
     Hard
 }
 
+public enum GameResult
+{
+    Win,
+    Draw,
+    Lose
+}
+
 public enum GameState
 {
     Start,

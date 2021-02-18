@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameMasterScript : MonoBehaviour
 {
@@ -13,10 +14,13 @@ public class GameMasterScript : MonoBehaviour
     MenuScript menu;
     [HideInInspector] public GameDifficulty difficulty;
     GameState gameState;
+    Statistics stats;
     [HideInInspector] public Letter playerLetter;
     Letter computerLetter;
     Letter[] letterGrid;
     int numberOfMoves;
+
+    [SerializeField] GameObject debugStatistics;
     
     void Start()
     {
@@ -26,6 +30,7 @@ public class GameMasterScript : MonoBehaviour
         if (boxClicked == null) boxClicked = new BoxClickedEvent();
         boxClicked.AddListener(OnBoxClicked);
         if (boxUpdated == null) boxUpdated = new BoxUpdatedEvent();
+        stats = new Statistics();
     }
 
     public void NewGame()
@@ -38,10 +43,10 @@ public class GameMasterScript : MonoBehaviour
         numberOfMoves = 0;
         letterGrid = new Letter[9];
         mbs.NewBoxGroup();
-        gameState = (GameState)UnityEngine.Random.Range(1, 3);
+        gameState = stats.GetNextGameState(difficulty);
         if (gameState == GameState.CompTurn)
         {
-            StartCoroutine(ComputerTurn(0.0f));
+            StartCoroutine(ComputerTurn(0));
         }
     }
 
@@ -57,7 +62,7 @@ public class GameMasterScript : MonoBehaviour
 
             if (gameState == GameState.CompTurn)
             {
-                StartCoroutine(ComputerTurn(1.0f));
+                StartCoroutine(ComputerTurn(1));
             }
         }
     }
@@ -116,6 +121,21 @@ public class GameMasterScript : MonoBehaviour
         line.GetComponent<LineRenderer>().SetPositions(positions);
     }
 
+    void OnGameOver(Letter winner)
+    {
+        if (winner == playerLetter)
+        {
+            stats.AddGame(difficulty, GameResult.Win);
+        }
+        else if (winner == computerLetter)
+        {
+            stats.AddGame(difficulty, GameResult.Lose);
+        }
+        else stats.AddGame(difficulty, GameResult.Draw);
+
+        debugStatistics.GetComponent<Text>().text = stats.DebugGetStatistics();
+    }
+
     bool FindGameOver(Letter letterPlayed, Letter[] grid)
     {
         for (int line = 0; line < 8; line++)
@@ -124,10 +144,15 @@ public class GameMasterScript : MonoBehaviour
             if (goodBoxes == 3)
             {
                 DrawLine(line);
+                OnGameOver(letterPlayed);
                 return true;
             }
         }
-        if (numberOfMoves >= 9) return true;
+        if (numberOfMoves >= 9)
+        {
+            OnGameOver(Letter.Blank);
+            return true;
+        }
         return false;
     }
 
