@@ -23,6 +23,10 @@ public class MenuScript : MonoBehaviour
 
     public void ExitToMenu()
     {
+        if (gm.stats.gameInProgress)
+        {
+            gm.ForfeitGame();
+        }
         uiPanel.SetActive(false);
         menuPanel.SetActive(true);
     }

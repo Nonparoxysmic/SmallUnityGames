@@ -9,12 +9,13 @@ public class GameMasterScript : MonoBehaviour
     public BoxClickedEvent boxClicked;
     public BoxUpdatedEvent boxUpdated;
     [SerializeField] GameObject linePrefab;
+    [SerializeField] GameObject exitButtonText;
     GameObject mainBoard;
     MainBoardScript mbs;
     MenuScript menu;
     [HideInInspector] public GameDifficulty difficulty;
     GameState gameState;
-    Statistics stats;
+    public Statistics stats;
     [HideInInspector] public Letter playerLetter;
     Letter computerLetter;
     Letter[] letterGrid;
@@ -33,6 +34,15 @@ public class GameMasterScript : MonoBehaviour
         stats = new Statistics();
     }
 
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
     public void NewGame()
     {
         GameObject previousLine = GameObject.Find("Line");
@@ -44,10 +54,25 @@ public class GameMasterScript : MonoBehaviour
         letterGrid = new Letter[9];
         mbs.NewBoxGroup();
         gameState = stats.GetNextGameState(difficulty);
+        stats.gameInProgress = true;
+        exitButtonText.GetComponent<Text>().text = "FORFEIT GAME";
         if (gameState == GameState.CompTurn)
         {
             StartCoroutine(ComputerTurn(0));
         }
+    }
+
+    public void ForfeitGame()
+    {
+        ResetExitButtonText();
+        stats.AddGame(difficulty, GameResult.Lose);
+
+        debugStatistics.GetComponent<Text>().text = stats.DebugGetStatistics();
+    }
+
+    void ResetExitButtonText()
+    {
+        exitButtonText.GetComponent<Text>().text = "RETURN TO MENU";
     }
 
     void OnBoxClicked(int boxNumber)
@@ -123,6 +148,7 @@ public class GameMasterScript : MonoBehaviour
 
     void OnGameOver(Letter winner)
     {
+        ResetExitButtonText();
         if (winner == playerLetter)
         {
             stats.AddGame(difficulty, GameResult.Win);

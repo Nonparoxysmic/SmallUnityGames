@@ -5,6 +5,7 @@ public class Statistics
 {
     readonly Dictionary<GameDifficulty, int[]> statistics;
     readonly Dictionary<GameDifficulty, GameState> nextStartingGameState;
+    public bool gameInProgress;
 
     public Statistics()
     {
@@ -32,6 +33,7 @@ public class Statistics
     public void AddGame(GameDifficulty difficulty, GameResult result)
     {
         statistics[difficulty][(int)result]++;
+        gameInProgress = false;
         nextStartingGameState[difficulty] = (GameState)(((int)nextStartingGameState[difficulty]) % 2) + 1;
     }
 
