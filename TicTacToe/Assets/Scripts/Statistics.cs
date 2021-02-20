@@ -14,7 +14,7 @@ public class Statistics
         ResetStatistics();
     }
 
-    void ResetStatistics()
+    public void ResetStatistics()
     {
         statistics.Clear();
         nextStartingGameState.Clear();

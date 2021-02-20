@@ -56,6 +56,9 @@ public class GameMasterScript : MonoBehaviour
         gameState = stats.GetNextGameState(difficulty);
         stats.gameInProgress = true;
         exitButtonText.GetComponent<Text>().text = "FORFEIT GAME";
+
+        debugStatistics.GetComponent<Text>().text = stats.DebugGetStatistics();
+
         if (gameState == GameState.CompTurn)
         {
             StartCoroutine(ComputerTurn(0));
