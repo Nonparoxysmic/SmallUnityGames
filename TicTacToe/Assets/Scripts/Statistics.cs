@@ -37,6 +37,36 @@ public class Statistics
         nextStartingGameState[difficulty] = (GameState)(((int)nextStartingGameState[difficulty]) % 2) + 1;
     }
 
+    public SaveData CreateSaveData()
+    {
+        SaveData save = new SaveData();
+        foreach (KeyValuePair<GameDifficulty, int[]> kvp in statistics)
+        {
+            save.statisticsList.Add(new StatsEntry() { gameDifficulty = kvp.Key, stats = kvp.Value });
+        }
+        foreach (KeyValuePair<GameDifficulty, GameState> kvp in nextStartingGameState)
+        {
+            save.nextStartingGameStateList.Add(new StartEntry() { gameDifficulty = kvp.Key, gameState = kvp.Value });
+        }
+        save.gameInProgress = gameInProgress;
+        return save;
+    }
+
+    public void LoadData(SaveData save)
+    {
+        statistics.Clear();
+        nextStartingGameState.Clear();
+        foreach (StatsEntry entry in save.statisticsList)
+        {
+            statistics.Add(entry.gameDifficulty, entry.stats);
+        }
+        foreach (StartEntry entry in save.nextStartingGameStateList)
+        {
+            nextStartingGameState.Add(entry.gameDifficulty, entry.gameState);
+        }
+        gameInProgress = save.gameInProgress;
+    }
+
     public string DebugGetStatistics()
     {
         string output = "Debug Statistics" + Environment.NewLine;

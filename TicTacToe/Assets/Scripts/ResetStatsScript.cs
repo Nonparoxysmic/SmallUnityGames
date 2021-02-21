@@ -23,6 +23,7 @@ public class ResetStatsScript : MonoBehaviour
         if (timesClicked == 2)
         {
             gm.stats.ResetStatistics();
+            gm.SaveGame();
             UpdateButtonText();
         }
         else if (timesClicked == 1)

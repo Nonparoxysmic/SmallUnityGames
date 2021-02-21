@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,11 +23,16 @@ public class GameMasterScript : MonoBehaviour
     Letter computerLetter;
     Letter[] letterGrid;
     int numberOfMoves;
+    XmlSerializer serializer;
+    string saveFilePath;
 
     [SerializeField] GameObject debugStatistics;
     
     void Start()
     {
+        saveFilePath = Application.persistentDataPath + "/save0.xml";
+        Debug.Log("Save file: " + saveFilePath);
+
         mainBoard = GameObject.Find("Main Board");
         mbs = GameObject.Find("Main Board").GetComponent<MainBoardScript>();
         menu = GetComponent<MenuScript>();
@@ -32,6 +40,41 @@ public class GameMasterScript : MonoBehaviour
         boxClicked.AddListener(OnBoxClicked);
         if (boxUpdated == null) boxUpdated = new BoxUpdatedEvent();
         stats = new Statistics();
+        serializer = new XmlSerializer(typeof(SaveData));
+        LoadGame();
+    }
+
+    public void LoadGame()
+    {
+        if (!File.Exists(saveFilePath)) return;
+        try
+        {
+            using (FileStream reader = new FileStream(saveFilePath, FileMode.Open))
+            {
+                SaveData loadedData = (SaveData)serializer.Deserialize(reader);
+                stats.LoadData(loadedData);
+            };
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+            stats = new Statistics();
+        }
+    }
+
+    public void SaveGame()
+    {
+        try
+        {
+            using (XmlWriter writer = XmlWriter.Create(saveFilePath))
+            {
+                serializer.Serialize(writer, stats.CreateSaveData());
+            };
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
     }
 
     public void QuitGame()
@@ -56,6 +99,7 @@ public class GameMasterScript : MonoBehaviour
         gameState = stats.GetNextGameState(difficulty);
         stats.gameInProgress = true;
         exitButtonText.GetComponent<Text>().text = "FORFEIT GAME";
+        SaveGame();
 
         debugStatistics.GetComponent<Text>().text = stats.DebugGetStatistics();
 
@@ -69,6 +113,7 @@ public class GameMasterScript : MonoBehaviour
     {
         ResetExitButtonText();
         stats.AddGame(difficulty, GameResult.Lose);
+        SaveGame();
 
         debugStatistics.GetComponent<Text>().text = stats.DebugGetStatistics();
     }
@@ -161,6 +206,7 @@ public class GameMasterScript : MonoBehaviour
             stats.AddGame(difficulty, GameResult.Lose);
         }
         else stats.AddGame(difficulty, GameResult.Draw);
+        SaveGame();
 
         debugStatistics.GetComponent<Text>().text = stats.DebugGetStatistics();
     }
