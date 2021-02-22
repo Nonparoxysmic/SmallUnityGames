@@ -5,9 +5,11 @@ public class BoxUpdatedEvent : UnityEvent<int, Letter> { }
 
 public enum GameDifficulty
 {
+    Easiest,
     Easy,
     Medium,
-    Hard
+    Hard,
+    Hardest
 }
 
 public enum GameResult

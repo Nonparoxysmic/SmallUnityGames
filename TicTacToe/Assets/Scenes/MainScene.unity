@@ -1758,6 +1758,7 @@ GameObject:
   - component: {fileID: 1838110061}
   - component: {fileID: 1838110058}
   - component: {fileID: 1838110062}
+  - component: {fileID: 1838110059}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -1783,6 +1784,18 @@ MonoBehaviour:
   difficulty: 0
   playerLetter: 0
   debugStatistics: {fileID: 1676222730}
+--- !u!114 &1838110059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838110057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329221c18f146f34faf6df806f699b4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1838110061
 Transform:
   m_ObjectHideFlags: 0

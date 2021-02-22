@@ -39,6 +39,7 @@ public class GameMasterScript : MonoBehaviour
         if (boxClicked == null) boxClicked = new BoxClickedEvent();
         boxClicked.AddListener(OnBoxClicked);
         if (boxUpdated == null) boxUpdated = new BoxUpdatedEvent();
+        difficulty = GameDifficulty.Medium;
         stats = new Statistics();
         serializer = new XmlSerializer(typeof(SaveData));
         LoadGame();
@@ -239,7 +240,7 @@ public class GameMasterScript : MonoBehaviour
         }
     }
 
-    void CheckLine(Letter letterToPlay, Letter[] grid, int lineNum, out int goodBoxes, out int emptyBoxes, out int theEmptyBox)
+    public void CheckLine(Letter letterToPlay, Letter[] grid, int lineNum, out int goodBoxes, out int emptyBoxes, out int theEmptyBox)
     {
         List<int> boxes = new List<int>();
         switch (lineNum)
@@ -310,6 +311,10 @@ public class GameMasterScript : MonoBehaviour
         int computerBoxChoice = -1;
         switch (difficulty)
         {
+            case GameDifficulty.Easiest:
+                if (numberOfMoves == 0) computerBoxChoice = 4;
+                else computerBoxChoice = Engine.WorstMove(computerLetter, letterGrid);
+                break;
             case GameDifficulty.Easy:
                 computerBoxChoice = GetRandomMove();
                 break;
@@ -327,6 +332,14 @@ public class GameMasterScript : MonoBehaviour
                         computerBoxChoice = GetRandomMove();
                     }
                 }
+                break;
+            case GameDifficulty.Hardest:
+                if (numberOfMoves == 0)
+                {
+                    int[] corners = new int[] { 0, 2, 6, 8 };
+                    computerBoxChoice = corners[UnityEngine.Random.Range(0, 4)];
+                }
+                else computerBoxChoice = Engine.BestMove(computerLetter, letterGrid);
                 break;
         }
         SetBoxLetter(computerBoxChoice, computerLetter);

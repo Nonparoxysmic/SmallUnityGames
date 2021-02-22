@@ -40,7 +40,7 @@ public class MenuScript : MonoBehaviour
 
     public void ChangeDifficulty()
     {
-        GameDifficulty newDifficulty = (GameDifficulty)((int)(gm.difficulty + 1) % 3);
+        GameDifficulty newDifficulty = (GameDifficulty)((int)(gm.difficulty + 1) % 5);
         gm.difficulty = newDifficulty;
         difficultyButtonText.GetComponent<Text>().text = "DIFFICULTY: " + newDifficulty;
     }
