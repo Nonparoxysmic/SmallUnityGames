@@ -25,8 +25,6 @@ public class GameMasterScript : MonoBehaviour
     int numberOfMoves;
     XmlSerializer serializer;
     string saveFilePath;
-
-    [SerializeField] GameObject debugStatistics;
     
     void Start()
     {
@@ -101,9 +99,6 @@ public class GameMasterScript : MonoBehaviour
         stats.gameInProgress = true;
         exitButtonText.GetComponent<Text>().text = "FORFEIT GAME";
         SaveGame();
-
-        debugStatistics.GetComponent<Text>().text = stats.DebugGetStatistics();
-
         if (gameState == GameState.CompTurn)
         {
             StartCoroutine(ComputerTurn(0));
@@ -113,10 +108,15 @@ public class GameMasterScript : MonoBehaviour
     public void ForfeitGame()
     {
         ResetExitButtonText();
-        stats.AddGame(difficulty, GameResult.Lose);
+        if (difficulty == GameDifficulty.Easiest)
+        {
+            stats.AddGame(difficulty, GameResult.Draw);
+        }
+        else
+        {
+            stats.AddGame(difficulty, GameResult.Lose);
+        }
         SaveGame();
-
-        debugStatistics.GetComponent<Text>().text = stats.DebugGetStatistics();
     }
 
     void ResetExitButtonText()
@@ -208,8 +208,6 @@ public class GameMasterScript : MonoBehaviour
         }
         else stats.AddGame(difficulty, GameResult.Draw);
         SaveGame();
-
-        debugStatistics.GetComponent<Text>().text = stats.DebugGetStatistics();
     }
 
     bool FindGameOver(Letter letterPlayed, Letter[] grid)

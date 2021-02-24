@@ -67,13 +67,8 @@ public class Statistics
         gameInProgress = save.gameInProgress;
     }
 
-    public string DebugGetStatistics()
+    public int GetStat(GameDifficulty difficulty, int index)
     {
-        string output = "Debug Statistics" + Environment.NewLine;
-        foreach (GameDifficulty difficulty in Enum.GetValues(typeof(GameDifficulty)))
-        {
-            output += difficulty.ToString() + ": " + statistics[difficulty][0] + " wins, " + statistics[difficulty][1] + " draws, " + statistics[difficulty][2] + " losses" + Environment.NewLine;
-        }
-        return output;
+        return statistics[difficulty][index];
     }
 }
