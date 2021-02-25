@@ -121,7 +121,7 @@ public class GameMasterScript : MonoBehaviour
 
     void ResetExitButtonText()
     {
-        exitButtonText.GetComponent<Text>().text = "RETURN TO MENU";
+        exitButtonText.GetComponent<Text>().text = "EXIT TO MENU";
     }
 
     void OnBoxClicked(int boxNumber)

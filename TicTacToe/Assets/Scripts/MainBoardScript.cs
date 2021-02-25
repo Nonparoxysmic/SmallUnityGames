@@ -26,4 +26,11 @@ public class MainBoardScript : MonoBehaviour
         currentBoxGroup = Instantiate(boxGroupPrefab, new Vector2(x, y), Quaternion.identity, gameObject.transform);
         currentBoxGroup.name = "Box Group";
     }
+
+    public void DestroyGame()
+    {
+        if (currentBoxGroup != null) Destroy(currentBoxGroup);
+        GameObject previousLine = GameObject.Find("Line");
+        if (previousLine != null) Destroy(previousLine);
+    }
 }
