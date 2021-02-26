@@ -12,10 +12,12 @@ public class GameMasterScript : MonoBehaviour
     public BoxClickedEvent boxClicked;
     public BoxUpdatedEvent boxUpdated;
     [SerializeField] GameObject linePrefab;
-    [SerializeField] GameObject exitButtonText;
     GameObject mainBoard;
     MainBoardScript mbs;
     MenuScript menu;
+    GameObject exitButtonText;
+    GameObject gameResult;
+    Text gameResultText;
     [HideInInspector] public GameDifficulty difficulty;
     GameState gameState;
     public Statistics stats;
@@ -34,6 +36,10 @@ public class GameMasterScript : MonoBehaviour
         mainBoard = GameObject.Find("Main Board");
         mbs = GameObject.Find("Main Board").GetComponent<MainBoardScript>();
         menu = GetComponent<MenuScript>();
+        exitButtonText = GameObject.Find("ExitButtonText");
+        gameResult = GameObject.Find("GameResult");
+        gameResultText = GameObject.Find("GameResultText").GetComponent<Text>();
+        gameResult.SetActive(false);
         if (boxClicked == null) boxClicked = new BoxClickedEvent();
         boxClicked.AddListener(OnBoxClicked);
         if (boxUpdated == null) boxUpdated = new BoxUpdatedEvent();
@@ -195,18 +201,47 @@ public class GameMasterScript : MonoBehaviour
         line.GetComponent<LineRenderer>().SetPositions(positions);
     }
 
+    void DisplayResult(GameResult result)
+    {
+        switch (result)
+        {
+            case GameResult.Win:
+                gameResultText.text = "YOU WIN!";
+                break;
+            case GameResult.Draw:
+                gameResultText.text = "IT'S A DRAW!";
+                break;
+            case GameResult.Lose:
+                gameResultText.text = "YOU LOSE :(";
+                break;
+        }
+        gameResult.SetActive(true);
+    }
+
+    public void HideResult()
+    {
+        gameResult.SetActive(false);
+        gameResultText.text = "result";
+    }
+
     void OnGameOver(Letter winner)
     {
         ResetExitButtonText();
         if (winner == playerLetter)
         {
             stats.AddGame(difficulty, GameResult.Win);
+            DisplayResult(GameResult.Win);
         }
         else if (winner == computerLetter)
         {
             stats.AddGame(difficulty, GameResult.Lose);
+            DisplayResult(GameResult.Lose);
         }
-        else stats.AddGame(difficulty, GameResult.Draw);
+        else
+        {
+            stats.AddGame(difficulty, GameResult.Draw);
+            DisplayResult(GameResult.Draw);
+        }
         SaveGame();
     }
 
