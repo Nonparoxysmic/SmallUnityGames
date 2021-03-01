@@ -17,6 +17,10 @@ public class GameMasterScript : MonoBehaviour
     MenuScript menu;
     GameObject exitButtonText;
     GameObject gameResult;
+    AudioSource audioPlayer;
+    AudioSource audioSource;
+    [SerializeField] AudioClip winClip;
+    [SerializeField] AudioClip noWinClip;
     Text gameResultText;
     [HideInInspector] public GameDifficulty difficulty;
     GameState gameState;
@@ -39,6 +43,8 @@ public class GameMasterScript : MonoBehaviour
         exitButtonText = GameObject.Find("ExitButtonText");
         gameResult = GameObject.Find("GameResult");
         gameResultText = GameObject.Find("GameResultText").GetComponent<Text>();
+        audioPlayer = GameObject.Find("Audio Player").GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         gameResult.SetActive(false);
         if (boxClicked == null) boxClicked = new BoxClickedEvent();
         boxClicked.AddListener(OnBoxClicked);
@@ -201,18 +207,29 @@ public class GameMasterScript : MonoBehaviour
         line.GetComponent<LineRenderer>().SetPositions(positions);
     }
 
+    IEnumerator PlayGameOverAudio(AudioClip clip)
+    {
+        if (clip == winClip) audioPlayer.mute = true;
+        audioSource.PlayOneShot(clip);
+        yield return new WaitForSeconds(clip.length);
+        audioPlayer.mute = false;
+    }
+
     void DisplayResult(GameResult result)
     {
         switch (result)
         {
             case GameResult.Win:
                 gameResultText.text = "YOU WIN!";
+                StartCoroutine(PlayGameOverAudio(winClip));
                 break;
             case GameResult.Draw:
                 gameResultText.text = "IT'S A DRAW!";
+                StartCoroutine(PlayGameOverAudio(noWinClip));
                 break;
             case GameResult.Lose:
                 gameResultText.text = "YOU LOSE :(";
+                StartCoroutine(PlayGameOverAudio(noWinClip));
                 break;
         }
         gameResult.SetActive(true);
