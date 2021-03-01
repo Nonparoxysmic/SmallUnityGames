@@ -21,4 +21,9 @@ public class ToggleVisible : MonoBehaviour
             image.color = new Color(image.color.r, image.color.g, image.color.b, 0);
         }
     }
+
+    public void Hide()
+    {
+        image.color = new Color(image.color.r, image.color.g, image.color.b, 0);
+    }
 }
