@@ -4,16 +4,24 @@ using UnityEngine.Tilemaps;
 
 public class PlayerVision : MonoBehaviour
 {
+    PlayerMovement playerMovement;
+
     [SerializeField] Tilemap fogTilemap;
     int currentTileX;
     int currentTileY;
 
     [SerializeField] Tile whiteTile;
 
+    void Awake()
+    {
+        playerMovement = GetComponent<PlayerMovement>();
+    }
+
     void Update()
     {
-        currentTileX = (int)Math.Floor(transform.position.x);
-        currentTileY = (int)Math.Floor(transform.position.y);
+        currentTileX = playerMovement.currentTilePos.x;
+        currentTileY = playerMovement.currentTilePos.y;
+
         fogTilemap.ClearAllTiles();
         for (int x = currentTileX - 2; x <= currentTileX + 2; x++)
         {
