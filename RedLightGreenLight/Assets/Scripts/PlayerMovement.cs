@@ -1,9 +1,12 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour
 {
     const float WalkSpeed = 2.5f;
+
+    [SerializeField] Tilemap wallTilemap;
 
     [HideInInspector] public Vector3Int currentTilePos;
     [HideInInspector] public bool isMoving;
@@ -62,9 +65,12 @@ public class PlayerMovement : MonoBehaviour
         moveInput.y = (int)Input.GetAxisRaw("Vertical");
         if (moveInput.x == 0 ^ moveInput.y == 0)
         {
-            targetPos = new Vector3(currentTilePos.x + moveInput.x + 0.5f, currentTilePos.y + moveInput.y + 0.5f, 0);
-            isMoving = true;
-            movingFrame = true;
+            if (wallTilemap.GetTile(new Vector3Int(currentTilePos.x + moveInput.x, currentTilePos.y + moveInput.y, 0)) == null)
+            {
+                targetPos = new Vector3(currentTilePos.x + moveInput.x + 0.5f, currentTilePos.y + moveInput.y + 0.5f, 0);
+                isMoving = true;
+                movingFrame = true;
+            }
         }
     }
 }
