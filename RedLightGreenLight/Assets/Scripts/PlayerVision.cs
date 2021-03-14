@@ -94,6 +94,11 @@ public class PlayerVision : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
     }
 
+    void Start()
+    {
+        fogTilemap.gameObject.SetActive(true);
+    }
+
     void Update()
     {
         Vector3 mouseDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -119,6 +124,12 @@ public class PlayerVision : MonoBehaviour
         {
             for (int y = 0; y < 15; y++)
             {
+                if (x == 7 && y == 7) continue;
+                float distance = (float)Math.Sqrt(Math.Pow(x - 7, 2) + Math.Pow(y - 7, 2));
+                Vector3 originPos = new Vector3(playerMovement.currentTilePos.x + 0.5f, playerMovement.currentTilePos.y + 0.5f, 0);
+                RaycastHit2D hit = Physics2D.Raycast(originPos, new Vector3(x - 7, y - 7, 0), distance);
+                if (hit.collider == null) continue;
+
                 if (visionPatterns[facing][x, y] == 0)
                 {
                     fogTilemap.SetTile(new Vector3Int(fogPos.x + x, fogPos.y + y, 0), blackTile);
