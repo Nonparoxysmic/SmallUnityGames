@@ -110,8 +110,8 @@ public class PlayerVision : MonoBehaviour
         else if (angle <= -0.25) facing = 2;
         else if (angle >= 0.25) facing = 0;
 
+        int minLightLevel = 2;
 
-        fogTilemap.ClearAllTiles();
         playerTilePos = playerMovement.currentTilePos;
         fogArrayTilePos = playerTilePos + new Vector3Int(-7, -7, 0);
         for (int x = 0; x < 15; x++)
@@ -121,7 +121,15 @@ public class PlayerVision : MonoBehaviour
                 Vector3Int lookTilePos = fogArrayTilePos + new Vector3Int(x, y, 0);
                 if (x == 7 && y == 7)
                 {
+                    fogTilemap.SetTile(lookTilePos, null);
+                    continue;
+                }
+                if (wallTilemap.GetTile(lookTilePos) == null)
+                {
                     fogTilemap.SetTile(lookTilePos, grayTile);
+                }
+                if (visionPatterns[facing][lookTilePos.x - fogArrayTilePos.x, lookTilePos.y - fogArrayTilePos.y] < minLightLevel)
+                {
                     continue;
                 }
                 Vector3 ray = lookTilePos - playerTilePos;
@@ -133,31 +141,23 @@ public class PlayerVision : MonoBehaviour
                     Vector3 stepPos = playerPos + ray * i / steps;
                     stepTilePos = new Vector3Int((int)Math.Floor(stepPos.x), (int)Math.Floor(stepPos.y), 0);
                     if (stepTilePos == playerTilePos) break;
-                    if (wallTilemap.GetTile(stepTilePos) == null)
+                    if (visionPatterns[facing][stepTilePos.x - fogArrayTilePos.x, stepTilePos.y - fogArrayTilePos.y] < minLightLevel)
                     {
-                        fogTilemap.SetTile(stepTilePos, whiteTile);
+                        if (wallTilemap.GetTile(stepTilePos) == null)
+                        {
+                            fogTilemap.SetTile(stepTilePos, blackTile);
+                        }
                     }
                     else
                     {
-                        fogTilemap.SetTile(stepTilePos, blackTile);
+                        fogTilemap.SetTile(stepTilePos, null);
+                    }
+                    if (wallTilemap.GetTile(stepTilePos) != null)
+                    {
                         break;
                     }
                 }
             }
         }
-
-
-        //        if (visionPatterns[facing][x, y] == 0)
-        //        {
-        //            fogTilemap.SetTile(new Vector3Int(fogPos.x + x, fogPos.y + y, 0), blackTile);
-        //        }
-        //        else if (visionPatterns[facing][x, y] == 1)
-        //        {
-        //            fogTilemap.SetTile(new Vector3Int(fogPos.x + x, fogPos.y + y, 0), whiteTile);
-        //        }
-        //        else if (visionPatterns[facing][x, y] == 2)
-        //        {
-        //            fogTilemap.SetTile(new Vector3Int(fogPos.x + x, fogPos.y + y, 0), whiteTile);
-        //        }
     }
 }
