@@ -119,14 +119,21 @@ public class PlayerVision : MonoBehaviour
             for (int y = 0; y < 15; y++)
             {
                 Vector3Int lookTilePos = fogArrayTilePos + new Vector3Int(x, y, 0);
+                if (fogTilemap.GetTile(lookTilePos) == null && wallTilemap.GetTile(lookTilePos) == null)
+                {
+                    fogTilemap.SetTile(lookTilePos, whiteTile);
+                }
+            }
+        }
+        for (int x = 0; x < 15; x++)
+        {
+            for (int y = 0; y < 15; y++)
+            {
+                Vector3Int lookTilePos = fogArrayTilePos + new Vector3Int(x, y, 0);
                 if (x == 7 && y == 7)
                 {
                     fogTilemap.SetTile(lookTilePos, null);
                     continue;
-                }
-                if (wallTilemap.GetTile(lookTilePos) == null)
-                {
-                    fogTilemap.SetTile(lookTilePos, grayTile);
                 }
                 if (visionPatterns[facing][lookTilePos.x - fogArrayTilePos.x, lookTilePos.y - fogArrayTilePos.y] < minLightLevel)
                 {
@@ -140,7 +147,7 @@ public class PlayerVision : MonoBehaviour
                 {
                     Vector3 stepPos = playerPos + ray * i / steps;
                     stepTilePos = new Vector3Int((int)Math.Floor(stepPos.x), (int)Math.Floor(stepPos.y), 0);
-                    if (stepTilePos == playerTilePos) break;
+                    if (stepTilePos == playerTilePos) continue;
                     if (visionPatterns[facing][stepTilePos.x - fogArrayTilePos.x, stepTilePos.y - fogArrayTilePos.y] < minLightLevel)
                     {
                         if (wallTilemap.GetTile(stepTilePos) == null)
