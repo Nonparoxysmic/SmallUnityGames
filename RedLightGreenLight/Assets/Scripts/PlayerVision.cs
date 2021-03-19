@@ -83,6 +83,7 @@ public class PlayerVision : MonoBehaviour
     PlayerMovement playerMovement;
 
     [SerializeField] Tilemap fogTilemap;
+    [SerializeField] Tilemap lightTilemap;
     [SerializeField] Tilemap wallTilemap;
     Vector3Int fogArrayTilePos;
     Vector3Int playerTilePos;
@@ -110,8 +111,6 @@ public class PlayerVision : MonoBehaviour
         else if (angle <= -0.25) facing = 2;
         else if (angle >= 0.25) facing = 0;
 
-        int minLightLevel = 2;
-
         playerTilePos = playerMovement.currentTilePos;
         fogArrayTilePos = playerTilePos + new Vector3Int(-7, -7, 0);
         for (int x = 0; x < 15; x++)
@@ -121,7 +120,14 @@ public class PlayerVision : MonoBehaviour
                 Vector3Int lookTilePos = fogArrayTilePos + new Vector3Int(x, y, 0);
                 if (fogTilemap.GetTile(lookTilePos) == null && wallTilemap.GetTile(lookTilePos) == null)
                 {
-                    fogTilemap.SetTile(lookTilePos, whiteTile);
+                    if (lightTilemap.GetTile(lookTilePos) == null)
+                    {
+                        fogTilemap.SetTile(lookTilePos, blackTile);
+                    }
+                    else
+                    {
+                        fogTilemap.SetTile(lookTilePos, whiteTile);
+                    }
                 }
             }
         }
@@ -135,10 +141,17 @@ public class PlayerVision : MonoBehaviour
                     fogTilemap.SetTile(lookTilePos, null);
                     continue;
                 }
-                if (visionPatterns[facing][lookTilePos.x - fogArrayTilePos.x, lookTilePos.y - fogArrayTilePos.y] < minLightLevel)
+
+                int lookTileLightRequired = 1;
+                if (lightTilemap.GetTile(lookTilePos) == null)
+                {
+                    lookTileLightRequired = 2;
+                }
+                if (visionPatterns[facing][lookTilePos.x - fogArrayTilePos.x, lookTilePos.y - fogArrayTilePos.y] < lookTileLightRequired)
                 {
                     continue;
                 }
+
                 Vector3 ray = lookTilePos - playerTilePos;
                 Vector3 playerPos = playerTilePos + new Vector3(0.5f, 0.5f, 0);
                 int steps = (int)Math.Max(Math.Abs(ray.x), Math.Abs(ray.y));
@@ -147,15 +160,12 @@ public class PlayerVision : MonoBehaviour
                 {
                     Vector3 stepPos = playerPos + ray * i / steps;
                     stepTilePos = new Vector3Int((int)Math.Floor(stepPos.x), (int)Math.Floor(stepPos.y), 0);
-                    if (stepTilePos == playerTilePos) continue;
-                    if (visionPatterns[facing][stepTilePos.x - fogArrayTilePos.x, stepTilePos.y - fogArrayTilePos.y] < minLightLevel)
+                    int stepTileLightRequired = 1;
+                    if (lightTilemap.GetTile(stepTilePos) == null)
                     {
-                        if (wallTilemap.GetTile(stepTilePos) == null)
-                        {
-                            fogTilemap.SetTile(stepTilePos, blackTile);
-                        }
+                        stepTileLightRequired = 2;
                     }
-                    else
+                    if (visionPatterns[facing][stepTilePos.x - fogArrayTilePos.x, stepTilePos.y - fogArrayTilePos.y] >= stepTileLightRequired)
                     {
                         fogTilemap.SetTile(stepTilePos, null);
                     }
