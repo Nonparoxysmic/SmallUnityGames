@@ -6,27 +6,29 @@ public class PlayerMovement : MonoBehaviour
 {
     const float WalkSpeed = 2.5f;
 
-    [SerializeField] Tilemap wallTilemap;
-
     [HideInInspector] public Vector3Int currentTilePos;
     [HideInInspector] public bool isMoving;
     [HideInInspector] public Vector3 targetPos;
 
+    CollisionMonitor collisionMonitor;
     GameClock gameClock;
+
+    Vector3Int lookTilePos;
     Vector2Int moveInput;
     bool movingFrame;
 
     void Awake()
     {
+        collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
         gameClock = GameObject.Find("Game Clock").GetComponent<GameClock>();
     }
 
     void Start()
     {
-        gameClock.onPlayerTick.AddListener(PlayerUpdate);
         currentTilePos = new Vector3Int((int)Math.Floor(transform.position.x), (int)Math.Floor(transform.position.y), 0);
-        targetPos = new Vector3(currentTilePos.x + 0.5f, currentTilePos.y + 0.5f, 0);
-        transform.position = targetPos;
+        transform.position = new Vector3(currentTilePos.x + 0.5f, currentTilePos.y + 0.5f, 0);
+        targetPos = transform.position;
+        gameClock.onPlayerTick.AddListener(PlayerUpdate);
     }
 
     void Update()
@@ -65,10 +67,11 @@ public class PlayerMovement : MonoBehaviour
         moveInput.y = (int)Input.GetAxisRaw("Vertical");
         if (moveInput.x == 0 ^ moveInput.y == 0)
         {
-            if (wallTilemap.GetTile(new Vector3Int(currentTilePos.x + moveInput.x, currentTilePos.y + moveInput.y, 0)) == null)
+            lookTilePos = new Vector3Int(currentTilePos.x + moveInput.x, currentTilePos.y + moveInput.y, 0);
+            if (collisionMonitor.TileIsEmpty(lookTilePos))
             {
-                targetPos = new Vector3(currentTilePos.x + moveInput.x + 0.5f, currentTilePos.y + moveInput.y + 0.5f, 0);
                 isMoving = true;
+                targetPos = new Vector3(lookTilePos.x + 0.5f, lookTilePos.y + 0.5f, 0);
                 movingFrame = true;
             }
         }
