@@ -10,6 +10,7 @@ public class GameClock : MonoBehaviour
 
     void Awake()
     {
+        isPlayerTick = true;
         onPlayerTick = new UnityEvent();
         onNonPlayerTick = new UnityEvent();
     }
