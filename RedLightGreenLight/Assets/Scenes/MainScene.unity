@@ -260,6 +260,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   testEnemy: {fileID: 651104513}
   wallTilemap: {fileID: 1232023073}
+  levelBoundary:
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &371284479
 GameObject:
   m_ObjectHideFlags: 0

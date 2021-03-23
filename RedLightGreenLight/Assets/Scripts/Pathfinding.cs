@@ -4,30 +4,66 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    //CollisionMonitor collisionMonitor;
-    //PlayerMovement playerMovement;
+    readonly Vector3Int[] moveDirections =
+        {
+            new Vector3Int(-1,  0,  0),
+            new Vector3Int( 1,  0,  0),
+            new Vector3Int( 0, -1,  0),
+            new Vector3Int( 0,  1,  0)
+        };
+
+    CollisionMonitor collisionMonitor;
+    PlayerMovement playerMovement;
 
     List<Vector3Int> bestMoves;
+    Vector3Int lookTilePos;
+    bool[,] pathArray;
 
     void Awake()
     {
-        //collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
-        //playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+        collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
+        playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         bestMoves = new List<Vector3Int>();
+    }
+
+    void Start()
+    {
+        pathArray = collisionMonitor.GetPathArray();
     }
 
     public List<Vector3Int> GetBestMovesTowardPlayer(Vector3Int startTilePos)
     {
         bestMoves.Clear();
-
-        // Temporary placeholder
-        bestMoves.Add(new Vector3Int(-1, 0, 0));
-        bestMoves.Add(new Vector3Int(1, 0, 0));
-        bestMoves.Add(new Vector3Int(0, -1, 0));
-        bestMoves.Add(new Vector3Int(0, 1, 0));
-
+        int shortestPathLength = int.MaxValue - 1;
+        foreach (Vector3Int moveDir in moveDirections)
+        {
+            lookTilePos = startTilePos + moveDir;
+            if (collisionMonitor.TileIsPath(lookTilePos))
+            {
+                int length = GetPathLength(lookTilePos, playerMovement.currentTilePos);
+                if (length < shortestPathLength)
+                {
+                    bestMoves.Clear();
+                    bestMoves.Add(lookTilePos);
+                    shortestPathLength = length;
+                }
+                else if (length == shortestPathLength) bestMoves.Add(lookTilePos);
+            }
+        }
         bestMoves.Shuffle();
         return bestMoves;
+    }
+
+    int GetPathLength(Vector3Int startTilePos, Vector3Int endTilePos)
+    {
+        if (!collisionMonitor.LevelContainsPosition(startTilePos) || !collisionMonitor.LevelContainsPosition(endTilePos))
+        {
+            return int.MaxValue;
+        }
+
+        // TODO: A* pathfinding
+
+        return 2;  // TEMPORARY RETURN
     }
 }
 

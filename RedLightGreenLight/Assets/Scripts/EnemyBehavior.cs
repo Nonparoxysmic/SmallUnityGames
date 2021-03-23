@@ -12,14 +12,14 @@ public class EnemyBehavior : MonoBehaviour
     CollisionMonitor collisionMonitor;
     GameClock gameClock;
     Pathfinding pathfinding;
-
-    Vector3Int lookTilePos;
+    PlayerMovement playerMovement;
 
     void Awake()
     {
         collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
         gameClock = GameObject.Find("Game Clock").GetComponent<GameClock>();
         pathfinding = GameObject.Find("Pathfinder").GetComponent<Pathfinding>();
+        playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
     }
 
     void Start()
@@ -32,13 +32,18 @@ public class EnemyBehavior : MonoBehaviour
     void NonPlayerUpdate()
     {
         if (fogTilemap.GetTile(currentTilePos) == null) return;
-        List<Vector3Int> bestMoves = pathfinding.GetBestMovesTowardPlayer(currentTilePos);
-        foreach (Vector3Int move in bestMoves)
+        int distanceToPlayer = Math.Abs(currentTilePos.x - playerMovement.currentTilePos.x) + Math.Abs(currentTilePos.y - playerMovement.currentTilePos.y);
+        if (distanceToPlayer == 1)
         {
-            lookTilePos = currentTilePos + move;
-            if (fogTilemap.GetTile(lookTilePos) == null || !collisionMonitor.TileIsEmpty(lookTilePos)) continue;
-            currentTilePos = lookTilePos;
-            transform.position = new Vector3(lookTilePos.x + 0.5f, lookTilePos.y + 0.5f, 0);
+            Debug.Log("Enemy caught player.");
+            return;
+        }
+        List<Vector3Int> bestMoves = pathfinding.GetBestMovesTowardPlayer(currentTilePos);
+        foreach (Vector3Int movePos in bestMoves)
+        {
+            if (fogTilemap.GetTile(movePos) == null || !collisionMonitor.TileIsEmpty(movePos)) continue;
+            currentTilePos = movePos;
+            transform.position = new Vector3(currentTilePos.x + 0.5f, currentTilePos.y + 0.5f, 0);
             break;
         }
     }
