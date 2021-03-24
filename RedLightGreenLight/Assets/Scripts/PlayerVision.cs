@@ -80,26 +80,28 @@ public class PlayerVision : MonoBehaviour
                 }
         };
 
-    PlayerMovement playerMovement;
-
-    [SerializeField] Tilemap fogTilemap;
-    [SerializeField] Tilemap lightTilemap;
-    [SerializeField] Tilemap wallTilemap;
-    Vector3Int fogArrayTilePos;
-    Vector3Int playerTilePos;
-
     [SerializeField] Tile blackTile;
     [SerializeField] Tile grayTile;
     [SerializeField] Tile whiteTile;
+    [SerializeField] Tilemap fogTilemap;
+    [SerializeField] Tilemap lightTilemap;
+    [SerializeField] Tilemap wallTilemap;
+
+    CollisionMonitor collisionMonitor;
+    PlayerMovement playerMovement;
+
+    Vector3Int fogArrayTilePos;
+    Vector3Int playerTilePos;
 
     void Awake()
     {
+        collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
         playerMovement = GetComponent<PlayerMovement>();
     }
 
     void Start()
     {
-        fogTilemap.gameObject.SetActive(true);
+        InitializeFog();
     }
 
     void Update()
@@ -174,6 +176,17 @@ public class PlayerVision : MonoBehaviour
                         break;
                     }
                 }
+            }
+        }
+    }
+
+    void InitializeFog()
+    {
+        for (int x = collisionMonitor.levelBoundary.xMin - 7; x < collisionMonitor.levelBoundary.xMax + 7; x++)
+        {
+            for (int y = collisionMonitor.levelBoundary.yMin - 7; y < collisionMonitor.levelBoundary.yMax + 7; y++)
+            {
+                fogTilemap.SetTile(new Vector3Int(x, y, 0), grayTile);
             }
         }
     }
