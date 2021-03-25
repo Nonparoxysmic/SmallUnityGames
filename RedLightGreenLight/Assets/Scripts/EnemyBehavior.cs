@@ -36,6 +36,8 @@ public class EnemyBehavior : MonoBehaviour
         if (distanceToPlayer == 1)
         {
             Debug.Log("Enemy caught player.");
+            Time.timeScale = 0;
+            GameObject.Find("Player").GetComponent<PlayerVision>().SetVision(false);
             return;
         }
         List<Vector3Int> bestMoves = pathfinding.GetBestMovesTowardPlayer(currentTilePos);

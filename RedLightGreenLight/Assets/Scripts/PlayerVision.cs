@@ -87,6 +87,7 @@ public class PlayerVision : MonoBehaviour
     [SerializeField] Tilemap lightTilemap;
     [SerializeField] Tilemap wallTilemap;
 
+    Camera cameraComponent;
     CollisionMonitor collisionMonitor;
     PlayerMovement playerMovement;
 
@@ -95,6 +96,7 @@ public class PlayerVision : MonoBehaviour
 
     void Awake()
     {
+        cameraComponent = GameObject.Find("Main Camera").GetComponent<Camera>();
         collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
         playerMovement = GetComponent<PlayerMovement>();
     }
@@ -115,9 +117,9 @@ public class PlayerVision : MonoBehaviour
 
         playerTilePos = playerMovement.currentTilePos;
         fogArrayTilePos = playerTilePos + new Vector3Int(-7, -7, 0);
-        for (int x = 0; x < 15; x++)
+        for (int x = -1; x < 17; x++)
         {
-            for (int y = 0; y < 15; y++)
+            for (int y = -1; y < 17; y++)
             {
                 Vector3Int lookTilePos = fogArrayTilePos + new Vector3Int(x, y, 0);
                 if (fogTilemap.GetTile(lookTilePos) == null && wallTilemap.GetTile(lookTilePos) == null)
@@ -188,6 +190,18 @@ public class PlayerVision : MonoBehaviour
             {
                 fogTilemap.SetTile(new Vector3Int(x, y, 0), grayTile);
             }
+        }
+    }
+
+    public void SetVision(bool enabled)
+    {
+        if (enabled)
+        {
+            cameraComponent.cullingMask = -1;
+        }
+        else
+        {
+            cameraComponent.cullingMask = 0;
         }
     }
 }

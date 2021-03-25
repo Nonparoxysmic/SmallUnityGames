@@ -19,6 +19,8 @@ public class Pathfinding : MonoBehaviour
     Vector3Int lookTilePos;
     bool[,] pathArray;
 
+    [HideInInspector] public bool debugPathLength = true;
+
     void Awake()
     {
         collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
@@ -56,7 +58,16 @@ public class Pathfinding : MonoBehaviour
 
     int GetPathLength(Vector3Int startTilePos, Vector3Int endTilePos)
     {
+        if (debugPathLength)
+        {
+            return (Math.Abs(startTilePos.x - endTilePos.x) + Math.Abs(startTilePos.y - endTilePos.y));
+        }
+
         if (!collisionMonitor.LevelContainsPosition(startTilePos) || !collisionMonitor.LevelContainsPosition(endTilePos))
+        {
+            return int.MaxValue;
+        }
+        if (!collisionMonitor.TileIsPath(startTilePos) || !collisionMonitor.TileIsPath(endTilePos))
         {
             return int.MaxValue;
         }
