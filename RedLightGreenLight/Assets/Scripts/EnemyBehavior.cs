@@ -10,6 +10,7 @@ public class EnemyBehavior : MonoBehaviour
     [HideInInspector] public Vector3Int currentTilePos;
 
     CollisionMonitor collisionMonitor;
+    EnemyManager enemyManager;
     GameClock gameClock;
     Pathfinding pathfinding;
     PlayerMovement playerMovement;
@@ -17,6 +18,7 @@ public class EnemyBehavior : MonoBehaviour
     void Awake()
     {
         collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
+        enemyManager = transform.parent.gameObject.GetComponent<EnemyManager>();
         gameClock = GameObject.Find("Game Clock").GetComponent<GameClock>();
         pathfinding = GameObject.Find("Pathfinder").GetComponent<Pathfinding>();
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
@@ -35,9 +37,7 @@ public class EnemyBehavior : MonoBehaviour
         int distanceToPlayer = Math.Abs(currentTilePos.x - playerMovement.currentTilePos.x) + Math.Abs(currentTilePos.y - playerMovement.currentTilePos.y);
         if (distanceToPlayer == 1)
         {
-            Debug.Log("Enemy caught player.");
-            Time.timeScale = 0;
-            GameObject.Find("Player").GetComponent<PlayerVision>().SetVision(false);
+            enemyManager.onPlayerCaught.Invoke();
             return;
         }
         List<Vector3Int> bestMoves = pathfinding.GetBestMovesTowardPlayer(currentTilePos);
