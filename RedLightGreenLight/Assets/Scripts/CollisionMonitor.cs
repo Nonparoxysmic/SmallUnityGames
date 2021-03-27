@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 public class CollisionMonitor : MonoBehaviour
 {
     [SerializeField] EnemyBehavior testEnemy;
+    [SerializeField] EnemyBehavior testEnemy2;
+
     [SerializeField] Tilemap wallTilemap;
 
     [HideInInspector] public RectInt levelBoundary;
@@ -22,6 +24,7 @@ public class CollisionMonitor : MonoBehaviour
     public bool TileIsEmpty(Vector3Int tilePosition)
     {
         if (testEnemy.currentTilePos == tilePosition) return false;
+        if (testEnemy2.currentTilePos == tilePosition) return false;
 
         if (wallTilemap.GetTile(tilePosition) != null) return false;
 
