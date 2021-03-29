@@ -1,33 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class CollisionMonitor : MonoBehaviour
 {
-    [SerializeField] EnemyBehavior testEnemy;
-    [SerializeField] EnemyBehavior testEnemy2;
-
     [SerializeField] Tilemap wallTilemap;
 
     [HideInInspector] public RectInt levelBoundary;
 
     PlayerMovement playerMovement;
 
+    Dictionary<GameObject, Vector3Int> enemyPositions;
     Vector3Int targetTilePosition;
 
     void Awake()
     {
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         levelBoundary = new RectInt(wallTilemap.origin.x, wallTilemap.origin.y, wallTilemap.size.x, wallTilemap.size.y);
+        enemyPositions = new Dictionary<GameObject, Vector3Int>();
     }
 
     public bool TileIsEmpty(Vector3Int tilePosition)
     {
-        if (testEnemy.currentTilePos == tilePosition) return false;
-        if (testEnemy2.currentTilePos == tilePosition) return false;
-
         if (wallTilemap.GetTile(tilePosition) != null) return false;
-
+        foreach (KeyValuePair<GameObject, Vector3Int> kvp in enemyPositions)
+        {
+            if (kvp.Value == tilePosition) return false;
+        }
         if (playerMovement.currentTilePos == tilePosition) return false;
         if (playerMovement.isMoving)
         {
@@ -64,5 +64,17 @@ public class CollisionMonitor : MonoBehaviour
             }
         }
         return paths;
+    }
+
+    public void UpdateEnemyPosition(GameObject enemy, Vector3Int position)
+    {
+        if (enemyPositions.ContainsKey(enemy))
+        {
+            enemyPositions[enemy] = position;
+        }
+        else
+        {
+            enemyPositions.Add(enemy, position);
+        }
     }
 }

@@ -37,7 +37,7 @@ public class Pathfinding : MonoBehaviour
         levelOffset = new Vector3Int(collisionMonitor.levelBoundary.x, collisionMonitor.levelBoundary.y, 0);
     }
 
-    public List<Vector3Int> GetBestMovesTowardPlayer(Vector3Int startTilePos)
+    public List<Vector3Int> GetBestMovesTowardPlayer(Vector3Int startTilePos, out int pathLength)
     {
         bestMoves.Clear();
         int shortestPathLength = int.MaxValue - 1;
@@ -50,13 +50,14 @@ public class Pathfinding : MonoBehaviour
                 if (length < shortestPathLength)
                 {
                     bestMoves.Clear();
-                    bestMoves.Add(lookTilePos);
+                    bestMoves.Add(moveDir);
                     shortestPathLength = length;
                 }
-                else if (length == shortestPathLength) bestMoves.Add(lookTilePos);
+                else if (length == shortestPathLength) bestMoves.Add(moveDir);
             }
         }
         bestMoves.Shuffle();
+        pathLength = shortestPathLength;
         return bestMoves;
     }
 

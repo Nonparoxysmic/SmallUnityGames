@@ -258,8 +258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f9d15033eeb8ff418a2a2d29841ab70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testEnemy: {fileID: 651104513}
-  testEnemy2: {fileID: 787605032}
   wallTilemap: {fileID: 1232023073}
   levelBoundary:
     x: 0
@@ -422,6 +420,7 @@ MonoBehaviour:
   onPlayerCaught:
     m_PersistentCalls:
       m_Calls: []
+  playerIsCaught: 0
 --- !u!4 &518208863
 Transform:
   m_ObjectHideFlags: 0
@@ -570,6 +569,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fogTilemap: {fileID: 1844684886}
+  detectionRange: 7
+  moveDelay: 0
+  wakeCountdown: 5
   currentTilePos: {x: 0, y: 0, z: 0}
 --- !u!212 &651104514
 SpriteRenderer:
@@ -680,6 +682,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fogTilemap: {fileID: 1844684886}
+  detectionRange: 14
+  moveDelay: 1
+  wakeCountdown: 15
   currentTilePos: {x: 0, y: 0, z: 0}
 --- !u!212 &787605033
 SpriteRenderer:

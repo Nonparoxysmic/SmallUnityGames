@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,20 +6,20 @@ public class EnemyManager : MonoBehaviour
 {
     public UnityEvent onPlayerCaught;
 
-    PlayerVision playerVision;
+    [HideInInspector] public bool playerIsCaught;
 
-    //List<GameObject> enemies;
+    PlayerVision playerVision;
 
     void Awake()
     {
         onPlayerCaught = new UnityEvent();
         onPlayerCaught.AddListener(PlayerCaught);
         playerVision = GameObject.Find("Player").GetComponent<PlayerVision>();
-        //enemies = new List<GameObject>();
     }
 
     void PlayerCaught()
     {
+        playerIsCaught = true;
         Time.timeScale = 0;
         playerVision.SetVision(false);
     }
