@@ -17,6 +17,7 @@ public class EnemyBehavior : MonoBehaviour
     GameClock gameClock;
     Pathfinding pathfinding;
     PlayerMovement playerMovement;
+    PlayerVision playerVision;
 
     int moveCountdown;
     int pathLengthToPlayer;
@@ -29,6 +30,7 @@ public class EnemyBehavior : MonoBehaviour
         gameClock = GameObject.Find("Game Clock").GetComponent<GameClock>();
         pathfinding = GameObject.Find("Pathfinder").GetComponent<Pathfinding>();
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+        playerVision = GameObject.Find("Player").GetComponent<PlayerVision>();
     }
 
     void Start()
@@ -46,7 +48,7 @@ public class EnemyBehavior : MonoBehaviour
             if (fogTilemap.GetTile(currentTilePos) == null) wakeCountdown--;
             return;
         }
-        if (fogTilemap.GetTile(currentTilePos) == null || enemyManager.playerIsCaught) return;
+        if ((fogTilemap.GetTile(currentTilePos) == null && !playerVision.isBlinking) || enemyManager.playerIsCaught) return;
         if (moveCountdown > 0)
         {
             moveCountdown--;
@@ -63,7 +65,7 @@ public class EnemyBehavior : MonoBehaviour
         foreach (Vector3Int moveDirection in bestMoves)
         {
             lookTilePos = currentTilePos + moveDirection;
-            if (fogTilemap.GetTile(lookTilePos) == null || !collisionMonitor.TileIsEmpty(lookTilePos)) continue;
+            if ((fogTilemap.GetTile(lookTilePos) == null && !playerVision.isBlinking) || !collisionMonitor.TileIsEmpty(lookTilePos)) continue;
             currentTilePos = lookTilePos;
             transform.position = new Vector3(currentTilePos.x + 0.5f, currentTilePos.y + 0.5f, 0);
             collisionMonitor.UpdateEnemyPosition(gameObject, currentTilePos);

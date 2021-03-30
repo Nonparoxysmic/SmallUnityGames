@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class PlayerVision : MonoBehaviour
 {
+    const float BlinkerSpeed = 180;
+
     readonly int[][,] visionPatterns = new int[][,]
         {
             new int[,]
@@ -87,15 +90,22 @@ public class PlayerVision : MonoBehaviour
     [SerializeField] Tilemap lightTilemap;
     [SerializeField] Tilemap wallTilemap;
 
+    [HideInInspector] public bool isBlinking;
+
+    GameObject blinker;
     Camera cameraComponent;
     CollisionMonitor collisionMonitor;
     PlayerMovement playerMovement;
 
+    float blinkerTargetPosY;
     Vector3Int fogArrayTilePos;
     Vector3Int playerTilePos;
 
+    int debugBlinkCooldown;
+
     void Awake()
     {
+        blinker = GameObject.Find("Blinker");
         cameraComponent = GameObject.Find("Main Camera").GetComponent<Camera>();
         collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
         playerMovement = GetComponent<PlayerMovement>();
@@ -103,6 +113,8 @@ public class PlayerVision : MonoBehaviour
 
     void Start()
     {
+        blinkerTargetPosY = 18;
+        debugBlinkCooldown = 40;
         InitializeFog();
     }
 
@@ -180,6 +192,40 @@ public class PlayerVision : MonoBehaviour
                 }
             }
         }
+
+        if (blinker.transform.localPosition.y != blinkerTargetPosY)
+        {
+            float difference = blinkerTargetPosY - blinker.transform.localPosition.y;
+            float step = Math.Sign(difference) * BlinkerSpeed * Time.deltaTime;
+            if (Math.Abs(step) < Math.Abs(difference))
+            {
+                blinker.transform.localPosition = new Vector3(blinker.transform.localPosition.x, blinker.transform.localPosition.y + step, blinker.transform.localPosition.z);
+            }
+            else
+            {
+                blinker.transform.localPosition = new Vector3(blinker.transform.localPosition.x, blinkerTargetPosY, blinker.transform.localPosition.z);
+            }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        blinker.transform.localPosition = new Vector3(blinker.transform.localPosition.x, blinkerTargetPosY, blinker.transform.localPosition.z);
+        if (blinkerTargetPosY == 0)
+        {
+            StartCoroutine(StopBlink());
+        }
+
+        // debug auto blink
+        if (blinkerTargetPosY == 18)
+        {
+            if (debugBlinkCooldown > 0) debugBlinkCooldown--;
+            else
+            {
+                StartCoroutine(StartBlink());
+                debugBlinkCooldown = 40;
+            }
+        }
     }
 
     void InitializeFog()
@@ -203,5 +249,19 @@ public class PlayerVision : MonoBehaviour
         {
             cameraComponent.cullingMask = 0;
         }
+    }
+
+    IEnumerator StartBlink()
+    {
+        yield return null;
+        isBlinking = true;
+        blinkerTargetPosY = 0;
+    }
+
+    IEnumerator StopBlink()
+    {
+        yield return null;
+        isBlinking = false;
+        blinkerTargetPosY = 18;
     }
 }
