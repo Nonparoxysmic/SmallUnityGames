@@ -89,32 +89,39 @@ public class PlayerVision : MonoBehaviour
     [SerializeField] Tilemap fogTilemap;
     [SerializeField] Tilemap lightTilemap;
     [SerializeField] Tilemap wallTilemap;
+    public int autoBlinkTime;
+    public int maxBlinkTime;
 
     [HideInInspector] public bool isBlinking;
 
     GameObject blinker;
+    BlinkMeter blinkMeter;
     Camera cameraComponent;
     CollisionMonitor collisionMonitor;
+    GameClock gameClock;
     PlayerMovement playerMovement;
 
+    int blinkCountdown;
     float blinkerTargetPosY;
     Vector3Int fogArrayTilePos;
     Vector3Int playerTilePos;
 
-    int debugBlinkCooldown;
-
     void Awake()
     {
         blinker = GameObject.Find("Blinker");
+        blinkMeter = GameObject.Find("Blink Meter").GetComponent<BlinkMeter>();
         cameraComponent = GameObject.Find("Main Camera").GetComponent<Camera>();
         collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
+        gameClock = GameObject.Find("Game Clock").GetComponent<GameClock>();
         playerMovement = GetComponent<PlayerMovement>();
     }
 
     void Start()
     {
+        gameClock.onPlayerTick.AddListener(PlayerUpdate);
+        gameClock.onNonPlayerTick.AddListener(NonPlayerUpdate);
         blinkerTargetPosY = 18;
-        debugBlinkCooldown = 40;
+        blinkCountdown = maxBlinkTime;
         InitializeFog();
     }
 
@@ -193,6 +200,7 @@ public class PlayerVision : MonoBehaviour
             }
         }
 
+        blinkMeter.SetHorzScale(10.0f * blinkCountdown / maxBlinkTime);
         if (blinker.transform.localPosition.y != blinkerTargetPosY)
         {
             float difference = blinkerTargetPosY - blinker.transform.localPosition.y;
@@ -208,23 +216,30 @@ public class PlayerVision : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    public void PlayerUpdate()
     {
         blinker.transform.localPosition = new Vector3(blinker.transform.localPosition.x, blinkerTargetPosY, blinker.transform.localPosition.z);
+        if (blinkCountdown > 0)
+        {
+            blinkCountdown--;
+        }
+        if (blinkCountdown > maxBlinkTime - autoBlinkTime || (blinkCountdown > 0 && Input.GetKey(KeyCode.Space)))
+        {
+            return;
+        }
+        StartCoroutine(StartBlink());
+    }
+
+    void NonPlayerUpdate()
+    {
+        blinker.transform.localPosition = new Vector3(blinker.transform.localPosition.x, blinkerTargetPosY, blinker.transform.localPosition.z);
+        if (blinkCountdown > 0)
+        {
+            blinkCountdown--;
+        }
         if (blinkerTargetPosY == 0)
         {
             StartCoroutine(StopBlink());
-        }
-
-        // debug auto blink
-        if (blinkerTargetPosY == 18)
-        {
-            if (debugBlinkCooldown > 0) debugBlinkCooldown--;
-            else
-            {
-                StartCoroutine(StartBlink());
-                debugBlinkCooldown = 40;
-            }
         }
     }
 
@@ -263,5 +278,6 @@ public class PlayerVision : MonoBehaviour
         yield return null;
         isBlinking = false;
         blinkerTargetPosY = 18;
+        blinkCountdown = maxBlinkTime;
     }
 }
