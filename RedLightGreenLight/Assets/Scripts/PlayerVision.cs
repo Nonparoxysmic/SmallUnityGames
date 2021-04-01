@@ -114,6 +114,10 @@ public class PlayerVision : MonoBehaviour
         collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
         gameClock = GameObject.Find("Game Clock").GetComponent<GameClock>();
         playerMovement = GetComponent<PlayerMovement>();
+        if (autoBlinkTime > maxBlinkTime)
+        {
+            autoBlinkTime = maxBlinkTime;
+        }
     }
 
     void Start()
@@ -200,7 +204,7 @@ public class PlayerVision : MonoBehaviour
             }
         }
 
-        blinkMeter.SetHorzScale(10.0f * blinkCountdown / maxBlinkTime);
+        blinkMeter.SetHorzScale(Math.Max(10.0f * (blinkCountdown + autoBlinkTime - maxBlinkTime) / autoBlinkTime, 0));
         if (blinker.transform.localPosition.y != blinkerTargetPosY)
         {
             float difference = blinkerTargetPosY - blinker.transform.localPosition.y;
