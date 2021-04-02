@@ -282,6 +282,6 @@ public class PlayerVision : MonoBehaviour
         yield return null;
         isBlinking = false;
         blinkerTargetPosY = 18;
-        blinkCountdown = maxBlinkTime;
+        blinkCountdown = maxBlinkTime - 1;
     }
 }
