@@ -89,7 +89,7 @@ public class PlayerVision : MonoBehaviour
     [SerializeField] Tilemap fogTilemap;
     [SerializeField] Tilemap lightTilemap;
     [SerializeField] Tilemap wallTilemap;
-    public int autoBlinkTime;
+    public int startDimTime;
     public int maxBlinkTime;
 
     [HideInInspector] public bool isBlinking;
@@ -98,10 +98,12 @@ public class PlayerVision : MonoBehaviour
     BlinkMeter blinkMeter;
     Camera cameraComponent;
     CollisionMonitor collisionMonitor;
+    SpriteRenderer dimmer;
     GameClock gameClock;
     PlayerMovement playerMovement;
 
     int blinkCountdown;
+    bool blinkPressedOffPlayerFrame;
     float blinkerTargetPosY;
     Vector3Int fogArrayTilePos;
     Vector3Int playerTilePos;
@@ -112,11 +114,12 @@ public class PlayerVision : MonoBehaviour
         blinkMeter = GameObject.Find("Blink Meter").GetComponent<BlinkMeter>();
         cameraComponent = GameObject.Find("Main Camera").GetComponent<Camera>();
         collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
+        dimmer = GameObject.Find("Dimmer").GetComponent<SpriteRenderer>();
         gameClock = GameObject.Find("Game Clock").GetComponent<GameClock>();
         playerMovement = GetComponent<PlayerMovement>();
-        if (autoBlinkTime > maxBlinkTime)
+        if (startDimTime > maxBlinkTime)
         {
-            autoBlinkTime = maxBlinkTime;
+            startDimTime = maxBlinkTime;
         }
     }
 
@@ -204,7 +207,21 @@ public class PlayerVision : MonoBehaviour
             }
         }
 
-        blinkMeter.SetHorzScale(Math.Max(10.0f * (blinkCountdown + autoBlinkTime - maxBlinkTime) / autoBlinkTime, 0));
+        blinkMeter.SetHorzScale(Math.Max(10.0f * (blinkCountdown + startDimTime - maxBlinkTime) / startDimTime, 0));
+        if (blinkCountdown < maxBlinkTime - startDimTime - 1)
+        {
+            float alpha;
+            if (blinkCountdown < (maxBlinkTime - startDimTime) * 2.0f / 3)
+            {
+                alpha = 1 - blinkCountdown / (2.0f * (maxBlinkTime - startDimTime));
+            }
+            else
+            {
+                alpha = 2.0f * (blinkCountdown - maxBlinkTime + startDimTime) / (startDimTime - maxBlinkTime);
+            }
+            dimmer.color = new Color(dimmer.color.r, dimmer.color.g, dimmer.color.b, alpha);
+        }
+        else dimmer.color = new Color(dimmer.color.r, dimmer.color.g, dimmer.color.b, 0);
         if (blinker.transform.localPosition.y != blinkerTargetPosY)
         {
             float difference = blinkerTargetPosY - blinker.transform.localPosition.y;
@@ -227,11 +244,11 @@ public class PlayerVision : MonoBehaviour
         {
             blinkCountdown--;
         }
-        if (blinkCountdown > maxBlinkTime - autoBlinkTime || (blinkCountdown > 0 && Input.GetKey(KeyCode.Space)))
+        if (blinkCountdown == 0 || ((blinkCountdown < maxBlinkTime - 2) && (blinkPressedOffPlayerFrame || Input.GetKey(KeyCode.Space))))
         {
-            return;
+            StartCoroutine(StartBlink());
         }
-        StartCoroutine(StartBlink());
+        blinkPressedOffPlayerFrame = false;
     }
 
     void NonPlayerUpdate()
@@ -244,6 +261,10 @@ public class PlayerVision : MonoBehaviour
         if (blinkerTargetPosY == 0)
         {
             StartCoroutine(StopBlink());
+        }
+        if (Input.GetKey(KeyCode.Space) && !isBlinking)
+        {
+            blinkPressedOffPlayerFrame = true;
         }
     }
 
