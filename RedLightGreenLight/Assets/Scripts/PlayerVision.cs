@@ -244,7 +244,7 @@ public class PlayerVision : MonoBehaviour
         {
             blinkCountdown--;
         }
-        if (blinkCountdown == 0 || ((blinkCountdown < maxBlinkTime - 2) && (blinkPressedOffPlayerFrame || Input.GetKey(KeyCode.Space))))
+        if (blinkCountdown == 0 || ((blinkCountdown < maxBlinkTime - 2) && (blinkPressedOffPlayerFrame || (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.RightControl)))))
         {
             StartCoroutine(StartBlink());
         }
@@ -262,7 +262,7 @@ public class PlayerVision : MonoBehaviour
         {
             StartCoroutine(StopBlink());
         }
-        if (Input.GetKey(KeyCode.Space) && !isBlinking)
+        if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.RightControl)) && !isBlinking)
         {
             blinkPressedOffPlayerFrame = true;
         }
