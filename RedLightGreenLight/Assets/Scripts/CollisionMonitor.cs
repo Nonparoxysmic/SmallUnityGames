@@ -12,6 +12,7 @@ public class CollisionMonitor : MonoBehaviour
     PlayerMovement playerMovement;
 
     Dictionary<GameObject, Vector3Int> enemyPositions;
+    List<Vector3Int> obstaclePositions;
     Vector3Int targetTilePosition;
 
     void Awake()
@@ -19,6 +20,7 @@ public class CollisionMonitor : MonoBehaviour
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         levelBoundary = new RectInt(wallTilemap.origin.x, wallTilemap.origin.y, wallTilemap.size.x, wallTilemap.size.y);
         enemyPositions = new Dictionary<GameObject, Vector3Int>();
+        obstaclePositions = new List<Vector3Int>();
     }
 
     public bool TileIsEmpty(Vector3Int tilePosition)
@@ -27,6 +29,10 @@ public class CollisionMonitor : MonoBehaviour
         foreach (KeyValuePair<GameObject, Vector3Int> kvp in enemyPositions)
         {
             if (kvp.Value == tilePosition) return false;
+        }
+        foreach (Vector3Int position in obstaclePositions)
+        {
+            if (position == tilePosition) return false;
         }
         if (playerMovement.currentTilePos == tilePosition) return false;
         if (playerMovement.isMoving)
@@ -40,6 +46,10 @@ public class CollisionMonitor : MonoBehaviour
     public bool TileIsPath(Vector3Int tilePosition)
     {
         if (wallTilemap.GetTile(tilePosition) != null) return false;
+        foreach (Vector3Int position in obstaclePositions)
+        {
+            if (position == tilePosition) return false;
+        }
         return true;
     }
 
@@ -76,5 +86,10 @@ public class CollisionMonitor : MonoBehaviour
         {
             enemyPositions.Add(enemy, position);
         }
+    }
+
+    public void AddObstaclePosition(Vector3Int position)
+    {
+        obstaclePositions.Add(position);
     }
 }
