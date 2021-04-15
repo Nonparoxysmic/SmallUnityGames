@@ -287,7 +287,7 @@ public class PlayerVision : MonoBehaviour
         }
         else
         {
-            cameraComponent.cullingMask = 0;
+            cameraComponent.cullingMask = 1 << 5;
         }
     }
 

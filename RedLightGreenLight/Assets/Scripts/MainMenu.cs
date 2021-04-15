@@ -6,6 +6,11 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] UnityEngine.Object gameScene;
 
+    void Awake()
+    {
+        Time.timeScale = 1;
+    }
+
     public void PlayGame()
     {
         SceneManager.LoadScene(gameScene.name);
