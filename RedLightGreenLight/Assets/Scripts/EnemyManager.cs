@@ -8,12 +8,14 @@ public class EnemyManager : MonoBehaviour
 
     [HideInInspector] public bool playerIsCaught;
 
+    GameMenu gameMenu;
     PlayerVision playerVision;
 
     void Awake()
     {
         onPlayerCaught = new UnityEvent();
         onPlayerCaught.AddListener(PlayerCaught);
+        gameMenu = GameObject.Find("Canvas").GetComponent<GameMenu>();
         playerVision = GameObject.Find("Player").GetComponent<PlayerVision>();
     }
 
@@ -22,5 +24,6 @@ public class EnemyManager : MonoBehaviour
         playerIsCaught = true;
         Time.timeScale = 0;
         playerVision.SetVision(false);
+        gameMenu.StartButtonEnableCountdown();
     }
 }

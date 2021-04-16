@@ -60,6 +60,7 @@ public class EnemyBehavior : MonoBehaviour
             enemyManager.onPlayerCaught.Invoke();
             return;
         }
+        if (distanceToPlayer > detectionRange) return;
         List<Vector3Int> bestMoves = pathfinding.GetBestMovesTowardPlayer(currentTilePos, out pathLengthToPlayer);
         if (pathLengthToPlayer > detectionRange) return;
         foreach (Vector3Int moveDirection in bestMoves)
