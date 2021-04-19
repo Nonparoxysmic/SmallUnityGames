@@ -4,6 +4,7 @@ using UnityEngine;
 public class AudioPlayer : MonoBehaviour
 {
     public float secondsToFade;
+    [SerializeField] AudioClip deathSound;
     AudioSource audioSource;
     bool fadingOut;
 
@@ -46,5 +47,11 @@ public class AudioPlayer : MonoBehaviour
     public void FadeOutMusic()
     {
         fadingOut = true;
+    }
+
+    public void PlayDeathSound()
+    {
+        audioSource.volume = 1;
+        audioSource.PlayOneShot(deathSound);
     }
 }

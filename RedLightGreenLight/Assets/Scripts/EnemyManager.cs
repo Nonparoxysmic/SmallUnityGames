@@ -8,6 +8,8 @@ public class EnemyManager : MonoBehaviour
 
     [HideInInspector] public bool playerIsCaught;
 
+    AudioPlayer audioPlayer;
+    GameObject audioPlayerObject;
     GameMenu gameMenu;
     PlayerVision playerVision;
 
@@ -17,6 +19,11 @@ public class EnemyManager : MonoBehaviour
         onPlayerCaught.AddListener(PlayerCaught);
         gameMenu = GameObject.Find("Canvas").GetComponent<GameMenu>();
         playerVision = GameObject.Find("Player").GetComponent<PlayerVision>();
+        audioPlayerObject = GameObject.Find("Audio Player");
+        if (audioPlayerObject != null)
+        {
+            audioPlayer = audioPlayerObject.GetComponent<AudioPlayer>();
+        }
     }
 
     void PlayerCaught()
@@ -25,5 +32,6 @@ public class EnemyManager : MonoBehaviour
         Time.timeScale = 0;
         playerVision.SetVision(false);
         gameMenu.StartButtonEnableCountdown();
+        if (audioPlayer != null) audioPlayer.PlayDeathSound();
     }
 }
