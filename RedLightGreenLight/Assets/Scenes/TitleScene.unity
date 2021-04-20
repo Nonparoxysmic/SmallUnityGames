@@ -522,7 +522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secondsToFade: 2
-  deathSound: {fileID: 8300000, guid: 390560730d03b994a91a04240c9a9d1b, type: 3}
+  deathSound: {fileID: 8300000, guid: a0a8698f27038f64aaf101cd2d186e09, type: 3}
 --- !u!82 &1959761158
 AudioSource:
   m_ObjectHideFlags: 0
