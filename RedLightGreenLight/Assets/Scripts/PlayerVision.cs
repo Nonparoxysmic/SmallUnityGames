@@ -100,6 +100,7 @@ public class PlayerVision : MonoBehaviour
     CollisionMonitor collisionMonitor;
     SpriteRenderer dimmer;
     GameClock gameClock;
+    Animator playerAnimator;
     PlayerMovement playerMovement;
 
     int blinkCountdown;
@@ -116,6 +117,7 @@ public class PlayerVision : MonoBehaviour
         collisionMonitor = GameObject.Find("CollisionMonitor").GetComponent<CollisionMonitor>();
         dimmer = GameObject.Find("Dimmer").GetComponent<SpriteRenderer>();
         gameClock = GameObject.Find("Game Clock").GetComponent<GameClock>();
+        playerAnimator = GameObject.Find("PlayerSprite").GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
         if (startDimTime > maxBlinkTime)
         {
@@ -140,6 +142,7 @@ public class PlayerVision : MonoBehaviour
         if (angle > 0.75 || angle < -0.75) facing = 3;
         else if (angle <= -0.25) facing = 2;
         else if (angle >= 0.25) facing = 0;
+        playerAnimator.SetInteger("Direction", facing);
 
         playerTilePos = playerMovement.currentTilePos;
         fogArrayTilePos = playerTilePos + new Vector3Int(-7, -7, 0);
