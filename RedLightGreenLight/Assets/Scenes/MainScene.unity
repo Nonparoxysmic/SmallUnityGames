@@ -2717,9 +2717,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fogTilemap: {fileID: 1844684886}
-  detectionRange: 7
-  moveDelay: 0
-  wakeCountdown: 5
+  detectionRange: 999
+  moveDelay: 1
+  wakeCountdown: 0
   currentTilePos: {x: 0, y: 0, z: 0}
 --- !u!212 &651104514
 SpriteRenderer:
@@ -2779,7 +2779,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 651104512}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 4.5, z: 0}
+  m_LocalPosition: {x: -16.5, y: 27.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 518208863}
@@ -2843,7 +2843,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 787605030}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 4.5, z: 0}
+  m_LocalPosition: {x: 16.5, y: 27.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 518208863}
@@ -2862,9 +2862,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fogTilemap: {fileID: 1844684886}
-  detectionRange: 14
-  moveDelay: 1
-  wakeCountdown: 15
+  detectionRange: 999
+  moveDelay: 2
+  wakeCountdown: 0
   currentTilePos: {x: 0, y: 0, z: 0}
 --- !u!212 &787605033
 SpriteRenderer:
