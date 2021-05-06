@@ -89,6 +89,7 @@ public class PlayerVision : MonoBehaviour
     [SerializeField] Tilemap fogTilemap;
     [SerializeField] Tilemap lightTilemap;
     [SerializeField] Tilemap wallTilemap;
+    [SerializeField] Tilemap wallSidesTilemap;
     public int startDimTime;
     public int maxBlinkTime;
 
@@ -108,6 +109,7 @@ public class PlayerVision : MonoBehaviour
     float blinkerTargetPosY;
     Vector3Int fogArrayTilePos;
     Vector3Int playerTilePos;
+    Vector3Int wallSideOffset;
 
     void Awake()
     {
@@ -123,6 +125,7 @@ public class PlayerVision : MonoBehaviour
         {
             startDimTime = maxBlinkTime;
         }
+        wallSideOffset = new Vector3Int(0, 1, 0);
     }
 
     void Start()
@@ -201,6 +204,11 @@ public class PlayerVision : MonoBehaviour
                     if (visionPatterns[facing][stepTilePos.x - fogArrayTilePos.x, stepTilePos.y - fogArrayTilePos.y] >= stepTileLightRequired)
                     {
                         fogTilemap.SetTile(stepTilePos, null);
+                        // If wall side, clear wall above also:
+                        if (wallSidesTilemap.GetTile(stepTilePos) != null && y < 14)
+                        {
+                            fogTilemap.SetTile(stepTilePos + wallSideOffset, null);
+                        }
                     }
                     if (wallTilemap.GetTile(stepTilePos) != null)
                     {
