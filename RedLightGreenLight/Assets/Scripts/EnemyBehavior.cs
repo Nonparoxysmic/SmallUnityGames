@@ -5,10 +5,9 @@ using UnityEngine.Tilemaps;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    [SerializeField] Tilemap fogTilemap;
-    public int detectionRange;
-    public int moveDelay;
-    public int wakeCountdown;
+    public int detectionRange = 999;
+    public int moveDelay = 1;
+    public int wakeCountdown = 0;
 
     [HideInInspector] public Vector3Int currentTilePos;
 
@@ -18,6 +17,7 @@ public class EnemyBehavior : MonoBehaviour
     Pathfinding pathfinding;
     PlayerMovement playerMovement;
     PlayerVision playerVision;
+    Tilemap fogTilemap;
 
     int moveCountdown;
     int pathLengthToPlayer;
@@ -31,6 +31,7 @@ public class EnemyBehavior : MonoBehaviour
         pathfinding = GameObject.Find("Pathfinder").GetComponent<Pathfinding>();
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         playerVision = GameObject.Find("Player").GetComponent<PlayerVision>();
+        fogTilemap = GameObject.Find("Fog").GetComponent<Tilemap>();
     }
 
     void Start()
