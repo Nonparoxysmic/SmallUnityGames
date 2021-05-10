@@ -40,6 +40,7 @@ public class EnemyBehavior : MonoBehaviour
         transform.position = new Vector3(currentTilePos.x + 0.5f, currentTilePos.y + 0.5f, 0);
         collisionMonitor.UpdateEnemyPosition(gameObject, currentTilePos);
         gameClock.onNonPlayerTick.AddListener(NonPlayerUpdate);
+        enemyManager.onPlayerWin.AddListener(PlayerWin);
     }
 
     void NonPlayerUpdate()
@@ -74,5 +75,10 @@ public class EnemyBehavior : MonoBehaviour
             moveCountdown += moveDelay;
             break;
         }
+    }
+
+    void PlayerWin()
+    {
+        Destroy(this);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class EnemyManager : MonoBehaviour
 {
     public UnityEvent onPlayerCaught;
+    public UnityEvent onPlayerWin;
 
     [HideInInspector] public bool playerIsCaught;
 
@@ -17,6 +18,7 @@ public class EnemyManager : MonoBehaviour
     {
         onPlayerCaught = new UnityEvent();
         onPlayerCaught.AddListener(PlayerCaught);
+        onPlayerWin = new UnityEvent();
         gameMenu = GameObject.Find("Canvas").GetComponent<GameMenu>();
         playerVision = GameObject.Find("Player").GetComponent<PlayerVision>();
         audioPlayerObject = GameObject.Find("Audio Player");

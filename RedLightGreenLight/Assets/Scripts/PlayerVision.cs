@@ -93,6 +93,7 @@ public class PlayerVision : MonoBehaviour
     public int startDimTime;
     public int maxBlinkTime;
 
+    [HideInInspector] public bool isFacingNorth;
     [HideInInspector] public bool isBlinking;
 
     GameObject blinker;
@@ -146,6 +147,8 @@ public class PlayerVision : MonoBehaviour
         else if (angle <= -0.25) facing = 2;
         else if (angle >= 0.25) facing = 0;
         playerAnimator.SetInteger("Direction", facing);
+        if (facing == 0) isFacingNorth = true;
+        else isFacingNorth = false;
 
         playerTilePos = playerMovement.currentTilePos;
         fogArrayTilePos = playerTilePos + new Vector3Int(-7, -7, 0);
