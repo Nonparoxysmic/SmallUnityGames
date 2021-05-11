@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a145f638fb4ec643a81334de727511a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsToFade: 2
+  secondsToFade: 6
   deathSound: {fileID: 8300000, guid: a0a8698f27038f64aaf101cd2d186e09, type: 3}
 --- !u!82 &1959761158
 AudioSource:
@@ -533,11 +533,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: fe84a278bed2ad54d96b85cb752a6a34, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 14efd9a66c325ae4996119ba68d0fdee, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
