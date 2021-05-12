@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class AudioPlayer : MonoBehaviour
 {
-    public float secondsToFade;
-    [SerializeField] AudioClip deathSound;
+    public float secondsToFadeIn;
+    public float secondsToFadeOut;
+
     AudioSource audioSource;
+    bool fadingIn;
     bool fadingOut;
 
     void Awake()
@@ -20,9 +22,9 @@ public class AudioPlayer : MonoBehaviour
         {
             if (audioSource.volume > 0)
             {
-                if (secondsToFade > 0)
+                if (secondsToFadeOut > 0)
                 {
-                    audioSource.volume -= Time.deltaTime / secondsToFade;
+                    audioSource.volume -= Time.deltaTime / secondsToFadeOut;
                     audioSource.volume = Math.Max(0, audioSource.volume);
                 }
                 else audioSource.volume = 0;
@@ -30,28 +32,35 @@ public class AudioPlayer : MonoBehaviour
             else
             {
                 fadingOut = false;
-                audioSource.Stop();
             }
         }
-    }
-
-    public void PlayMusic()
-    {
-        if (!audioSource.isPlaying)
+        if (fadingIn)
         {
-            audioSource.volume = 1;
-            audioSource.Play();
+            if (audioSource.volume < 1)
+            {
+                if (secondsToFadeIn > 0)
+                {
+                    audioSource.volume += Time.deltaTime / secondsToFadeIn;
+                    audioSource.volume = Math.Min(1, audioSource.volume);
+                }
+                else audioSource.volume = 1;
+            }
+            else
+            {
+                fadingIn = false;
+            }
         }
     }
 
     public void FadeOutMusic()
     {
+        fadingIn = false;
         fadingOut = true;
     }
 
-    public void PlayDeathSound()
+    public void FadeInMusic()
     {
-        audioSource.volume = 1;
-        audioSource.PlayOneShot(deathSound);
+        fadingOut = false;
+        fadingIn = true;
     }
 }

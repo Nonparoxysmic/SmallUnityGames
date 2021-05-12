@@ -521,8 +521,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a145f638fb4ec643a81334de727511a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsToFade: 6
-  deathSound: {fileID: 8300000, guid: a0a8698f27038f64aaf101cd2d186e09, type: 3}
+  secondsToFadeIn: 6
+  secondsToFadeOut: 2
 --- !u!82 &1959761158
 AudioSource:
   m_ObjectHideFlags: 0
@@ -535,7 +535,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 14efd9a66c325ae4996119ba68d0fdee, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] UnityEngine.Object gameScene;
+    AudioPlayer audioPlayer;
     GameObject audioPlayerObject;
 
     void Awake()
@@ -13,17 +14,16 @@ public class MainMenu : MonoBehaviour
         audioPlayerObject = GameObject.Find("Audio Player");
         if (audioPlayerObject != null)
         {
-            AudioPlayer audioPlayer = audioPlayerObject.GetComponent<AudioPlayer>();
-            audioPlayer.PlayMusic();
+            audioPlayer = audioPlayerObject.GetComponent<AudioPlayer>();
+            audioPlayer.FadeOutMusic();
         }
     }
 
     public void PlayGame()
     {
-        if (audioPlayerObject != null)
+        if (audioPlayer != null)
         {
-            AudioPlayer audioPlayer = audioPlayerObject.GetComponent<AudioPlayer>();
-            audioPlayer.FadeOutMusic();
+            audioPlayer.FadeInMusic();
         }
         SceneManager.LoadScene(gameScene.name);
     }
