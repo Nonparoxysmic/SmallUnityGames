@@ -21,6 +21,15 @@ public class IntermittentAudio : MonoBehaviour
 
     IEnumerator AudioLoop()
     {
+        if (minWaitSeconds > maxWaitSeconds)
+        {
+            float f = minWaitSeconds;
+            minWaitSeconds = maxWaitSeconds;
+            maxWaitSeconds = f;
+        }
+        float firstInterval = audioSource.clip.length + UnityEngine.Random.Range(Math.Max(0, minWaitSeconds), Math.Max(0, maxWaitSeconds));
+        yield return new WaitForSecondsRealtime(firstInterval);
+
         while (true)
         {
             if (minWaitSeconds > maxWaitSeconds)

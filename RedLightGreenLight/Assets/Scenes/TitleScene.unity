@@ -452,7 +452,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4b8a50c5a5a10c24f9007b6ece92a8e2, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -665,6 +665,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   secondsToFadeIn: 6
   secondsToFadeOut: 2
+  intermittentAudioVolume: 0.15
 --- !u!82 &1959761158
 AudioSource:
   m_ObjectHideFlags: 0

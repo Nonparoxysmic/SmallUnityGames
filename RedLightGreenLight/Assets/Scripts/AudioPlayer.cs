@@ -5,8 +5,10 @@ public class AudioPlayer : MonoBehaviour
 {
     public float secondsToFadeIn;
     public float secondsToFadeOut;
+    public float intermittentAudioVolume;
 
     AudioSource audioSource;
+    AudioSource intermittentAudioSource;
     bool fadingIn;
     bool fadingOut;
 
@@ -14,6 +16,7 @@ public class AudioPlayer : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         audioSource = GetComponent<AudioSource>();
+        intermittentAudioSource = GameObject.Find("Intermittent Audio Player").GetComponent<AudioSource>();
     }
 
     void Update()
@@ -28,6 +31,7 @@ public class AudioPlayer : MonoBehaviour
                     audioSource.volume = Math.Max(0, audioSource.volume);
                 }
                 else audioSource.volume = 0;
+                intermittentAudioSource.volume = audioSource.volume * intermittentAudioVolume;
             }
             else
             {
@@ -44,6 +48,7 @@ public class AudioPlayer : MonoBehaviour
                     audioSource.volume = Math.Min(1, audioSource.volume);
                 }
                 else audioSource.volume = 1;
+                intermittentAudioSource.volume = audioSource.volume * intermittentAudioVolume;
             }
             else
             {
