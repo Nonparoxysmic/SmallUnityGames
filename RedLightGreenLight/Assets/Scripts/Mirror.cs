@@ -5,6 +5,8 @@ public class Mirror : MonoBehaviour
 {
     [SerializeField] Sprite mirrorWithEye;
 
+    AudioSource audioSource;
+    MirrorManager mirrorManager;
     GameObject player;
     PlayerVision playerVision;
     SpriteRenderer sr;
@@ -13,6 +15,8 @@ public class Mirror : MonoBehaviour
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+        mirrorManager = GameObject.Find("MirrorManager").GetComponent<MirrorManager>();
         player = GameObject.Find("Player");
         playerVision = GameObject.Find("Player").GetComponent<PlayerVision>();
         sr = GetComponent<SpriteRenderer>();
@@ -29,9 +33,8 @@ public class Mirror : MonoBehaviour
         if ((player.transform.position - targetPos).magnitude < 0.05 && playerVision.isFacingNorth)
         {
             sr.sprite = mirrorWithEye;
-
-            // count toward the goal here
-
+            audioSource.Play();
+            mirrorManager.MirrorSeen();
             Destroy(this);
         }
     }
