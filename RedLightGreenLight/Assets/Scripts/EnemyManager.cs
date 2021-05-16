@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class EnemyManager : MonoBehaviour
 
     AudioSource deathAudio;
     GameMenu gameMenu;
+    Text gameOverText;
     PlayerVision playerVision;
 
     void Awake()
@@ -18,7 +20,9 @@ public class EnemyManager : MonoBehaviour
         onPlayerCaught = new UnityEvent();
         onPlayerCaught.AddListener(PlayerCaught);
         onPlayerWin = new UnityEvent();
+        onPlayerWin.AddListener(PlayerWin);
         gameMenu = GameObject.Find("Canvas").GetComponent<GameMenu>();
+        gameOverText = GameObject.Find("GameOverText").GetComponent<Text>();
         playerVision = GameObject.Find("Player").GetComponent<PlayerVision>();
         deathAudio = GetComponent<AudioSource>();
     }
@@ -30,5 +34,13 @@ public class EnemyManager : MonoBehaviour
         playerVision.SetVision(false);
         gameMenu.StartButtonEnableCountdown();
         deathAudio.Play();
+    }
+
+    void PlayerWin()
+    {
+        gameOverText.text = "YOU WIN";
+        playerVision.TerminateBlinking();
+        playerVision.SetVision(true);
+        gameMenu.StartButtonEnableCountdown();
     }
 }

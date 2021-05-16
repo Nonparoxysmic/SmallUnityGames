@@ -108,6 +108,7 @@ public class PlayerVision : MonoBehaviour
     int blinkCountdown;
     bool blinkPressedOffPlayerFrame;
     float blinkerTargetPosY;
+    bool doBlinking;
     Vector3Int fogArrayTilePos;
     Vector3Int playerTilePos;
     Vector3Int wallSideOffset;
@@ -131,6 +132,7 @@ public class PlayerVision : MonoBehaviour
 
     void Start()
     {
+        doBlinking = true;
         gameClock.onPlayerTick.AddListener(PlayerUpdate);
         gameClock.onNonPlayerTick.AddListener(NonPlayerUpdate);
         blinkerTargetPosY = 18;
@@ -221,6 +223,8 @@ public class PlayerVision : MonoBehaviour
             }
         }
 
+        if (!doBlinking) return;
+
         blinkMeter.SetHorzScale(Math.Max(10.0f * (blinkCountdown + startDimTime - maxBlinkTime) / startDimTime, 0));
         if (blinkCountdown < maxBlinkTime - startDimTime - 1)
         {
@@ -253,6 +257,8 @@ public class PlayerVision : MonoBehaviour
 
     public void PlayerUpdate()
     {
+        if (!doBlinking) return;
+
         blinker.transform.localPosition = new Vector3(blinker.transform.localPosition.x, blinkerTargetPosY, blinker.transform.localPosition.z);
         if (blinkCountdown > 0)
         {
@@ -267,6 +273,8 @@ public class PlayerVision : MonoBehaviour
 
     void NonPlayerUpdate()
     {
+        if (!doBlinking) return;
+
         blinker.transform.localPosition = new Vector3(blinker.transform.localPosition.x, blinkerTargetPosY, blinker.transform.localPosition.z);
         if (blinkCountdown > 0)
         {
@@ -303,6 +311,14 @@ public class PlayerVision : MonoBehaviour
         {
             cameraComponent.cullingMask = 1 << 5;
         }
+    }
+
+    public void TerminateBlinking()
+    {
+        doBlinking = false;
+        Destroy(blinker);
+        Destroy(blinkMeter.gameObject);
+        Destroy(dimmer.gameObject);
     }
 
     IEnumerator StartBlink()
