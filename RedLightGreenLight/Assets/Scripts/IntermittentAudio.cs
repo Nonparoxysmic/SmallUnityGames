@@ -6,6 +6,7 @@ public class IntermittentAudio : MonoBehaviour
 {
     public float maxWaitSeconds;
     public float minWaitSeconds;
+    public float mostRecentInterval;
 
     AudioSource audioSource;
 
@@ -27,8 +28,8 @@ public class IntermittentAudio : MonoBehaviour
             minWaitSeconds = maxWaitSeconds;
             maxWaitSeconds = f;
         }
-        float firstInterval = audioSource.clip.length + UnityEngine.Random.Range(Math.Max(0, minWaitSeconds), Math.Max(0, maxWaitSeconds));
-        yield return new WaitForSecondsRealtime(firstInterval);
+        mostRecentInterval = audioSource.clip.length + UnityEngine.Random.Range(Math.Max(0, minWaitSeconds), Math.Max(0, maxWaitSeconds));
+        yield return new WaitForSecondsRealtime(mostRecentInterval);
 
         while (true)
         {
@@ -39,8 +40,8 @@ public class IntermittentAudio : MonoBehaviour
                 maxWaitSeconds = f;
             }
             audioSource.Play();
-            float nextInterval = audioSource.clip.length + UnityEngine.Random.Range(Math.Max(0, minWaitSeconds), Math.Max(0, maxWaitSeconds));
-            yield return new WaitForSecondsRealtime(nextInterval);
+            mostRecentInterval = audioSource.clip.length + UnityEngine.Random.Range(Math.Max(0, minWaitSeconds), Math.Max(0, maxWaitSeconds));
+            yield return new WaitForSecondsRealtime(mostRecentInterval);
         }
     }
 }
