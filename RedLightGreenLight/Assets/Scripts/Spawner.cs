@@ -5,6 +5,9 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] SpawnerType spawnerType;
     [SerializeField] int spriteNumber;
+    [SerializeField] int detectionRange = 999;
+    [SerializeField] int moveDelay = 1;
+    [SerializeField] int wakeCountdown = 0;
 
     [SerializeField] Sprite[] sprites;
 
@@ -55,7 +58,10 @@ public class Spawner : MonoBehaviour
         if (spawnerType == SpawnerType.Enemy)
         {
             thing.name = "Enemy";
-            thing.AddComponent<EnemyBehavior>();
+            EnemyBehavior eb = thing.AddComponent<EnemyBehavior>();
+            eb.detectionRange = detectionRange;
+            eb.moveDelay = moveDelay;
+            eb.wakeCountdown = wakeCountdown;
         }
         else
         {
