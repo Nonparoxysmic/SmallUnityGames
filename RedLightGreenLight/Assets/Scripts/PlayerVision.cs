@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -106,6 +107,7 @@ public class PlayerVision : MonoBehaviour
     PlayerMovement playerMovement;
 
     int blinkCountdown;
+    KeyCode[] blinkKeyCodes;
     bool blinkPressedOffPlayerFrame;
     float blinkerTargetPosY;
     bool doBlinking;
@@ -128,6 +130,7 @@ public class PlayerVision : MonoBehaviour
             startDimTime = maxBlinkTime;
         }
         wallSideOffset = new Vector3Int(0, 1, 0);
+        blinkKeyCodes = InitializeBlinkKeys();
     }
 
     void Start()
@@ -264,7 +267,7 @@ public class PlayerVision : MonoBehaviour
         {
             blinkCountdown--;
         }
-        if (blinkCountdown == 0 || ((blinkCountdown < maxBlinkTime - 2) && (blinkPressedOffPlayerFrame || Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.Mouse0))))
+        if (blinkCountdown == 0 || ((blinkCountdown < maxBlinkTime - 2) && (blinkPressedOffPlayerFrame || BlinkPressedThisFrame())))
         {
             StartCoroutine(StartBlink());
         }
@@ -284,10 +287,41 @@ public class PlayerVision : MonoBehaviour
         {
             StartCoroutine(StopBlink());
         }
-        if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.Mouse0)) && !isBlinking)
+        if (BlinkPressedThisFrame() && !isBlinking)
         {
             blinkPressedOffPlayerFrame = true;
         }
+    }
+
+    bool BlinkPressedThisFrame()
+    {
+        foreach (KeyCode kc in blinkKeyCodes)
+        {
+            if (Input.GetKey(kc)) return true;
+        }
+        return false;
+    }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "Target-typed new() expression not available in Unity 2019")]
+    KeyCode[] InitializeBlinkKeys()
+    {
+        List<KeyCode> keys = new List<KeyCode>();
+        foreach (KeyCode kc in Enum.GetValues(typeof(KeyCode)))
+        {
+            if ((int)kc > 324) break;
+            keys.Add(kc);
+        }
+        keys.Remove(KeyCode.UpArrow);
+        keys.Remove(KeyCode.DownArrow);
+        keys.Remove(KeyCode.RightArrow);
+        keys.Remove(KeyCode.LeftArrow);
+        keys.Remove(KeyCode.W);
+        keys.Remove(KeyCode.A);
+        keys.Remove(KeyCode.S);
+        keys.Remove(KeyCode.D);
+        keys.Remove(KeyCode.Escape);
+        keys.Remove(KeyCode.None);
+        return keys.ToArray();
     }
 
     void InitializeFog()
