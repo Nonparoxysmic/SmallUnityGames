@@ -2,10 +2,13 @@
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour
 {
+    [SerializeField] Tilemap wallTilemap;
+
     public string timeElapsed;
     public UnityEvent onPlayerCaught;
     public UnityEvent onPlayerWin;
@@ -18,6 +21,7 @@ public class EnemyManager : MonoBehaviour
     MirrorManager mirrorManager;
     PlayerVision playerVision;
     Text progressText;
+    Vector3Int[] secretDoors;
     Stopwatch stopwatch;
 
     void Awake()
@@ -34,6 +38,10 @@ public class EnemyManager : MonoBehaviour
         stopwatch = new Stopwatch();
         stopwatch.Start();
         deathAudio = GetComponent<AudioSource>();
+        secretDoors  = new Vector3Int[] { new Vector3Int(-14, 11, 0),
+                                          new Vector3Int(-14, 12, 0),
+                                          new Vector3Int( 13, 11, 0),
+                                          new Vector3Int( 13, 12, 0) };
     }
 
     void FixedUpdate()
@@ -63,6 +71,15 @@ public class EnemyManager : MonoBehaviour
         playerVision.TerminateBlinking();
         playerVision.SetVision(true);
         gameMenu.StartButtonEnableCountdown();
+        OpenSecretAreas();
+    }
+
+    void OpenSecretAreas()
+    {
+        foreach (Vector3Int tile in secretDoors)
+        {
+            wallTilemap.SetTile(tile, null);
+        }
     }
 
     void SetProgressText()
