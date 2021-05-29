@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class GameMenu : MonoBehaviour
 {
-    [SerializeField] UnityEngine.Object menuScene;
+    [SerializeField] string menuSceneName;
     [SerializeField] Button returnButton;
     [SerializeField] Text buttonText;
     public float buttonDelay;
 
     public void ReturnToMenu()
     {
-        SceneManager.LoadScene(menuScene.name);
+        SceneManager.LoadScene(menuSceneName);
     }
 
     public void StartButtonEnableCountdown()

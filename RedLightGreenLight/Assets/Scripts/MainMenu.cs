@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] UnityEngine.Object gameScene;
+    [SerializeField] string gameSceneName;
     AudioPlayer audioPlayer;
     GameObject audioPlayerObject;
 
@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
         {
             audioPlayer.FadeInMusic();
         }
-        SceneManager.LoadScene(gameScene.name);
+        SceneManager.LoadScene(gameSceneName);
     }
 
     public void QuitGame()

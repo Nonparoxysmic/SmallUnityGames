@@ -45,9 +45,11 @@ public class EnemyBehavior : MonoBehaviour
 
     void NonPlayerUpdate()
     {
+        int distanceToPlayer = Math.Abs(currentTilePos.x - playerMovement.currentTilePos.x) + Math.Abs(currentTilePos.y - playerMovement.currentTilePos.y);
         if (wakeCountdown > 0)
         {
             if (fogTilemap.GetTile(currentTilePos) == null) wakeCountdown--;
+            else if (distanceToPlayer == 1) wakeCountdown = 0;
             return;
         }
         if ((fogTilemap.GetTile(currentTilePos) == null && !playerVision.isBlinking) || enemyManager.playerIsCaught) return;
@@ -56,7 +58,6 @@ public class EnemyBehavior : MonoBehaviour
             moveCountdown--;
             return;
         }
-        int distanceToPlayer = Math.Abs(currentTilePos.x - playerMovement.currentTilePos.x) + Math.Abs(currentTilePos.y - playerMovement.currentTilePos.y);
         if (distanceToPlayer == 1)
         {
             enemyManager.onPlayerCaught.Invoke();

@@ -4,13 +4,13 @@ using UnityEngine.SceneManagement;
 
 public class TitleScene : MonoBehaviour
 {
-    [SerializeField] UnityEngine.Object mainMenuScene;
+    [SerializeField] string menuSceneName;
 
     void Update()
     {
         if (Input.anyKeyDown)
         {
-            SceneManager.LoadScene(mainMenuScene.name);
+            SceneManager.LoadScene(menuSceneName);
         }
     }
 }
