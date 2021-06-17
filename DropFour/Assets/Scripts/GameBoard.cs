@@ -23,12 +23,13 @@ public class GameBoard
 
     public void MakeMove(int column)
     {
-        bitboards[movesMade & 1] |= 1U << nextPositions[column]++;
+        bitboards[movesMade & 1] |= 1UL << nextPositions[column]++;
         moveList[movesMade++] = column;
     }
 
     public void UnmakeLastMove()
     {
-        bitboards[movesMade & 1] ^= 1U << --nextPositions[moveList[--movesMade]];
+        ulong bit = 1UL << --nextPositions[moveList[--movesMade]];
+        bitboards[movesMade & 1] ^= bit;
     }
 }
