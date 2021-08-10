@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    GameMaster gm;
+
     Vector3 lastMousePosition;
     float lastHorzKey;
     float lastVertKey;
 
     void Start()
     {
+        gm = gameObject.GetComponent<GameMaster>();
         lastMousePosition = Input.mousePosition;
         lastHorzKey = Input.GetAxisRaw("Horizontal");
         lastVertKey = Input.GetAxisRaw("Vertical");
@@ -39,7 +42,7 @@ public class InputManager : MonoBehaviour
         if (Input.mousePosition != lastMousePosition)
         {
             // Mouse moved this frame
-
+            gm.MouseMoved(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             lastMousePosition = Input.mousePosition;
         }
     }
