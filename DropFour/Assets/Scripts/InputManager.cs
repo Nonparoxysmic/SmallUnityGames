@@ -12,7 +12,7 @@ public class InputManager : MonoBehaviour
     void Start()
     {
         gm = gameObject.GetComponent<GameMaster>();
-        lastMousePosition = Input.mousePosition;
+        lastMousePosition = Vector3.positiveInfinity;
         lastHorzKey = Input.GetAxisRaw("Horizontal");
         lastVertKey = Input.GetAxisRaw("Vertical");
     }
