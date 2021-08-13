@@ -1,15 +1,20 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
+
+public class UnityEvent_Int : UnityEvent<int> { }
 
 public class GameMaster : MonoBehaviour
 {
+    public UnityEvent_Int selectionChanged;
+
     [SerializeField] GameObject[] columns;
 
     GameBoard board;
     BoxCollider2D[] columnColliders;
     int currentSelection = -1;
 
-    void Start()
+    void Awake()
     {
         board = new GameBoard();
         columnColliders = new BoxCollider2D[columns.Length];
@@ -17,11 +22,13 @@ public class GameMaster : MonoBehaviour
         {
             columnColliders[i] = columns[i].GetComponent<BoxCollider2D>();
         }
+        selectionChanged = new UnityEvent_Int();
     }
 
     void SelectionChanged(int value)
     {
         currentSelection = value;
+        selectionChanged.Invoke(value);
     }
 
     public void MouseMoved(Vector2 position)
