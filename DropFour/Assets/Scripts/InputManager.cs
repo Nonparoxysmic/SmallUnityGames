@@ -6,31 +6,30 @@ public class InputManager : MonoBehaviour
     GameMaster gm;
 
     Vector3 lastMousePosition;
-    float lastHorzKey;
-    float lastVertKey;
 
-    void Start()
+    void Awake()
     {
-        gm = gameObject.GetComponent<GameMaster>();
+        gm = GetComponent<GameMaster>();
         lastMousePosition = Vector3.positiveInfinity;
-        lastHorzKey = Input.GetAxisRaw("Horizontal");
-        lastVertKey = Input.GetAxisRaw("Vertical");
     }
 
     void Update()
     {
-        if (Input.GetAxisRaw("Horizontal") != lastHorzKey)
+        int horizontal = 0;
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            // Horizontal input changed
-            
-            lastHorzKey = Input.GetAxisRaw("Horizontal");
+            horizontal--;
         }
-        if (Input.GetAxisRaw("Vertical") != lastVertKey)
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            // Vertical input changed
+            horizontal++;
+        }
+        if (horizontal != 0)
+        {
+            gm.DirectionPressed(new Vector2Int(horizontal, 0));
+        }
 
-            lastVertKey = Input.GetAxisRaw("Vertical");
-        }
+        Vector3 mousePos = Input.mousePosition;
         if (Input.GetMouseButtonDown(0))
         {
             // Left click
@@ -39,11 +38,10 @@ public class InputManager : MonoBehaviour
         {
             // Right click
         }
-        if (Input.mousePosition != lastMousePosition)
+        if (mousePos != lastMousePosition)
         {
-            // Mouse moved this frame
-            gm.MouseMoved(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            lastMousePosition = Input.mousePosition;
+            gm.MouseMoved(Camera.main.ScreenToWorldPoint(mousePos));
+            lastMousePosition = mousePos;
         }
     }
 }
