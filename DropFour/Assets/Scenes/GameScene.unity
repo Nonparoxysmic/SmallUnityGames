@@ -795,6 +795,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f15c8337eafb444b5da54e287840e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  repeatDelay: 0.425
+  repeatInterval: 0.075
 --- !u!4 &1526488160
 Transform:
   m_ObjectHideFlags: 0
