@@ -73,25 +73,20 @@ public class InputManager : MonoBehaviour
         if (pressedLeft) horizontal--;
         if (pressedRight) horizontal++;
         if (holdingLeft && holdingRight) horizontal = 0;
-
         if (horizontal != 0)
         {
             gm.DirectionPressed(new Vector2Int(horizontal, 0));
         }
 
         Vector3 mousePos = Input.mousePosition;
-        if (Input.GetMouseButtonDown(0))
-        {
-            // Left click
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            // Right click
-        }
         if (mousePos != lastMousePosition)
         {
             gm.MouseMoved(Camera.main.ScreenToWorldPoint(mousePos));
             lastMousePosition = mousePos;
+        }
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+        {
+            gm.SelectionActivated();
         }
     }
 }

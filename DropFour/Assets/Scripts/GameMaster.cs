@@ -7,6 +7,7 @@ public class UnityEvent_Int : UnityEvent<int> { }
 public class GameMaster : MonoBehaviour
 {
     public UnityEvent_Int selectionChanged;
+    public UnityEvent_Int selectionActivated;
 
     [SerializeField] GameObject[] columns;
 
@@ -18,6 +19,7 @@ public class GameMaster : MonoBehaviour
     void Awake()
     {
         selectionChanged = new UnityEvent_Int();
+        selectionActivated = new UnityEvent_Int();
         board = new GameBoard();
         columnColliders = new BoxCollider2D[columns.Length];
         for (int i = 0; i < columns.Length; i++)
@@ -76,5 +78,10 @@ public class GameMaster : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void SelectionActivated()
+    {
+        selectionActivated.Invoke(currentSelection);
     }
 }

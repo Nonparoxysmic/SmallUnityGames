@@ -20,6 +20,7 @@ public class Column : MonoBehaviour
     void Start()
     {
         gm.selectionChanged.AddListener(OnSelectionChanged);
+        gm.selectionActivated.AddListener(OnSelectionActivated);
     }
 
     void OnSelectionChanged(int value)
@@ -31,8 +32,11 @@ public class Column : MonoBehaviour
         else sr.color = baseColor;
     }
 
-    void OnMouseDown()
+    void OnSelectionActivated(int value)
     {
-        Debug.Log("Column clicked.");
+        if (value == selectionValue)
+        {
+            Debug.Log("Column " + selectionValue + " activated!");
+        }
     }
 }
