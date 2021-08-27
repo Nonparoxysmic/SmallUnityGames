@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Column : MonoBehaviour
 {
+    [SerializeField] GameObject tokenPrefab;
     [SerializeField] int selectionValue;
 
     GameMaster gm;
@@ -32,11 +33,12 @@ public class Column : MonoBehaviour
         else sr.color = baseColor;
     }
 
-    void OnSelectionActivated(int value)
+    void OnSelectionActivated(int selection, int player)
     {
-        if (value == selectionValue)
+        if (selection == selectionValue)
         {
             Debug.Log("Column " + selectionValue + " activated!");
+            Instantiate(tokenPrefab, new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 3.5f), Quaternion.identity, gameObject.transform);
         }
     }
 }

@@ -3,11 +3,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class UnityEvent_Int : UnityEvent<int> { }
+public class UnityEvent_Int_Int : UnityEvent<int, int> { }
 
 public class GameMaster : MonoBehaviour
 {
     public UnityEvent_Int selectionChanged;
-    public UnityEvent_Int selectionActivated;
+    public UnityEvent_Int_Int selectionActivated;
 
     [SerializeField] GameObject[] columns;
 
@@ -15,11 +16,12 @@ public class GameMaster : MonoBehaviour
     BoxCollider2D[] columnColliders;
 
     int currentSelection = -1;
+    int movesMade;
 
     void Awake()
     {
         selectionChanged = new UnityEvent_Int();
-        selectionActivated = new UnityEvent_Int();
+        selectionActivated = new UnityEvent_Int_Int();
         board = new GameBoard();
         columnColliders = new BoxCollider2D[columns.Length];
         for (int i = 0; i < columns.Length; i++)
@@ -82,6 +84,16 @@ public class GameMaster : MonoBehaviour
 
     public void SelectionActivated()
     {
-        selectionActivated.Invoke(currentSelection);
+        if (currentSelection >= 0 && currentSelection <= 6)
+        {
+            if (board.IsValidMove(currentSelection))
+            {
+                board.MakeMove(currentSelection);
+                selectionActivated.Invoke(currentSelection, movesMade & 1);
+                movesMade++;
+                Debug.Log("Move made!");
+            }
+            else Debug.Log("Not a valid move!");
+        }
     }
 }
