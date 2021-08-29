@@ -38,7 +38,8 @@ public class Column : MonoBehaviour
         if (selection == selectionValue)
         {
             Debug.Log("Column " + selectionValue + " activated!");
-            Instantiate(tokenPrefab, new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 3.5f), Quaternion.identity, gameObject.transform);
+            GameObject tokenObject = Instantiate(tokenPrefab, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 3.5f, -1), Quaternion.identity, gameObject.transform);
+            tokenObject.GetComponent<Token>().SetFallPositionY(-2.5f);  // TEMPORARY HARD-CODED VALUE
         }
     }
 }
