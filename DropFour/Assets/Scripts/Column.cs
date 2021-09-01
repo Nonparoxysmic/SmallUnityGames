@@ -10,6 +10,7 @@ public class Column : MonoBehaviour
     SpriteRenderer sr;
 
     Color baseColor;
+    int tokenCount;
 
     void Awake()
     {
@@ -39,7 +40,8 @@ public class Column : MonoBehaviour
         {
             Debug.Log("Column " + selectionValue + " activated!");
             GameObject tokenObject = Instantiate(tokenPrefab, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 3.5f, -1), Quaternion.identity, gameObject.transform);
-            tokenObject.GetComponent<Token>().SetFallPositionY(-2.5f);  // TEMPORARY HARD-CODED VALUE
+            tokenObject.GetComponent<SpriteRenderer>().color = new Color(1, player, 0);
+            tokenObject.GetComponent<Token>().SetFallPositionY(-2.5f + tokenCount++);
         }
     }
 }
