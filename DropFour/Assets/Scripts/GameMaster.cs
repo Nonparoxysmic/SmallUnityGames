@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,6 +16,7 @@ public class GameMaster : MonoBehaviour
     GameBoard board;
     BoxCollider2D[] columnColliders;
 
+    GameState currentState;
     int currentSelection = -1;
     int movesMade;
 
@@ -27,6 +29,11 @@ public class GameMaster : MonoBehaviour
         for (int i = 0; i < columns.Length; i++)
         {
             columnColliders[i] = columns[i].GetComponent<BoxCollider2D>();
+        }
+        currentState = UnityEngine.Random.Range(0, 2) == 0 ? GameState.PlayerTurn : GameState.ComputerTurn;
+        if (currentState == GameState.ComputerTurn)
+        {
+            StartCoroutine(ComputerTurn(0));
         }
     }
 
@@ -84,16 +91,52 @@ public class GameMaster : MonoBehaviour
 
     public void SelectionActivated()
     {
+        if (currentState != GameState.PlayerTurn) return;
         if (currentSelection >= 0 && currentSelection <= 6)
         {
             if (board.IsValidMove(currentSelection))
             {
+                currentState = GameState.ComputerTurn;
                 board.MakeMove(currentSelection);
                 selectionActivated.Invoke(currentSelection, movesMade & 1);
+                if (board.HasConnectedFour(movesMade & 1))
+                {
+                    Debug.Log("PLAYER WINS");
+                    currentState = GameState.End;
+                }
                 movesMade++;
-                Debug.Log("Move made!");
+                if (currentState != GameState.End)
+                {
+                    StartCoroutine(ComputerTurn(1));
+                }
             }
-            else Debug.Log("Not a valid move!");
         }
     }
+
+    IEnumerator ComputerTurn(float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        int[] validMoves = board.ValidMoves();
+        int chosenMove = UnityEngine.Random.Range(0, validMoves.Length);
+        board.MakeMove(chosenMove);
+        selectionActivated.Invoke(chosenMove, movesMade & 1);
+        if (board.HasConnectedFour(movesMade & 1))
+        {
+            Debug.Log("COMPUTER WINS");
+            currentState = GameState.End;
+        }
+        movesMade++;
+        if (currentState != GameState.End)
+        {
+            currentState = GameState.PlayerTurn;
+        }
+    }
+}
+
+public enum GameState
+{
+    Start,
+    PlayerTurn,
+    ComputerTurn,
+    End
 }
