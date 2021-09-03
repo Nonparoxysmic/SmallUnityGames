@@ -5,11 +5,13 @@ using UnityEngine.Events;
 
 public class UnityEvent_Int : UnityEvent<int> { }
 public class UnityEvent_Int_Int : UnityEvent<int, int> { }
+public class UnityEvent_Bool : UnityEvent<bool> { }
 
 public class GameMaster : MonoBehaviour
 {
     public UnityEvent_Int selectionChanged;
     public UnityEvent_Int_Int selectionActivated;
+    public UnityEvent_Bool showSelectionChanged;
 
     [SerializeField] GameObject[] columns;
 
@@ -22,6 +24,7 @@ public class GameMaster : MonoBehaviour
 
     void Awake()
     {
+        showSelectionChanged = new UnityEvent_Bool();
         selectionChanged = new UnityEvent_Int();
         selectionActivated = new UnityEvent_Int_Int();
         board = new GameBoard();
@@ -35,6 +38,12 @@ public class GameMaster : MonoBehaviour
         {
             StartCoroutine(ComputerTurn(0));
         }
+        else ShowSelection(true);
+    }
+
+    void ShowSelection(bool doShow)
+    {
+        showSelectionChanged.Invoke(doShow);
     }
 
     void SelectionChanged(int value)
@@ -129,6 +138,7 @@ public class GameMaster : MonoBehaviour
         if (currentState != GameState.End)
         {
             currentState = GameState.PlayerTurn;
+            ShowSelection(true);
         }
     }
 }
