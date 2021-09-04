@@ -24,9 +24,9 @@ public class GameMaster : MonoBehaviour
 
     void Awake()
     {
-        showSelectionChanged = new UnityEvent_Bool();
         selectionChanged = new UnityEvent_Int();
         selectionActivated = new UnityEvent_Int_Int();
+        showSelectionChanged = new UnityEvent_Bool();
         board = new GameBoard();
         columnColliders = new BoxCollider2D[columns.Length];
         for (int i = 0; i < columns.Length; i++)
@@ -44,6 +44,7 @@ public class GameMaster : MonoBehaviour
     void ShowSelection(bool doShow)
     {
         showSelectionChanged.Invoke(doShow);
+        selectionChanged.Invoke(currentSelection);
     }
 
     void SelectionChanged(int value)
@@ -105,6 +106,7 @@ public class GameMaster : MonoBehaviour
         {
             if (board.IsValidMove(currentSelection))
             {
+                ShowSelection(false);
                 currentState = GameState.ComputerTurn;
                 board.MakeMove(currentSelection);
                 selectionActivated.Invoke(currentSelection, movesMade & 1);
@@ -129,6 +131,7 @@ public class GameMaster : MonoBehaviour
         int chosenMove = UnityEngine.Random.Range(0, validMoves.Length);
         board.MakeMove(chosenMove);
         selectionActivated.Invoke(chosenMove, movesMade & 1);
+        yield return new WaitForSeconds(0.5f);
         if (board.HasConnectedFour(movesMade & 1))
         {
             Debug.Log("COMPUTER WINS");

@@ -9,6 +9,7 @@ public class Column : MonoBehaviour
     GameMaster gm;
     SpriteRenderer sr;
 
+    bool showSelection;
     Color baseColor;
     int tokenCount;
 
@@ -23,11 +24,12 @@ public class Column : MonoBehaviour
     {
         gm.selectionChanged.AddListener(OnSelectionChanged);
         gm.selectionActivated.AddListener(OnSelectionActivated);
+        gm.showSelectionChanged.AddListener(ShowSelectionChanged);
     }
 
     void OnSelectionChanged(int value)
     {
-        if (value == selectionValue)
+        if (value == selectionValue && showSelection)
         {
             sr.color = new Color(sr.color.r, sr.color.g, sr.color.b) * 0.5f + Color.red * 0.5f;
         }
@@ -43,5 +45,10 @@ public class Column : MonoBehaviour
             tokenObject.GetComponent<SpriteRenderer>().color = new Color(1, player, 0);
             tokenObject.GetComponent<Token>().SetFallPositionY(-2.5f + tokenCount++);
         }
+    }
+
+    void ShowSelectionChanged(bool doShow)
+    {
+        showSelection = doShow;
     }
 }
