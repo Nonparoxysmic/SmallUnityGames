@@ -881,6 +881,8 @@ MonoBehaviour:
   - {fileID: 1775444058}
   - {fileID: 2097557412}
   - {fileID: 355843514}
+  tokenAcceleration: 100
+  tokenMaxSpeed: 20
 --- !u!1001 &1530298613
 PrefabInstance:
   m_ObjectHideFlags: 0

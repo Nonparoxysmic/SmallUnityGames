@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Token : MonoBehaviour
 {
-    [SerializeField] float accelerationY;
-    [SerializeField] float maxSpeed;
+    float _acceleration = 100;
+    float _maxSpeed = 20;
 
     bool isFalling;
     float speedY;
@@ -18,8 +18,8 @@ public class Token : MonoBehaviour
         {
             gameObject.transform.position = new Vector3(gameObject.transform.position.x, currentY + speedY * Time.deltaTime, gameObject.transform.position.z);
 
-            speedY -= Math.Abs(accelerationY) * Time.deltaTime;
-            speedY = Math.Max(speedY, -Math.Abs(maxSpeed));
+            speedY -= Math.Abs(_acceleration) * Time.deltaTime;
+            speedY = Math.Max(speedY, -Math.Abs(_maxSpeed));
         }
         if (gameObject.transform.position.y <= targetY)
         {
@@ -33,5 +33,11 @@ public class Token : MonoBehaviour
     {
         targetY = y;
         isFalling = true;
+    }
+
+    public void SetPhysics(float acceleration, float maxSpeed)
+    {
+        _acceleration = acceleration;
+        _maxSpeed = maxSpeed;
     }
 }

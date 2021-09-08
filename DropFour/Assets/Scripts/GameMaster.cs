@@ -14,6 +14,8 @@ public class GameMaster : MonoBehaviour
     public UnityEvent_Bool showSelectionChanged;
 
     [SerializeField] GameObject[] columns;
+    public float tokenAcceleration;
+    public float tokenMaxSpeed;
 
     GameBoard board;
     BoxCollider2D[] columnColliders;
