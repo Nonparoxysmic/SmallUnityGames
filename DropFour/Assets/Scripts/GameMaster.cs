@@ -35,6 +35,10 @@ public class GameMaster : MonoBehaviour
         {
             columnColliders[i] = columns[i].GetComponent<BoxCollider2D>();
         }
+    }
+
+    void Start()
+    {
         currentState = UnityEngine.Random.Range(0, 2) == 0 ? GameState.PlayerTurn : GameState.ComputerTurn;
         if (currentState == GameState.ComputerTurn)
         {
