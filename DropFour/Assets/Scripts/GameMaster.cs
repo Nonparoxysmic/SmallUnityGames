@@ -103,6 +103,10 @@ public class GameMaster : MonoBehaviour
                 return;
             }
         }
+        if (currentSelection >= 0)
+        {
+            SelectionChanged(-1);
+        }
     }
 
     public void SelectionActivated()
