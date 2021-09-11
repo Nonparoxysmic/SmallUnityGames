@@ -1,40 +1,21 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
-
-public class UnityEvent_Int : UnityEvent<int> { }
-public class UnityEvent_Int_Int : UnityEvent<int, int> { }
-public class UnityEvent_Bool : UnityEvent<bool> { }
 
 public class GameMaster : MonoBehaviour
 {
-    public UnityEvent_Int selectionChanged;
-    public UnityEvent_Int_Int selectionActivated;
-    public UnityEvent_Bool showSelectionChanged;
-
-    [SerializeField] GameObject[] columns;
     public float tokenAcceleration;
     public float tokenMaxSpeed;
 
+    InputManager inputManager;
     GameBoard board;
-    BoxCollider2D[] columnColliders;
-
     GameState currentState;
-    int currentSelection = -1;
     int movesMade;
 
     void Awake()
     {
-        selectionChanged = new UnityEvent_Int();
-        selectionActivated = new UnityEvent_Int_Int();
-        showSelectionChanged = new UnityEvent_Bool();
+        inputManager = GetComponent<InputManager>();
         board = new GameBoard();
-        columnColliders = new BoxCollider2D[columns.Length];
-        for (int i = 0; i < columns.Length; i++)
-        {
-            columnColliders[i] = columns[i].GetComponent<BoxCollider2D>();
-        }
     }
 
     void Start()
@@ -49,67 +30,10 @@ public class GameMaster : MonoBehaviour
 
     void ShowSelection(bool doShow)
     {
-        showSelectionChanged.Invoke(doShow);
-        selectionChanged.Invoke(currentSelection);
+        inputManager.ShowSelection(doShow);
     }
 
-    void SelectionChanged(int value)
-    {
-        currentSelection = value;
-        selectionChanged.Invoke(value);
-    }
-
-    public void DirectionPressed(Vector2Int direction)
-    {
-        if (currentSelection < 0)
-        {
-            if (direction.x > 0) SelectionChanged(0);
-            else if (direction.x < 0) SelectionChanged(columns.Length - 1);
-        }
-        else if (direction.x < 0)
-        {
-            if (currentSelection > 0)
-            {
-                SelectionChanged(currentSelection - 1);
-            }
-            else if (currentSelection == 0)
-            {
-                SelectionChanged(columns.Length - 1);
-            }
-        }
-        else if (direction.x > 0)
-        {
-            if (currentSelection < columns.Length - 1)
-            {
-                SelectionChanged(currentSelection + 1);
-            }
-            else if (currentSelection == columns.Length - 1)
-            {
-                SelectionChanged(0);
-            }
-        }
-    }
-
-    public void MouseMoved(Vector2 position)
-    {
-        for (int i = 0; i < columnColliders.Length; i++)
-        {
-            if (columnColliders[i].bounds.Contains(position))
-            {
-                if (i != currentSelection)
-                {
-                    SelectionChanged(i);
-                }
-                return;
-            }
-        }
-        if (currentSelection >= 0)
-        {
-            SelectionChanged(-1);
-        }
-    }
-
-    public void SelectionActivated()
+    public void SelectionActivated(int currentSelection)
     {
         if (currentState != GameState.PlayerTurn) return;
         if (currentSelection >= 0 && currentSelection <= 6)
@@ -119,7 +43,7 @@ public class GameMaster : MonoBehaviour
                 ShowSelection(false);
                 currentState = GameState.ComputerTurn;
                 board.MakeMove(currentSelection);
-                selectionActivated.Invoke(currentSelection, movesMade & 1);
+                inputManager.selectionActivated.Invoke(currentSelection, movesMade & 1);
                 if (board.HasConnectedFour(movesMade & 1))
                 {
                     Debug.Log("PLAYER WINS");
@@ -140,7 +64,7 @@ public class GameMaster : MonoBehaviour
         int[] validMoves = board.ValidMoves();
         int chosenMove = UnityEngine.Random.Range(0, validMoves.Length);
         board.MakeMove(chosenMove);
-        selectionActivated.Invoke(chosenMove, movesMade & 1);
+        inputManager.selectionActivated.Invoke(chosenMove, movesMade & 1);
         yield return new WaitForSeconds(0.5f);
         if (board.HasConnectedFour(movesMade & 1))
         {

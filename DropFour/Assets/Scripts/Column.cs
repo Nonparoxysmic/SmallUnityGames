@@ -7,6 +7,7 @@ public class Column : MonoBehaviour
     [SerializeField] int selectionValue;
 
     GameMaster gm;
+    InputManager inputManager;
     SpriteRenderer sr;
 
     bool showSelection;
@@ -15,6 +16,7 @@ public class Column : MonoBehaviour
 
     void Awake()
     {
+        inputManager = GameObject.Find("Main Game").GetComponent<InputManager>();
         gm = GameObject.Find("Main Game").GetComponent<GameMaster>();
         sr = GetComponent<SpriteRenderer>();
         baseColor = sr.color;
@@ -22,9 +24,9 @@ public class Column : MonoBehaviour
 
     void Start()
     {
-        gm.selectionChanged.AddListener(OnSelectionChanged);
-        gm.selectionActivated.AddListener(OnSelectionActivated);
-        gm.showSelectionChanged.AddListener(ShowSelectionChanged);
+        inputManager.selectionChanged.AddListener(OnSelectionChanged);
+        inputManager.selectionActivated.AddListener(OnSelectionActivated);
+        inputManager.showSelectionChanged.AddListener(ShowSelectionChanged);
     }
 
     void OnSelectionChanged(int value)
@@ -40,7 +42,6 @@ public class Column : MonoBehaviour
     {
         if (selection == selectionValue)
         {
-            Debug.Log("Column " + selectionValue + " activated!");
             GameObject tokenObject = Instantiate(tokenPrefab, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 3.5f, -1), Quaternion.identity, gameObject.transform);
             tokenObject.GetComponent<SpriteRenderer>().color = new Color(1, player, 0);
             Token tokenScript = tokenObject.GetComponent<Token>();
