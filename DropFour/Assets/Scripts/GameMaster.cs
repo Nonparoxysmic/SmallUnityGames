@@ -46,11 +46,15 @@ public class GameMaster : MonoBehaviour
                 inputManager.selectionActivated.Invoke(currentSelection, movesMade & 1);
                 if (board.HasConnectedFour(movesMade & 1))
                 {
-                    Debug.Log("PLAYER WINS");
-                    currentState = GameState.End;
+                    currentState = GameState.Ending;
                 }
                 movesMade++;
-                if (currentState != GameState.End)
+                if (currentState == GameState.Ending)
+                {
+                    currentState = GameState.End;
+                    GameOver(true);
+                }
+                else
                 {
                     StartCoroutine(ComputerTurn(1));
                 }
@@ -68,14 +72,30 @@ public class GameMaster : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (board.HasConnectedFour(movesMade & 1))
         {
-            Debug.Log("COMPUTER WINS");
-            currentState = GameState.End;
+            currentState = GameState.Ending;
         }
         movesMade++;
-        if (currentState != GameState.End)
+        if (currentState == GameState.Ending)
+        {
+            currentState = GameState.End;
+            GameOver(false);
+        }
+        else
         {
             currentState = GameState.PlayerTurn;
             ShowSelection(true);
+        }
+    }
+
+    void GameOver(bool playerWon)
+    {
+        if (playerWon)
+        {
+            Debug.Log("PLAYER WINS");
+        }
+        else
+        {
+            Debug.Log("COMPUTER WINS");
         }
     }
 }
@@ -85,5 +105,6 @@ public enum GameState
     Start,
     PlayerTurn,
     ComputerTurn,
+    Ending,
     End
 }
