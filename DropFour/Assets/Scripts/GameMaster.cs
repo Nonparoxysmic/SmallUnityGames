@@ -7,15 +7,16 @@ public class GameMaster : MonoBehaviour
     public float tokenAcceleration;
     public float tokenMaxSpeed;
 
-    InputManager inputManager;
     GameBoard board;
+    InputManager inputManager;
+
     GameState currentState;
     int movesMade;
 
     void Awake()
     {
-        inputManager = GetComponent<InputManager>();
         board = new GameBoard();
+        inputManager = GetComponent<InputManager>();
     }
 
     void Start()
@@ -65,8 +66,7 @@ public class GameMaster : MonoBehaviour
     IEnumerator ComputerTurn(float delaySeconds)
     {
         yield return new WaitForSeconds(delaySeconds);
-        int[] validMoves = board.ValidMoves();
-        int chosenMove = UnityEngine.Random.Range(0, validMoves.Length);
+        int chosenMove = Engine.RandomMove(board);
         board.MakeMove(chosenMove);
         inputManager.selectionActivated.Invoke(chosenMove, movesMade & 1);
         yield return new WaitForSeconds(0.5f);

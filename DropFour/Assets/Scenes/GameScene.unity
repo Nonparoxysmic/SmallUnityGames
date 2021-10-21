@@ -845,6 +845,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f15c8337eafb444b5da54e287840e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  repeatDelay: 0.425
+  repeatInterval: 0.075
   columns:
   - {fileID: 304278289}
   - {fileID: 1805351145}
@@ -853,8 +855,6 @@ MonoBehaviour:
   - {fileID: 1775444058}
   - {fileID: 2097557412}
   - {fileID: 355843514}
-  repeatDelay: 0.425
-  repeatInterval: 0.075
 --- !u!4 &1526488160
 Transform:
   m_ObjectHideFlags: 0
