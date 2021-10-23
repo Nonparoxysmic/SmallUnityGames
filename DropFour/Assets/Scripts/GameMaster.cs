@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour
 {
+    public float computerThinkTime;
     public float tokenAcceleration;
     public float tokenMaxSpeed;
 
+    Engine engine;
     GameBoard board;
     InputManager inputManager;
 
@@ -15,6 +17,8 @@ public class GameMaster : MonoBehaviour
 
     void Awake()
     {
+        if (computerThinkTime < 1) { computerThinkTime = 1; }
+        engine = GetComponent<Engine>();
         board = new GameBoard();
         inputManager = GetComponent<InputManager>();
     }
@@ -65,8 +69,11 @@ public class GameMaster : MonoBehaviour
 
     IEnumerator ComputerTurn(float delaySeconds)
     {
-        yield return new WaitForSeconds(delaySeconds);
-        int chosenMove = Engine.RandomMove(board);
+        engine.StartThinking(board, computerThinkTime);
+        yield return new WaitForSeconds(Math.Max(computerThinkTime + 0.1f, delaySeconds));
+        Debug.Log("Chosen move: " + engine.Output);  // TEMPORARY FOR DEBUGGING
+        int chosenMove = engine.RandomMove(board);  // TEMPORARY FOR DEBUGGING
+        //int chosenMove = engine.Output;
         board.MakeMove(chosenMove);
         inputManager.selectionActivated.Invoke(chosenMove, movesMade & 1);
         yield return new WaitForSeconds(0.5f);
