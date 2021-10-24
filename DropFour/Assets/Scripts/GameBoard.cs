@@ -20,6 +20,8 @@ public class GameBoard
     readonly int[] moveList;
     int movesMade;
 
+    public int CurrentPlayer { get => movesMade % 2; }
+
     public GameBoard()
     {
         bitboards = new ulong[2];

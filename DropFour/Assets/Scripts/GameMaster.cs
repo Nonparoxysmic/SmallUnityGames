@@ -17,7 +17,7 @@ public class GameMaster : MonoBehaviour
 
     void Awake()
     {
-        if (computerThinkTime < 1) { computerThinkTime = 1; }
+        if (computerThinkTime < 0.1) { computerThinkTime = 0.1f; }
         engine = GetComponent<Engine>();
         board = new GameBoard();
         inputManager = GetComponent<InputManager>();
@@ -71,9 +71,8 @@ public class GameMaster : MonoBehaviour
     {
         engine.StartThinking(board, computerThinkTime);
         yield return new WaitForSeconds(Math.Max(computerThinkTime + 0.1f, delaySeconds));
-        Debug.Log("Chosen move: " + engine.Output);  // TEMPORARY FOR DEBUGGING
-        int chosenMove = engine.RandomMove(board);  // TEMPORARY FOR DEBUGGING
-        //int chosenMove = engine.Output;
+        int chosenMove = engine.Output;
+        Debug.Log("Chosen move: " + chosenMove + ", Depth completed: " + engine.Depth);
         board.MakeMove(chosenMove);
         inputManager.selectionActivated.Invoke(chosenMove, movesMade & 1);
         yield return new WaitForSeconds(0.5f);
