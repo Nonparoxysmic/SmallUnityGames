@@ -12,7 +12,12 @@ public class Engine : MonoBehaviour
 
     bool isRunning;
     Dictionary<int, int> moveScores;
-    readonly System.Random random = new System.Random();
+    System.Random random;
+
+    void Awake()
+    {
+        random = new System.Random();
+    }
 
     public int RandomMove(GameBoard board)
     {
@@ -113,6 +118,21 @@ public class Engine : MonoBehaviour
 
     bool AlphaBetaSearch(GameBoard board, int alpha, int beta, int depthRemaining, out int score)
     {
+        if (board.HasConnectedFour(0))
+        {
+            score = int.MaxValue;
+            return true;
+        }
+        if (board.HasConnectedFour(1))
+        {
+            score = int.MinValue;
+            return true;
+        }
+        if (board.MovesMade == 42)
+        {
+            score = 0;
+            return true;
+        }
         if (depthRemaining == 0)
         {
             score = EvaluatePosition(board);
@@ -134,6 +154,7 @@ public class Engine : MonoBehaviour
                 {
                     if (eval >= beta)
                     {
+                        board.UnmakeLastMove();
                         score = beta;
                         return true;
                     }
@@ -159,6 +180,7 @@ public class Engine : MonoBehaviour
                 {
                     if (eval <= alpha)
                     {
+                        board.UnmakeLastMove();
                         score = alpha;
                         return true;
                     }

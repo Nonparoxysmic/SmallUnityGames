@@ -21,6 +21,7 @@ public class GameBoard
     int movesMade;
 
     public int CurrentPlayer { get => movesMade % 2; }
+    public int MovesMade { get => movesMade; }
 
     public GameBoard()
     {
