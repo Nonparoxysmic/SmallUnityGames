@@ -12,6 +12,7 @@ public class GameMaster : MonoBehaviour
     GameBoard board;
     InputManager inputManager;
 
+    GameResult gameResult;
     GameState currentState;
     int movesMade;
 
@@ -25,6 +26,7 @@ public class GameMaster : MonoBehaviour
 
     void Start()
     {
+        gameResult = GameResult.InProgress;
         currentState = UnityEngine.Random.Range(0, 2) == 0 ? GameState.PlayerTurn : GameState.ComputerTurn;
         if (currentState == GameState.ComputerTurn)
         {
@@ -52,12 +54,18 @@ public class GameMaster : MonoBehaviour
                 if (board.HasConnectedFour(movesMade & 1))
                 {
                     currentState = GameState.Ending;
+                    gameResult = GameResult.PlayerWin;
+                }
+                else if (board.MovesMade >= 42)
+                {
+                    currentState = GameState.Ending;
+                    gameResult = GameResult.Tie;
                 }
                 movesMade++;
                 if (currentState == GameState.Ending)
                 {
                     currentState = GameState.End;
-                    GameOver(true);
+                    GameOver();
                 }
                 else
                 {
@@ -79,12 +87,18 @@ public class GameMaster : MonoBehaviour
         if (board.HasConnectedFour(movesMade & 1))
         {
             currentState = GameState.Ending;
+            gameResult = GameResult.ComputerWin;
+        }
+        else if (board.MovesMade >= 42)
+        {
+            currentState = GameState.Ending;
+            gameResult = GameResult.Tie;
         }
         movesMade++;
         if (currentState == GameState.Ending)
         {
             currentState = GameState.End;
-            GameOver(false);
+            GameOver();
         }
         else
         {
@@ -93,15 +107,19 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    void GameOver(bool playerWon)
+    void GameOver()
     {
-        if (playerWon)
+        switch (gameResult)
         {
-            Debug.Log("PLAYER WINS");
-        }
-        else
-        {
-            Debug.Log("COMPUTER WINS");
+            case GameResult.PlayerWin:
+                Debug.Log("PLAYER WINS");
+                break;
+            case GameResult.ComputerWin:
+                Debug.Log("COMPUTER WINS");
+                break;
+            case GameResult.Tie:
+                Debug.Log("TIED GAME");
+                break;
         }
     }
 }
@@ -113,4 +131,12 @@ public enum GameState
     ComputerTurn,
     Ending,
     End
+}
+
+public enum GameResult
+{
+    InProgress,
+    PlayerWin,
+    ComputerWin,
+    Tie
 }
