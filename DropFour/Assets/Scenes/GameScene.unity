@@ -882,7 +882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8089d125edf0514da1d6625b4ed0b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  computerThinkTime: 0.1
+  computerThinkTime: 1
   tokenAcceleration: 100
   tokenMaxSpeed: 20
 --- !u!114 &1526488162

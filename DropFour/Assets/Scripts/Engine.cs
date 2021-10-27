@@ -12,12 +12,6 @@ public class Engine : MonoBehaviour
 
     bool isRunning;
     Dictionary<int, int> moveScores;
-    System.Random random;
-
-    void Awake()
-    {
-        random = new System.Random();
-    }
 
     public int RandomMove(GameBoard board)
     {
@@ -47,7 +41,7 @@ public class Engine : MonoBehaviour
 
     void Search(GameBoard board)
     {
-        for (int i = 1; true; i++)
+        for (int i = 1; i <= 42 - board.MovesMade; i++)
         {
             if (!isRunning) { return; }
             SearchToDepth(board, i);
@@ -99,6 +93,7 @@ public class Engine : MonoBehaviour
             if (kvp.Value >= highestScore)
             {
                 highestScoreMoves.Add(kvp.Key);
+                highestScore = kvp.Value;
             }
             if (kvp.Value < lowestScore)
             {
@@ -107,13 +102,14 @@ public class Engine : MonoBehaviour
             if (kvp.Value <= lowestScore)
             {
                 lowestScoreMoves.Add(kvp.Key);
+                lowestScore = kvp.Value;
             }
         }
         if (player == 0)
         {
-            return highestScoreMoves[random.Next(0, highestScoreMoves.Count)];
+            return highestScoreMoves[UnityEngine.Random.Range(0, highestScoreMoves.Count)];
         }
-        return lowestScoreMoves[random.Next(0, lowestScoreMoves.Count)];
+        return lowestScoreMoves[UnityEngine.Random.Range(0, lowestScoreMoves.Count)];
     }
 
     bool AlphaBetaSearch(GameBoard board, int alpha, int beta, int depthRemaining, out int score)
