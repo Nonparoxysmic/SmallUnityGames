@@ -12,11 +12,18 @@ public class Engine : MonoBehaviour
 
     bool isRunning;
     Dictionary<int, int> moveScores;
+    System.Random random;
+
+    void Awake()
+    {
+        random = new System.Random();
+    }
+
 
     public int RandomMove(GameBoard board)
     {
         int[] validMoves = board.ValidMoves();
-        return validMoves[UnityEngine.Random.Range(0, validMoves.Length)];
+        return validMoves[random.Next(0, validMoves.Length)];
     }
 
     public void StartThinking(GameBoard board, float seconds)
@@ -107,9 +114,9 @@ public class Engine : MonoBehaviour
         }
         if (player == 0)
         {
-            return highestScoreMoves[UnityEngine.Random.Range(0, highestScoreMoves.Count)];
+            return highestScoreMoves[random.Next(0, highestScoreMoves.Count)];
         }
-        return lowestScoreMoves[UnityEngine.Random.Range(0, lowestScoreMoves.Count)];
+        return lowestScoreMoves[random.Next(0, lowestScoreMoves.Count)];
     }
 
     bool AlphaBetaSearch(GameBoard board, int alpha, int beta, int depthRemaining, out int score)
