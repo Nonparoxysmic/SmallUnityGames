@@ -19,7 +19,6 @@ public class Engine : MonoBehaviour
         random = new System.Random();
     }
 
-
     public int RandomMove(GameBoard board)
     {
         int[] validMoves = board.ValidMoves();
@@ -148,23 +147,18 @@ public class Engine : MonoBehaviour
         }
 
         int[] validMoves = board.ValidMoves();
-        foreach (int move in validMoves)
+        if (board.CurrentPlayer == 0)
         {
-            if (board.CurrentPlayer == 0)
+            int value = int.MinValue;
+            foreach (int move in validMoves)
             {
                 board.MakeMove(move);
                 if (AlphaBetaSearch(board, alpha, beta, depthRemaining - 1, out int eval))
                 {
-                    if (eval >= beta)
-                    {
-                        board.UnmakeLastMove();
-                        score = beta;
-                        return true;
-                    }
-                    if (eval > alpha)
-                    {
-                        alpha = eval;
-                    }
+                    board.UnmakeLastMove();
+                    value = Math.Max(value, eval);
+                    if (value >= beta) { break; }
+                    alpha = Math.Max(alpha, value);
                 }
                 else
                 {
@@ -172,39 +166,33 @@ public class Engine : MonoBehaviour
                     score = 0;
                     return false;
                 }
-                board.UnmakeLastMove();
-                score = alpha;
-                return true;
             }
-            else
-            {
-                board.MakeMove(move);
-                if (AlphaBetaSearch(board, alpha, beta, depthRemaining - 1, out int eval))
-                {
-                    if (eval <= alpha)
-                    {
-                        board.UnmakeLastMove();
-                        score = alpha;
-                        return true;
-                    }
-                    if (eval < beta)
-                    {
-                        beta = eval;
-                    }
-                }
-                else
-                {
-                    board.UnmakeLastMove();
-                    score = 0;
-                    return false;
-                }
-                board.UnmakeLastMove();
-                score = beta;
-                return true;
-            }
+            score = value;
+            return true;
         }
-        score = 0;
-        return false;
+        else
+        {
+            int value = int.MaxValue;
+            foreach (int move in validMoves)
+            {
+                board.MakeMove(move);
+                if (AlphaBetaSearch(board, alpha, beta, depthRemaining - 1, out int eval))
+                {
+                    board.UnmakeLastMove();
+                    value = Math.Min(value, eval);
+                    if (value <= alpha) { break; }
+                    beta = Math.Min(beta, value);
+                }
+                else
+                {
+                    board.UnmakeLastMove();
+                    score = 0;
+                    return false;
+                }
+            }
+            score = value;
+            return true;
+        }
     }
 
     int EvaluatePosition(GameBoard board)
