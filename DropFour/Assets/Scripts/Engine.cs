@@ -10,6 +10,8 @@ public class Engine : MonoBehaviour
     public int Depth { get; set; }
     public int Output { get; set; }
 
+    public float thinkTime;
+
     bool isRunning;
     Dictionary<int, int> moveScores;
     System.Random random;
@@ -17,6 +19,7 @@ public class Engine : MonoBehaviour
     void Awake()
     {
         random = new System.Random();
+        if (thinkTime < 0.1) { thinkTime = 0.1f; }
     }
 
     public int RandomMove(GameBoard board)
@@ -25,7 +28,7 @@ public class Engine : MonoBehaviour
         return validMoves[random.Next(0, validMoves.Length)];
     }
 
-    public void StartThinking(GameBoard board, float seconds)
+    public void StartThinking(GameBoard board)
     {
         moveScores = new Dictionary<int, int>();
         int[] validMoves = board.ValidMoves();
@@ -34,14 +37,14 @@ public class Engine : MonoBehaviour
             moveScores.Add(move, 0);
         }
         isRunning = true;
-        StartCoroutine(HandleSearch(board, seconds));
+        StartCoroutine(HandleSearch(board));
     }
 
-    IEnumerator HandleSearch(GameBoard board, float seconds)
+    IEnumerator HandleSearch(GameBoard board)
     {
         var t = new Thread(() => Search(board));
         t.Start();
-        yield return new WaitForSeconds(seconds);
+        yield return new WaitForSeconds(thinkTime);
         isRunning = false;
     }
 

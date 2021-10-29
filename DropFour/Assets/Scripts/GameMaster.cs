@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour
 {
-    public float computerThinkTime;
     public float tokenAcceleration;
     public float tokenMaxSpeed;
 
-    Engine engine;
+    Engine computerA;
     GameBoard board;
     InputManager inputManager;
 
@@ -18,14 +17,13 @@ public class GameMaster : MonoBehaviour
 
     void Awake()
     {
-        if (computerThinkTime < 0.1) { computerThinkTime = 0.1f; }
-        engine = GetComponent<Engine>();
         board = new GameBoard();
         inputManager = GetComponent<InputManager>();
     }
 
     void Start()
     {
+        computerA = GameObject.Find("Computer Player A").GetComponent<Engine>();
         gameResult = GameResult.InProgress;
         currentState = UnityEngine.Random.Range(0, 2) == 0 ? GameState.PlayerTurn : GameState.ComputerTurn;
         if (currentState == GameState.ComputerTurn)
@@ -77,10 +75,11 @@ public class GameMaster : MonoBehaviour
 
     IEnumerator ComputerTurn(float delaySeconds)
     {
-        engine.StartThinking(board, computerThinkTime);
+        computerA.StartThinking(board);
+        float computerThinkTime = computerA.thinkTime;
         yield return new WaitForSeconds(Math.Max(computerThinkTime + 0.1f, delaySeconds));
-        int chosenMove = engine.Output;
-        Debug.Log("Chosen move: " + chosenMove + ", Depth completed: " + engine.Depth);
+        int chosenMove = computerA.Output;
+        Debug.Log("Chosen move: " + chosenMove + ", Depth completed: " + computerA.Depth);
         board.MakeMove(chosenMove);
         inputManager.selectionActivated.Invoke(chosenMove, movesMade & 1);
         yield return new WaitForSeconds(0.5f);
