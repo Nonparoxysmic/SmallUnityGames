@@ -13,19 +13,38 @@ public class GameMaster : MonoBehaviour
 
     GameResult gameResult;
     GameState currentState;
+    GameType gameType;
     int movesMade;
 
     void Awake()
     {
         board = new GameBoard();
         inputManager = GetComponent<InputManager>();
+        if (!PlayerPrefs.HasKey("GameType"))
+        {
+            PlayerPrefs.SetInt("GameType", (int)GameType.RandomFirst);
+        }
+        gameType = (GameType)PlayerPrefs.GetInt("GameType");
     }
 
     void Start()
     {
         computerA = GameObject.Find("Computer Player A").GetComponent<Engine>();
         gameResult = GameResult.InProgress;
-        currentState = UnityEngine.Random.Range(0, 2) == 0 ? GameState.PlayerTurn : GameState.ComputerTurn;
+        switch (gameType)
+        {
+            case GameType.RandomFirst:
+            case GameType.TwoPlayer:  // TODO: Implement game type
+            case GameType.TwoComputer:  // TODO: Implement game type
+                currentState = UnityEngine.Random.Range(0, 2) == 0 ? GameState.PlayerTurn : GameState.ComputerTurn;
+                break;
+            case GameType.PlayerFirst:
+                currentState = GameState.PlayerTurn;
+                break;
+            case GameType.ComputerFirst:
+                currentState = GameState.ComputerTurn;
+                break;
+        }
         if (currentState == GameState.ComputerTurn)
         {
             StartCoroutine(ComputerTurn(0));

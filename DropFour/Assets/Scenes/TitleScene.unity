@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c429ac8cbc3e4b459f425c07a358738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: GameScene
+  nextSceneName: MenuScene
 --- !u!4 &481659361
 Transform:
   m_ObjectHideFlags: 0
