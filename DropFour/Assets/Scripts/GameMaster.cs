@@ -8,13 +8,18 @@ public class GameMaster : MonoBehaviour
     public float tokenMaxSpeed;
 
     Engine computerA;
+    Engine computerB;
+    Engine moverOne;
+    Engine moverTwo;
     GameBoard board;
     InputManager inputManager;
 
+    bool playerMoved;
     GameResult gameResult;
     GameState currentState;
     GameType gameType;
     int movesMade;
+    int playerMovedSelection;
 
     void Awake()
     {
@@ -30,26 +35,44 @@ public class GameMaster : MonoBehaviour
     void Start()
     {
         computerA = GameObject.Find("Computer Player A").GetComponent<Engine>();
+        computerB = GameObject.Find("Computer Player B").GetComponent<Engine>();
         gameResult = GameResult.InProgress;
         switch (gameType)
         {
             case GameType.RandomFirst:
-            case GameType.TwoPlayer:  // TODO: Implement game type
-            case GameType.TwoComputer:  // TODO: Implement game type
-                currentState = UnityEngine.Random.Range(0, 2) == 0 ? GameState.PlayerTurn : GameState.ComputerTurn;
+                if (UnityEngine.Random.Range(0, 2) == 0)
+                {
+                    moverOne = null;
+                    moverTwo = computerA;
+                }
+                else
+                {
+                    moverOne = computerA;
+                    moverTwo = null;
+                }
                 break;
             case GameType.PlayerFirst:
-                currentState = GameState.PlayerTurn;
+                moverOne = null;
+                moverTwo = computerA;
                 break;
             case GameType.ComputerFirst:
-                currentState = GameState.ComputerTurn;
+                moverOne = computerA;
+                moverTwo = null;
+                break;
+            case GameType.TwoPlayer:
+                moverOne = null;
+                moverTwo = null;
+                break;
+            case GameType.TwoComputer:
+                moverOne = computerA;
+                moverTwo = computerB;
                 break;
         }
-        if (currentState == GameState.ComputerTurn)
+        if (moverOne == null)
         {
-            StartCoroutine(ComputerTurn(0));
+            StartCoroutine(PlayerTurn());
         }
-        else ShowSelection(true);
+        else StartCoroutine(ComputerTurn(moverOne, 0));
     }
 
     void ShowSelection(bool doShow)
@@ -64,41 +87,59 @@ public class GameMaster : MonoBehaviour
         {
             if (board.IsValidMove(currentSelection))
             {
-                ShowSelection(false);
-                currentState = GameState.ComputerTurn;
-                board.MakeMove(currentSelection);
-                inputManager.selectionActivated.Invoke(currentSelection, movesMade & 1);
-                if (board.HasConnectedFour(movesMade & 1))
-                {
-                    currentState = GameState.Ending;
-                    gameResult = GameResult.PlayerWin;
-                }
-                else if (board.MovesMade >= 42)
-                {
-                    currentState = GameState.Ending;
-                    gameResult = GameResult.Tie;
-                }
-                movesMade++;
-                if (currentState == GameState.Ending)
-                {
-                    currentState = GameState.End;
-                    GameOver();
-                }
-                else
-                {
-                    StartCoroutine(ComputerTurn(1));
-                }
+                playerMoved = true;
+                playerMovedSelection = currentSelection;
             }
         }
     }
 
-    IEnumerator ComputerTurn(float delaySeconds)
+    IEnumerator PlayerTurn()
     {
-        computerA.StartThinking(board);
-        float computerThinkTime = computerA.thinkTime;
-        yield return new WaitForSeconds(Math.Max(computerThinkTime + 0.1f, delaySeconds));
-        int chosenMove = computerA.Output;
-        Debug.Log("Chosen move: " + chosenMove + ", Depth completed: " + computerA.Depth);
+        currentState = GameState.PlayerTurn;
+        ShowSelection(true);
+        while (!playerMoved)
+        {
+            yield return null;
+        }
+        currentState = GameState.Processing;
+        playerMoved = false;
+        ShowSelection(false);
+        board.MakeMove(playerMovedSelection);
+        inputManager.selectionActivated.Invoke(playerMovedSelection, movesMade & 1);
+        if (board.HasConnectedFour(movesMade & 1))
+        {
+            currentState = GameState.Ending;
+            gameResult = GameResult.PlayerWin;
+        }
+        else if (board.MovesMade >= 42)
+        {
+            currentState = GameState.Ending;
+            gameResult = GameResult.Tie;
+        }
+        movesMade++;
+        if (currentState == GameState.Ending)
+        {
+            currentState = GameState.End;
+            GameOver();
+        }
+        else
+        {
+            Engine nextMover = movesMade % 2 == 0 ? moverOne : moverTwo;
+            if (nextMover == null)
+            {
+                StartCoroutine(PlayerTurn());
+            }
+            else StartCoroutine(ComputerTurn(nextMover, 1));
+        }
+    }
+
+    IEnumerator ComputerTurn(Engine engine, float delaySeconds)
+    {
+        currentState = GameState.ComputerTurn;
+        engine.StartThinking(board);
+        yield return new WaitForSeconds(Math.Max(engine.thinkTime + 0.1f, delaySeconds));
+        int chosenMove = engine.Output;
+        Debug.Log("Chosen move: " + chosenMove + ", Depth completed: " + engine.Depth);
         board.MakeMove(chosenMove);
         inputManager.selectionActivated.Invoke(chosenMove, movesMade & 1);
         yield return new WaitForSeconds(0.5f);
@@ -120,8 +161,12 @@ public class GameMaster : MonoBehaviour
         }
         else
         {
-            currentState = GameState.PlayerTurn;
-            ShowSelection(true);
+            Engine nextMover = movesMade % 2 == 0 ? moverOne : moverTwo;
+            if (nextMover == null)
+            {
+                StartCoroutine(PlayerTurn());
+            }
+            else StartCoroutine(ComputerTurn(nextMover, 1));
         }
     }
 
@@ -147,6 +192,7 @@ public enum GameState
     Start,
     PlayerTurn,
     ComputerTurn,
+    Processing,
     Ending,
     End
 }
