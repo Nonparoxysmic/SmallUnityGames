@@ -36,7 +36,6 @@ public class GameMaster : MonoBehaviour
     {
         computerA = GameObject.Find("Computer Player A").GetComponent<Engine>();
         computerB = GameObject.Find("Computer Player B").GetComponent<Engine>();
-        gameResult = GameResult.InProgress;
         switch (gameType)
         {
             case GameType.RandomFirst:
@@ -109,7 +108,7 @@ public class GameMaster : MonoBehaviour
         if (board.HasConnectedFour(movesMade & 1))
         {
             currentState = GameState.Ending;
-            gameResult = GameResult.PlayerWin;
+            gameResult = GameResult.WinLoss;
         }
         else if (board.MovesMade >= 42)
         {
@@ -146,7 +145,7 @@ public class GameMaster : MonoBehaviour
         if (board.HasConnectedFour(movesMade & 1))
         {
             currentState = GameState.Ending;
-            gameResult = GameResult.ComputerWin;
+            gameResult = GameResult.WinLoss;
         }
         else if (board.MovesMade >= 42)
         {
@@ -172,17 +171,30 @@ public class GameMaster : MonoBehaviour
 
     void GameOver()
     {
-        switch (gameResult)
+        if (gameResult == GameResult.InProgress)
         {
-            case GameResult.PlayerWin:
+            Debug.LogError("Game result not set before game over.");
+            return;
+        }
+        if (gameResult == GameResult.Tie)
+        {
+            Debug.Log("TIED GAME");
+            return;
+        }
+
+        if (gameType == GameType.TwoPlayer || gameType == GameType.TwoComputer)
+        {
+            int winner = movesMade % 2 == 0 ? 2 : 1;
+            Debug.Log("PLAYER " + winner + " WINS");
+        }
+        else
+        {
+            Engine winner = movesMade % 2 == 0 ? moverTwo : moverOne;
+            if (winner == null)
+            {
                 Debug.Log("PLAYER WINS");
-                break;
-            case GameResult.ComputerWin:
-                Debug.Log("COMPUTER WINS");
-                break;
-            case GameResult.Tie:
-                Debug.Log("TIED GAME");
-                break;
+            }
+            else Debug.Log("COMPUTER WINS");
         }
     }
 }
@@ -200,7 +212,6 @@ public enum GameState
 public enum GameResult
 {
     InProgress,
-    PlayerWin,
-    ComputerWin,
+    WinLoss,
     Tie
 }
