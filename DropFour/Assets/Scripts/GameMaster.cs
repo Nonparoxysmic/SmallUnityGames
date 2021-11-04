@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour
 {
+    public float delayBetweenTurns;
     public float tokenAcceleration;
     public float tokenMaxSpeed;
 
@@ -71,7 +72,7 @@ public class GameMaster : MonoBehaviour
         {
             StartCoroutine(PlayerTurn());
         }
-        else StartCoroutine(ComputerTurn(moverOne, 0));
+        else StartCoroutine(ComputerTurn(moverOne));
     }
 
     void ShowSelection(bool doShow)
@@ -86,20 +87,18 @@ public class GameMaster : MonoBehaviour
         {
             if (board.IsValidMove(currentSelection))
             {
-                playerMoved = true;
                 playerMovedSelection = currentSelection;
+                playerMoved = true;
             }
         }
     }
 
     IEnumerator PlayerTurn()
     {
+        yield return new WaitForSeconds(delayBetweenTurns);
         currentState = GameState.PlayerTurn;
         ShowSelection(true);
-        while (!playerMoved)
-        {
-            yield return null;
-        }
+        yield return new WaitUntil(() => playerMoved);
         currentState = GameState.Processing;
         playerMoved = false;
         ShowSelection(false);
@@ -128,20 +127,19 @@ public class GameMaster : MonoBehaviour
             {
                 StartCoroutine(PlayerTurn());
             }
-            else StartCoroutine(ComputerTurn(nextMover, 1));
+            else StartCoroutine(ComputerTurn(nextMover));
         }
     }
 
-    IEnumerator ComputerTurn(Engine engine, float delaySeconds)
+    IEnumerator ComputerTurn(Engine engine)
     {
         currentState = GameState.ComputerTurn;
         engine.StartThinking(board);
-        yield return new WaitForSeconds(Math.Max(engine.thinkTime + 0.1f, delaySeconds));
+        yield return new WaitForSeconds(Math.Max(engine.thinkTime + 0.1f, delayBetweenTurns));
         int chosenMove = engine.Output;
         Debug.Log("Chosen move: " + chosenMove + ", Depth completed: " + engine.Depth);
         board.MakeMove(chosenMove);
         inputManager.selectionActivated.Invoke(chosenMove, movesMade & 1);
-        yield return new WaitForSeconds(0.5f);
         if (board.HasConnectedFour(movesMade & 1))
         {
             currentState = GameState.Ending;
@@ -165,7 +163,7 @@ public class GameMaster : MonoBehaviour
             {
                 StartCoroutine(PlayerTurn());
             }
-            else StartCoroutine(ComputerTurn(nextMover, 1));
+            else StartCoroutine(ComputerTurn(nextMover));
         }
     }
 
@@ -181,7 +179,6 @@ public class GameMaster : MonoBehaviour
             Debug.Log("TIED GAME");
             return;
         }
-
         if (gameType == GameType.TwoPlayer || gameType == GameType.TwoComputer)
         {
             int winner = movesMade % 2 == 0 ? 2 : 1;

@@ -10,10 +10,12 @@ public class Engine : MonoBehaviour
     public int Depth { get; set; }
     public int Output { get; set; }
 
+    public int depthLimit;
     public float thinkTime;
 
     bool isRunning;
     Dictionary<int, int> moveScores;
+    int outputScore;
     System.Random random;
 
     void Awake()
@@ -36,6 +38,7 @@ public class Engine : MonoBehaviour
         {
             moveScores.Add(move, 0);
         }
+        outputScore = 0;
         isRunning = true;
         StartCoroutine(HandleSearch(board));
     }
@@ -50,10 +53,11 @@ public class Engine : MonoBehaviour
 
     void Search(GameBoard board)
     {
-        for (int i = 1; i <= 42 - board.MovesMade; i++)
+        for (int i = 1; i <= 42 - board.MovesMade && i <= depthLimit; i++)
         {
             if (!isRunning) { return; }
             SearchToDepth(board, i);
+            if (outputScore == int.MaxValue * (1 - 2 * board.CurrentPlayer)) { return; }
         }
     }
 
@@ -82,6 +86,8 @@ public class Engine : MonoBehaviour
             }
             board.UnmakeLastMove();
             Output = BestMove(moveScores, board.CurrentPlayer);
+            outputScore = moveScores[Output];
+            if (outputScore == int.MaxValue * (1 - 2 * board.CurrentPlayer)) { return; }
             if (!isRunning) { return; }
         }
         Depth = depth;
