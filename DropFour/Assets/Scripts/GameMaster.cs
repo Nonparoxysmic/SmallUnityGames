@@ -14,6 +14,7 @@ public class GameMaster : MonoBehaviour
     Engine moverTwo;
     GameBoard board;
     InputManager inputManager;
+    SceneController sceneController;
 
     bool playerMoved;
     GameResult gameResult;
@@ -37,6 +38,7 @@ public class GameMaster : MonoBehaviour
     {
         computerA = GameObject.Find("Computer Player A").GetComponent<Engine>();
         computerB = GameObject.Find("Computer Player B").GetComponent<Engine>();
+        sceneController = GameObject.Find("Scene Controller").GetComponent<SceneController>();
         switch (gameType)
         {
             case GameType.RandomFirst:
@@ -193,6 +195,7 @@ public class GameMaster : MonoBehaviour
             }
             else Debug.Log("COMPUTER WINS");
         }
+        sceneController.ChangeExitButtonText("Exit to Main Menu");
     }
 }
 
