@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour
 {
+    public bool isPaused;
     public float delayBetweenTurns;
     public float tokenAcceleration;
     public float tokenMaxSpeed;
@@ -84,7 +85,7 @@ public class GameMaster : MonoBehaviour
 
     public void SelectionActivated(int currentSelection)
     {
-        if (currentState != GameState.PlayerTurn) return;
+        if (currentState != GameState.PlayerTurn || isPaused) return;
         if (currentSelection >= 0 && currentSelection <= 6)
         {
             if (board.IsValidMove(currentSelection))

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] string gameSceneName;
+    [SerializeField] int settingsSceneNumber;
 
     TMP_Dropdown dropdown;
 
@@ -12,6 +13,11 @@ public class MainMenu : MonoBehaviour
     {
         dropdown = GameObject.Find("First Player Dropdown").GetComponent<TMP_Dropdown>();
         PlayerPrefs.SetInt("GameType", (int)GameType.RandomFirst);
+    }
+
+    public void OpenSettings()
+    {
+        SceneManager.LoadSceneAsync(settingsSceneNumber, LoadSceneMode.Additive);
     }
 
     public void UpdateDropdown()
