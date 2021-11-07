@@ -13,6 +13,14 @@ public class MainMenu : MonoBehaviour
     {
         dropdown = GameObject.Find("First Player Dropdown").GetComponent<TMP_Dropdown>();
         PlayerPrefs.SetInt("GameType", (int)GameType.RandomFirst);
+        if (!PlayerPrefs.HasKey("EngineOneStrength"))
+        {
+            PlayerPrefs.SetInt("EngineOneStrength", 1);
+        }
+        if (!PlayerPrefs.HasKey("EngineTwoStrength"))
+        {
+            PlayerPrefs.SetInt("EngineTwoStrength", 1);
+        }
     }
 
     public void OpenSettings()

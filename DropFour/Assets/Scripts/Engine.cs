@@ -9,6 +9,7 @@ public class Engine : MonoBehaviour
 {
     public int Depth { get; set; }
     public int Output { get; set; }
+    public int Strength { get; set; }
 
     public int depthLimit;
     public float thinkTime;

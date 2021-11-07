@@ -32,6 +32,14 @@ public class GameMaster : MonoBehaviour
         {
             PlayerPrefs.SetInt("GameType", (int)GameType.RandomFirst);
         }
+        if (!PlayerPrefs.HasKey("EngineOneStrength"))
+        {
+            PlayerPrefs.SetInt("EngineOneStrength", 1);
+        }
+        if (!PlayerPrefs.HasKey("EngineTwoStrength"))
+        {
+            PlayerPrefs.SetInt("EngineTwoStrength", 1);
+        }
         gameType = (GameType)PlayerPrefs.GetInt("GameType");
     }
 
@@ -137,9 +145,24 @@ public class GameMaster : MonoBehaviour
     IEnumerator ComputerTurn(Engine engine)
     {
         currentState = GameState.ComputerTurn;
-        engine.StartThinking(board);
-        yield return new WaitForSeconds(Math.Max(engine.thinkTime + 0.1f, delayBetweenTurns));
-        int chosenMove = engine.Output;
+        if (engine == computerA)
+        {
+            engine.Strength = PlayerPrefs.GetInt("EngineOneStrength");
+        }
+        else engine.Strength = PlayerPrefs.GetInt("EngineTwoStrength");
+        int chosenMove;
+        if (engine.Strength > 0)
+        {
+            engine.StartThinking(board);
+            yield return new WaitForSeconds(Math.Max(engine.thinkTime + 0.1f, delayBetweenTurns));
+            chosenMove = engine.Output;
+        }
+        else
+        {
+            yield return new WaitForSeconds(Math.Max(0.1f, delayBetweenTurns));
+            engine.Depth = 0;
+            chosenMove = engine.RandomMove(board);
+        }
         Debug.Log("Chosen move: " + chosenMove + ", Depth completed: " + engine.Depth);
         board.MakeMove(chosenMove);
         inputManager.selectionActivated.Invoke(chosenMove, movesMade & 1);
