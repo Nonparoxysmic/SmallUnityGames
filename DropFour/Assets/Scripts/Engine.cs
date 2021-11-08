@@ -58,7 +58,7 @@ public class Engine : MonoBehaviour
         {
             if (!isRunning) { return; }
             SearchToDepth(board, i);
-            if (outputScore == int.MaxValue * (1 - 2 * board.CurrentPlayer)) { return; }
+            if (outputScore == int.MaxValue || outputScore == int.MinValue) { return; }
         }
     }
 
@@ -88,7 +88,8 @@ public class Engine : MonoBehaviour
             board.UnmakeLastMove();
             Output = BestMove(moveScores, board.CurrentPlayer);
             outputScore = moveScores[Output];
-            if (outputScore == int.MaxValue * (1 - 2 * board.CurrentPlayer)) { return; }
+            if ((board.CurrentPlayer == 0 && outputScore == int.MaxValue) ||
+                (board.CurrentPlayer == 1 && outputScore == int.MinValue)) { return; }
             if (!isRunning) { return; }
         }
         Depth = depth;
