@@ -4,11 +4,13 @@ using UnityEngine;
 public class Column : MonoBehaviour
 {
     [SerializeField] GameObject tokenPrefab;
+    [SerializeField] GameObject indicatorPrefab;
     [SerializeField] int selectionValue;
 
     GameMaster gm;
     InputManager inputManager;
     SpriteRenderer sr;
+    TokenIndicator indicator;
 
     bool showSelection;
     Color baseColor;
@@ -24,6 +26,8 @@ public class Column : MonoBehaviour
 
     void Start()
     {
+        GameObject indicatorObject = Instantiate(indicatorPrefab, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 3.5f, -1), Quaternion.identity, gameObject.transform);
+        indicator = indicatorObject.GetComponent<TokenIndicator>();
         inputManager.selectionChanged.AddListener(OnSelectionChanged);
         inputManager.selectionActivated.AddListener(OnSelectionActivated);
         inputManager.showSelectionChanged.AddListener(ShowSelectionChanged);
@@ -34,8 +38,13 @@ public class Column : MonoBehaviour
         if (value == selectionValue && showSelection)
         {
             sr.color = new Color(sr.color.r, sr.color.g, sr.color.b) * 0.5f + Color.red * 0.5f;
+            indicator.Selected(true);
         }
-        else sr.color = baseColor;
+        else
+        {
+            sr.color = baseColor;
+            indicator.Selected(false);
+        }
     }
 
     void OnSelectionActivated(int selection, int player)
