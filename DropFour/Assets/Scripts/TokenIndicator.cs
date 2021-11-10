@@ -1,22 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class TokenIndicator : MonoBehaviour
 {
-    bool isVisible;
+    public float frequency;
+    public float magnitude;
+
+    SpriteRenderer sr;
+
+    float elapsedSeconds;
+    Vector3 basePos;
+
+    void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+    }
+
+    void Start()
+    {
+        basePos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+    }
+
+    void Update()
+    {
+        elapsedSeconds += Time.deltaTime;
+        if (sr.enabled)
+        {
+            float deltaZ = (float)(magnitude * Math.Abs(Math.Sin(frequency * elapsedSeconds * Math.PI)));
+            transform.position = basePos + new Vector3(0, deltaZ, 0);
+        }
+    }
 
     public void Selected(bool doSelect)
     {
-        if (isVisible && !doSelect)
+        if (sr.enabled && !doSelect)
         {
-            Debug.Log("Indicator deselected.");
-            isVisible = false;
+            sr.enabled = false;
         }
-        else if (!isVisible && doSelect)
+        else if (!sr.enabled && doSelect)
         {
-            Debug.Log("Indicator selected.");
-            isVisible = true;
+            sr.enabled = true;
         }
     }
 }
