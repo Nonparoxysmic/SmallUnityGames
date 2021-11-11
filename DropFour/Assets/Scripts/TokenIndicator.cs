@@ -6,6 +6,7 @@ public class TokenIndicator : MonoBehaviour
     public float frequency;
     public float magnitude;
 
+    GameMaster gm;
     SpriteRenderer sr;
 
     float elapsedSeconds;
@@ -13,11 +14,13 @@ public class TokenIndicator : MonoBehaviour
 
     void Awake()
     {
+        gm = GameObject.Find("Main Game").GetComponent<GameMaster>();
         sr = GetComponent<SpriteRenderer>();
     }
 
     void Start()
     {
+        gm.playerColorChanged.AddListener(ChangeCurrentPlayer);
         basePos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
     }
 
@@ -41,5 +44,10 @@ public class TokenIndicator : MonoBehaviour
         {
             sr.enabled = true;
         }
+    }
+
+    void ChangeCurrentPlayer(int player)
+    {
+        sr.color = new Color(1, player, 0);
     }
 }

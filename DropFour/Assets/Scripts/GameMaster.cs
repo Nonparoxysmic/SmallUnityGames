@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour
 {
+    public UnityEvent_Int playerColorChanged;
+
     public bool isPaused;
     public float delayBetweenTurns;
     public float tokenAcceleration;
@@ -28,6 +30,7 @@ public class GameMaster : MonoBehaviour
     {
         board = new GameBoard();
         inputManager = GetComponent<InputManager>();
+        playerColorChanged = new UnityEvent_Int();
         if (!PlayerPrefs.HasKey("GameType"))
         {
             PlayerPrefs.SetInt("GameType", (int)GameType.RandomFirst);
@@ -106,6 +109,7 @@ public class GameMaster : MonoBehaviour
 
     IEnumerator PlayerTurn()
     {
+        playerColorChanged.Invoke(board.CurrentPlayer);
         yield return new WaitForSeconds(delayBetweenTurns);
         currentState = GameState.PlayerTurn;
         ShowSelection(true);
@@ -144,6 +148,7 @@ public class GameMaster : MonoBehaviour
 
     IEnumerator ComputerTurn(Engine engine)
     {
+        playerColorChanged.Invoke(board.CurrentPlayer);
         currentState = GameState.ComputerTurn;
         if (engine == computerA)
         {
