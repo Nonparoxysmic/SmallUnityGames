@@ -11,6 +11,7 @@ public class GameMaster : MonoBehaviour
     public float tokenAcceleration;
     public float tokenMaxSpeed;
 
+    DebugOutput debugOutput;
     Engine computerA;
     Engine computerB;
     Engine moverOne;
@@ -29,6 +30,7 @@ public class GameMaster : MonoBehaviour
     void Awake()
     {
         board = new GameBoard();
+        debugOutput = GetComponent<DebugOutput>();
         inputManager = GetComponent<InputManager>();
         playerColorChanged = new UnityEvent_Int();
         if (!PlayerPrefs.HasKey("GameType"))
@@ -117,6 +119,8 @@ public class GameMaster : MonoBehaviour
         currentState = GameState.Processing;
         playerMoved = false;
         ShowSelection(false);
+        debugOutput.AddText((movesMade + 1) + ". Player " + (board.CurrentPlayer + 1)
+            + " in column " + (playerMovedSelection + 1));
         board.MakeMove(playerMovedSelection);
         inputManager.selectionActivated.Invoke(playerMovedSelection, movesMade & 1);
         if (board.HasConnectedFour(movesMade & 1))
@@ -168,7 +172,17 @@ public class GameMaster : MonoBehaviour
             engine.Depth = 0;
             chosenMove = engine.RandomMove(board);
         }
-        Debug.Log("Chosen move: " + chosenMove + ", Depth completed: " + engine.Depth);
+        string scoreString = engine.outputScore.ToString();
+        if (engine.outputScore == int.MaxValue)
+        {
+            scoreString = "Player 1 Win";
+        }
+        if (engine.outputScore == int.MinValue)
+        {
+            scoreString = "Player 2 Win";
+        }
+        debugOutput.AddText((movesMade + 1) + ". Player " + (board.CurrentPlayer + 1) + " in column "
+            + (chosenMove + 1) + " (Score: " + scoreString + ", Depth: " + engine.Depth + ")");
         board.MakeMove(chosenMove);
         inputManager.selectionActivated.Invoke(chosenMove, movesMade & 1);
         if (board.HasConnectedFour(movesMade & 1))
@@ -202,27 +216,27 @@ public class GameMaster : MonoBehaviour
     {
         if (gameResult == GameResult.InProgress)
         {
-            Debug.LogError("Game result not set before game over.");
+            debugOutput.AddText("ERROR: Game result not set before game over.");
             return;
         }
         if (gameResult == GameResult.Tie)
         {
-            Debug.Log("TIED GAME");
+            debugOutput.AddText("TIED GAME");
             return;
         }
         if (gameType == GameType.TwoPlayer || gameType == GameType.TwoComputer)
         {
             int winner = movesMade % 2 == 0 ? 2 : 1;
-            Debug.Log("PLAYER " + winner + " WINS");
+            debugOutput.AddText("PLAYER " + winner + " WINS");
         }
         else
         {
             Engine winner = movesMade % 2 == 0 ? moverTwo : moverOne;
             if (winner == null)
             {
-                Debug.Log("PLAYER WINS");
+                debugOutput.AddText("PLAYER WINS");
             }
-            else Debug.Log("COMPUTER WINS");
+            else debugOutput.AddText("COMPUTER WINS");
         }
         sceneController.ChangeExitButtonText("Exit to Main Menu");
     }
