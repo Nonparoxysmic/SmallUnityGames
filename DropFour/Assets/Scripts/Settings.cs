@@ -7,6 +7,7 @@ public class Settings : MonoBehaviour
     [SerializeField] int settingsSceneNumber;
     [SerializeField] Slider engineOneSlider;
     [SerializeField] Slider engineTwoSlider;
+    [SerializeField] Toggle debugTextToggle;
 
     GameMaster gm;
     GameObject gmObject;
@@ -15,6 +16,7 @@ public class Settings : MonoBehaviour
     {
         engineOneSlider.value = PlayerPrefs.GetInt("EngineOneStrength");
         engineTwoSlider.value = PlayerPrefs.GetInt("EngineTwoStrength");
+        debugTextToggle.isOn = PlayerPrefs.GetInt("ShowDebugLog") != 0;
     }
 
     void Start()
@@ -43,5 +45,15 @@ public class Settings : MonoBehaviour
     public void UpdateEngineTwoStrength()
     {
         PlayerPrefs.SetInt("EngineTwoStrength", (int)engineTwoSlider.value);
+    }
+
+    public void UpdateDebug()
+    {
+        int showDebug = debugTextToggle.isOn ? 1 : 0;
+        PlayerPrefs.SetInt("ShowDebugLog", showDebug);
+        if (gm != null)
+        {
+            gm.ShowDebugText(debugTextToggle.isOn);
+        }
     }
 }

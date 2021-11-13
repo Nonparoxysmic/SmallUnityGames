@@ -21,6 +21,7 @@ public class MainMenu : MonoBehaviour
         {
             PlayerPrefs.SetInt("EngineTwoStrength", 1);
         }
+        PlayerPrefs.SetInt("ShowDebugLog", 0);
     }
 
     public void OpenSettings()

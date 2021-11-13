@@ -45,6 +45,11 @@ public class GameMaster : MonoBehaviour
         {
             PlayerPrefs.SetInt("EngineTwoStrength", 1);
         }
+        if (!PlayerPrefs.HasKey("ShowDebugLog"))
+        {
+            PlayerPrefs.SetInt("ShowDebugLog", 0);
+        }
+        ShowDebugText(PlayerPrefs.GetInt("ShowDebugLog") != 0);
         gameType = (GameType)PlayerPrefs.GetInt("GameType");
     }
 
@@ -239,6 +244,12 @@ public class GameMaster : MonoBehaviour
             else debugOutput.AddText("COMPUTER WINS");
         }
         sceneController.ChangeExitButtonText("Exit to Main Menu");
+    }
+
+    public void ShowDebugText(bool doShow)
+    {
+        debugOutput.debugOutputText.enabled = doShow;
+        debugOutput.debugBackgroundImage.enabled = doShow;
     }
 }
 

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DebugOutput : MonoBehaviour
 {
-    public TMP_Text output;
+    public TMP_Text debugOutputText;
+    public Image debugBackgroundImage;
 
     Queue<string> lines;
 
@@ -22,6 +24,6 @@ public class DebugOutput : MonoBehaviour
         {
             lines.Dequeue();
         }
-        output.text = string.Join(Environment.NewLine, lines);
+        debugOutputText.text = string.Join(Environment.NewLine, lines);
     }
 }
