@@ -3,12 +3,22 @@ using UnityEngine;
 
 public class Token : MonoBehaviour
 {
+    [SerializeField] Sprite redToken;
+    [SerializeField] Sprite yellowToken;
+
+    SpriteRenderer sr;
+
     float _acceleration = 100;
     float _maxSpeed = 20;
 
     bool isFalling;
     float speedY;
     float targetY;
+
+    void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+    }
 
     void Update()
     {
@@ -39,5 +49,14 @@ public class Token : MonoBehaviour
     {
         _acceleration = acceleration;
         _maxSpeed = maxSpeed;
+    }
+
+    public void SetToken(int player)
+    {
+        if (player == 0)
+        {
+            sr.sprite = redToken;
+        }
+        else sr.sprite = yellowToken;
     }
 }

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class TokenIndicator : MonoBehaviour
 {
+    [SerializeField] Sprite redToken;
+    [SerializeField] Sprite yellowToken;
+    
     public float frequency;
     public float magnitude;
 
@@ -48,6 +51,10 @@ public class TokenIndicator : MonoBehaviour
 
     void ChangeCurrentPlayer(int player)
     {
-        sr.color = new Color(1, player, 0);
+        if (player == 0)
+        {
+            sr.sprite = redToken;
+        }
+        else sr.sprite = yellowToken;
     }
 }

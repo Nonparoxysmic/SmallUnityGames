@@ -52,8 +52,8 @@ public class Column : MonoBehaviour
         if (selection == selectionValue)
         {
             GameObject tokenObject = Instantiate(tokenPrefab, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 3.5f, -1), Quaternion.identity, gameObject.transform);
-            tokenObject.GetComponent<SpriteRenderer>().color = new Color(1, player, 0);
             Token tokenScript = tokenObject.GetComponent<Token>();
+            tokenScript.SetToken(player);
             tokenScript.SetPhysics(gm.tokenAcceleration, gm.tokenMaxSpeed);
             tokenScript.SetFallPositionY(-2.5f + tokenCount++);
         }
