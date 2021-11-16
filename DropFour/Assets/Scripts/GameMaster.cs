@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class GameMaster : MonoBehaviour
 {
     public UnityEvent_Int playerColorChanged;
+
+    [SerializeField] GameObject gameOverPopup;
+    [SerializeField] TMP_Text gameOverText;
 
     public bool isPaused;
     public float delayBetweenTurns;
@@ -142,6 +146,7 @@ public class GameMaster : MonoBehaviour
         if (currentState == GameState.Ending)
         {
             currentState = GameState.End;
+            yield return new WaitForSeconds(delayBetweenTurns);
             GameOver();
         }
         else
@@ -204,6 +209,7 @@ public class GameMaster : MonoBehaviour
         if (currentState == GameState.Ending)
         {
             currentState = GameState.End;
+            yield return new WaitForSeconds(delayBetweenTurns);
             GameOver();
         }
         else
@@ -219,31 +225,37 @@ public class GameMaster : MonoBehaviour
 
     void GameOver()
     {
+        debugOutput.AddText("GAME OVER");
         if (gameResult == GameResult.InProgress)
         {
-            debugOutput.AddText("ERROR: Game result not set before game over.");
-            return;
+            SetGameOverText("ERROR: Game result not set.");
         }
-        if (gameResult == GameResult.Tie)
+        else if (gameResult == GameResult.Tie)
         {
-            debugOutput.AddText("TIED GAME");
-            return;
+            SetGameOverText("TIED GAME");
         }
-        if (gameType == GameType.TwoPlayer || gameType == GameType.TwoComputer)
+        else if (gameType == GameType.TwoPlayer || gameType == GameType.TwoComputer)
         {
-            int winner = movesMade % 2 == 0 ? 2 : 1;
-            debugOutput.AddText("PLAYER " + winner + " WINS");
+            string winner = movesMade % 2 == 0 ? "YELLOW" : "RED";
+            SetGameOverText(winner + " VICTORY");
         }
         else
         {
             Engine winner = movesMade % 2 == 0 ? moverTwo : moverOne;
             if (winner == null)
             {
-                debugOutput.AddText("PLAYER WINS");
+                SetGameOverText("YOU WIN");
             }
-            else debugOutput.AddText("COMPUTER WINS");
+            else SetGameOverText("YOU LOSE");
         }
+        gameOverPopup.SetActive(true);
         sceneController.ChangeExitButtonText("Exit to Main Menu");
+    }
+
+    void SetGameOverText(string text)
+    {
+        debugOutput.AddText(text);
+        gameOverText.text = "GAME OVER" + Environment.NewLine + Environment.NewLine + text;
     }
 
     public void ShowDebugText(bool doShow)
