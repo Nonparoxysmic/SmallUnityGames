@@ -32,4 +32,9 @@ public class SceneController : MonoBehaviour
         gm.isPaused = true;
         SceneManager.LoadSceneAsync(settingsSceneNumber, LoadSceneMode.Additive);
     }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }

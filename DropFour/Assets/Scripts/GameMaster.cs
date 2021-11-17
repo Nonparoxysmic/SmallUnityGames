@@ -9,6 +9,7 @@ public class GameMaster : MonoBehaviour
 
     [SerializeField] GameObject gameOverPopup;
     [SerializeField] TMP_Text gameOverText;
+    [SerializeField] GameObject restartButton;
 
     public bool isPaused;
     public float delayBetweenTurns;
@@ -249,6 +250,7 @@ public class GameMaster : MonoBehaviour
             else SetGameOverText("YOU LOSE");
         }
         gameOverPopup.SetActive(true);
+        restartButton.SetActive(true);
         sceneController.ChangeExitButtonText("Exit to Main Menu");
     }
 
