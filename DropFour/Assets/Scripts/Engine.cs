@@ -15,12 +15,15 @@ public class Engine : MonoBehaviour
     public int outputScore;
     public float thinkTime;
 
+    [HideInInspector] public NeuralNetworkHandler neuralNetworkHandler;
+
     bool isRunning;
     Dictionary<int, int> moveScores;
     System.Random random;
 
     void Awake()
     {
+        neuralNetworkHandler = GetComponent<NeuralNetworkHandler>();
         random = new System.Random();
         if (thinkTime < 0.1) { thinkTime = 0.1f; }
     }
@@ -209,6 +212,7 @@ public class Engine : MonoBehaviour
 
     int EvaluatePosition(GameBoard board)
     {
-        return 0;  // TEMPORARY
+        if (neuralNetworkHandler == null) { return 0; }
+        return neuralNetworkHandler.EvaluatePosition(board);
     }
 }
