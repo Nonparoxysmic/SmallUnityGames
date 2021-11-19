@@ -1648,10 +1648,10 @@ MonoBehaviour:
   gameOverPopup: {fileID: 411423895}
   gameOverText: {fileID: 1651054447}
   restartButton: {fileID: 459903522}
-  isPaused: 0
   delayBetweenTurns: 0.8
   tokenAcceleration: 100
   tokenMaxSpeed: 20
+  isPaused: 0
 --- !u!114 &1526488162
 MonoBehaviour:
   m_ObjectHideFlags: 0

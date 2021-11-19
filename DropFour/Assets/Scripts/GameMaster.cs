@@ -11,10 +11,11 @@ public class GameMaster : MonoBehaviour
     [SerializeField] TMP_Text gameOverText;
     [SerializeField] GameObject restartButton;
 
-    public bool isPaused;
     public float delayBetweenTurns;
     public float tokenAcceleration;
     public float tokenMaxSpeed;
+
+    [HideInInspector] public bool isPaused;
 
     DebugOutput debugOutput;
     Engine computerA;
@@ -186,11 +187,15 @@ public class GameMaster : MonoBehaviour
         string scoreString = engine.outputScore.ToString();
         if (engine.outputScore == int.MaxValue)
         {
-            scoreString = "Player 1 Win";
+            scoreString = "Red Victory";
         }
         if (engine.outputScore == int.MinValue)
         {
-            scoreString = "Player 2 Win";
+            scoreString = "Yellow Victory";
+        }
+        if (engine.Strength == 0)
+        {
+            scoreString = "--";
         }
         debugOutput.AddText((movesMade + 1) + ". Player " + (board.CurrentPlayer + 1) + " in column "
             + (chosenMove + 1) + " (Score: " + scoreString + ", Depth: " + engine.Depth + ")");
