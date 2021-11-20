@@ -1,8 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <NeuralNetwork xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <layerCount>3</layerCount>
   <layerSizes>
-    <int>3</int>
-    <int>4</int>
     <int>2</int>
+    <int>3</int>
+    <int>1</int>
   </layerSizes>
+  <neurons>
+    <ArrayOfFloat>
+      <float>0</float>
+      <float>0</float>
+    </ArrayOfFloat>
+    <ArrayOfFloat>
+      <float>0</float>
+      <float>0</float>
+      <float>0</float>
+    </ArrayOfFloat>
+    <ArrayOfFloat>
+      <float>0</float>
+    </ArrayOfFloat>
+  </neurons>
+  <biases>
+    <ArrayOfFloat />
+    <ArrayOfFloat>
+      <float>1</float>
+      <float>-1</float>
+      <float>0</float>
+    </ArrayOfFloat>
+    <ArrayOfFloat>
+      <float>-1</float>
+    </ArrayOfFloat>
+  </biases>
+  <weights>
+    <ArrayOfArrayOfFloat />
+    <ArrayOfArrayOfFloat>
+      <ArrayOfFloat>
+        <float>27</float>
+        <float>-24</float>
+      </ArrayOfFloat>
+      <ArrayOfFloat>
+        <float>-32</float>
+        <float>77</float>
+      </ArrayOfFloat>
+      <ArrayOfFloat>
+        <float>76</float>
+        <float>20</float>
+      </ArrayOfFloat>
+    </ArrayOfArrayOfFloat>
+    <ArrayOfArrayOfFloat>
+      <ArrayOfFloat>
+        <float>-24</float>
+        <float>23</float>
+        <float>-59</float>
+      </ArrayOfFloat>
+    </ArrayOfArrayOfFloat>
+  </weights>
 </NeuralNetwork>
