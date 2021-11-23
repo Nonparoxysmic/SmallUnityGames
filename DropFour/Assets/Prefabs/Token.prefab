@@ -94,5 +94,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698f2a73aaa9f0041be74bd29f7f3bbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  redToken: {fileID: 21300000, guid: 99258729483df9140af8139b9ad5b1cc, type: 3}
-  yellowToken: {fileID: 21300000, guid: cbce299136bf67f4ca26424bfc0f9cc6, type: 3}
+  redToken: {fileID: 21300000, guid: d809c7435f06b7c4c93ff68e94e1c3d0, type: 3}
+  yellowToken: {fileID: 21300000, guid: c05fd40c9ab8ee14888a4be05322eb9e, type: 3}
