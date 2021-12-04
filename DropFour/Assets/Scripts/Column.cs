@@ -37,7 +37,7 @@ public class Column : MonoBehaviour
     {
         if (value == selectionValue && showSelection)
         {
-            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b) * 0.5f + Color.red * 0.5f;
+            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 1);
             indicator.Selected(true);
         }
         else
@@ -62,5 +62,6 @@ public class Column : MonoBehaviour
     void ShowSelectionChanged(bool doShow)
     {
         showSelection = doShow;
+        sr.enabled = doShow;
     }
 }
