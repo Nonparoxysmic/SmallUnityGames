@@ -12,8 +12,8 @@ public class Column : MonoBehaviour
     SpriteRenderer sr;
     TokenIndicator indicator;
 
+    bool showGuides;
     bool showSelection;
-    Color baseColor;
     int tokenCount;
 
     void Awake()
@@ -21,7 +21,6 @@ public class Column : MonoBehaviour
         inputManager = GameObject.Find("Main Game").GetComponent<InputManager>();
         gm = GameObject.Find("Main Game").GetComponent<GameMaster>();
         sr = GetComponent<SpriteRenderer>();
-        baseColor = sr.color;
     }
 
     void Start()
@@ -31,6 +30,10 @@ public class Column : MonoBehaviour
         inputManager.selectionChanged.AddListener(OnSelectionChanged);
         inputManager.selectionActivated.AddListener(OnSelectionActivated);
         inputManager.showSelectionChanged.AddListener(ShowSelectionChanged);
+        if (gm != null)
+        {
+            gm.showGuidesChanged.AddListener(ShowGuidesChanged);
+        }
     }
 
     void OnSelectionChanged(int value)
@@ -40,9 +43,14 @@ public class Column : MonoBehaviour
             sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 1);
             indicator.Selected(true);
         }
+        else if (showGuides && showSelection)
+        {
+            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 0.5f);
+            indicator.Selected(false);
+        }
         else
         {
-            sr.color = baseColor;
+            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 0);
             indicator.Selected(false);
         }
     }
@@ -62,6 +70,10 @@ public class Column : MonoBehaviour
     void ShowSelectionChanged(bool doShow)
     {
         showSelection = doShow;
-        sr.enabled = doShow;
+    }
+
+    void ShowGuidesChanged(bool doShow)
+    {
+        showGuides = doShow;
     }
 }

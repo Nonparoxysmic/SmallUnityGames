@@ -8,6 +8,7 @@ public class Settings : MonoBehaviour
     [SerializeField] Slider engineOneSlider;
     [SerializeField] Slider engineTwoSlider;
     [SerializeField] Toggle debugTextToggle;
+    [SerializeField] Toggle placementGuideToggle;
 
     GameMaster gm;
     GameObject gmObject;
@@ -17,6 +18,7 @@ public class Settings : MonoBehaviour
         engineOneSlider.value = PlayerPrefs.GetInt("EngineOneStrength");
         engineTwoSlider.value = PlayerPrefs.GetInt("EngineTwoStrength");
         debugTextToggle.isOn = PlayerPrefs.GetInt("ShowDebugLog") != 0;
+        placementGuideToggle.isOn = PlayerPrefs.GetInt("ShowPlacementGuides") != 0;
     }
 
     void Start()
@@ -54,6 +56,16 @@ public class Settings : MonoBehaviour
         if (gm != null)
         {
             gm.ShowDebugText(debugTextToggle.isOn);
+        }
+    }
+
+    public void UpdatePlacementGuides()
+    {
+        int showGuides = placementGuideToggle.isOn ? 1 : 0;
+        PlayerPrefs.SetInt("ShowPlacementGuides", showGuides);
+        if (gm != null)
+        {
+            gm.ShowPlacementGuides(placementGuideToggle.isOn);
         }
     }
 }

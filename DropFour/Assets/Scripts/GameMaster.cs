@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour
 {
+    public UnityEvent_Bool showGuidesChanged;
     public UnityEvent_Int playerColorChanged;
 
     [SerializeField] GameObject gameOverPopup;
@@ -38,6 +39,7 @@ public class GameMaster : MonoBehaviour
         board = new GameBoard();
         debugOutput = GetComponent<DebugOutput>();
         inputManager = GetComponent<InputManager>();
+        showGuidesChanged = new UnityEvent_Bool();
         playerColorChanged = new UnityEvent_Int();
         if (!PlayerPrefs.HasKey("GameType"))
         {
@@ -55,12 +57,17 @@ public class GameMaster : MonoBehaviour
         {
             PlayerPrefs.SetInt("ShowDebugLog", 0);
         }
+        if (!PlayerPrefs.HasKey("ShowPlacementGuides"))
+        {
+            PlayerPrefs.SetInt("ShowPlacementGuides", 0);
+        }
         ShowDebugText(PlayerPrefs.GetInt("ShowDebugLog") != 0);
         gameType = (GameType)PlayerPrefs.GetInt("GameType");
     }
 
     void Start()
     {
+        ShowPlacementGuides(PlayerPrefs.GetInt("ShowPlacementGuides") != 0);
         computerA = GameObject.Find("Computer Player A").GetComponent<Engine>();
         computerB = GameObject.Find("Computer Player B").GetComponent<Engine>();
         sceneController = GameObject.Find("Scene Controller").GetComponent<SceneController>();
@@ -269,6 +276,11 @@ public class GameMaster : MonoBehaviour
     {
         debugOutput.debugOutputText.enabled = doShow;
         debugOutput.debugBackgroundImage.enabled = doShow;
+    }
+
+    public void ShowPlacementGuides(bool doShow)
+    {
+        showGuidesChanged.Invoke(doShow);
     }
 }
 
