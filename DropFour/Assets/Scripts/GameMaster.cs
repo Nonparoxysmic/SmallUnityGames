@@ -11,6 +11,7 @@ public class GameMaster : MonoBehaviour
     [SerializeField] GameObject gameOverPopup;
     [SerializeField] TMP_Text gameOverText;
     [SerializeField] GameObject restartButton;
+    [SerializeField] SpriteRenderer alternateBackgroundSR;
 
     public float delayBetweenTurns;
     public float tokenAcceleration;
@@ -281,6 +282,11 @@ public class GameMaster : MonoBehaviour
     public void ShowPlacementGuides(bool doShow)
     {
         showGuidesChanged.Invoke(doShow);
+        if (gameType == GameType.TwoComputer)
+        {
+            alternateBackgroundSR.enabled = false;
+        }
+        else alternateBackgroundSR.enabled = doShow;
     }
 }
 
