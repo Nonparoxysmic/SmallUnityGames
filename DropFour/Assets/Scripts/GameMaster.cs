@@ -174,6 +174,10 @@ public class GameMaster : MonoBehaviour
     {
         playerColorChanged.Invoke(board.CurrentPlayer);
         currentState = GameState.ComputerTurn;
+        if (isPaused)
+        {
+            yield return new WaitUntil(() => !isPaused);
+        }
         if (engine == computerA)
         {
             engine.Strength = PlayerPrefs.GetInt("EngineOneStrength");
