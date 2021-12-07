@@ -18,6 +18,7 @@ public class Engine : MonoBehaviour
     [HideInInspector] public NeuralNetworkHandler neuralNetworkHandler;
 
     bool isRunning;
+    bool useNnet;
     Dictionary<int, int> moveScores;
     System.Random random;
 
@@ -25,7 +26,6 @@ public class Engine : MonoBehaviour
     {
         neuralNetworkHandler = GetComponent<NeuralNetworkHandler>();
         random = new System.Random();
-        if (thinkTime < 0.1) { thinkTime = 0.1f; }
     }
 
     public int RandomMove(GameBoard board)
@@ -36,6 +36,7 @@ public class Engine : MonoBehaviour
 
     public void StartThinking(GameBoard board)
     {
+        UpdateStrength();
         moveScores = new Dictionary<int, int>();
         int[] validMoves = board.ValidMoves();
         foreach (int move in validMoves)
@@ -45,6 +46,28 @@ public class Engine : MonoBehaviour
         outputScore = 0;
         isRunning = true;
         StartCoroutine(HandleSearch(board));
+    }
+
+    void UpdateStrength()
+    {
+        switch (Strength)
+        {
+            case 1:
+                useNnet = false;
+                depthLimit = 4;
+                thinkTime = 0.1f;
+                break;
+            case 2:
+                useNnet = true;
+                depthLimit = 8;
+                thinkTime = 0.5f;
+                break;
+            case 3:
+                useNnet = true;
+                depthLimit = 99;
+                thinkTime = 5;
+                break;
+        }
     }
 
     IEnumerator HandleSearch(GameBoard board)
@@ -212,7 +235,7 @@ public class Engine : MonoBehaviour
 
     int EvaluatePosition(GameBoard board)
     {
-        if (neuralNetworkHandler == null) { return 0; }
+        if (neuralNetworkHandler == null || !useNnet) { return 0; }
         return neuralNetworkHandler.EvaluatePosition(board);
     }
 }
