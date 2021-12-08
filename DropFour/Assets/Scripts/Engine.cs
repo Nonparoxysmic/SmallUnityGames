@@ -11,11 +11,26 @@ public class Engine : MonoBehaviour
     public int Output { get; set; }
     public int Strength { get; set; }
 
-    public int depthLimit;
-    public int outputScore;
-    public float thinkTime;
+    [Header("Strength 1")]
+    [SerializeField] bool useNeuralNetwork1;
+    [SerializeField] [Range(1, 42)] int depthLimit1;
+    [SerializeField] [Range(0.1f, 5)] float thinkTime1;
+
+    [Header("Strength 2")]
+    [SerializeField] bool useNeuralNetwork2;
+    [SerializeField] [Range(1, 42)] int depthLimit2;
+    [SerializeField] [Range(0.1f, 5)] float thinkTime2;
+
+    [Header("Strength 3")]
+    [SerializeField] bool useNeuralNetwork3;
+    [SerializeField] [Range(1, 42)] int depthLimit3;
+    [SerializeField] [Range(0.1f, 5)] float thinkTime3;
 
     [HideInInspector] public NeuralNetworkHandler neuralNetworkHandler;
+
+    [HideInInspector] public int depthLimit;
+    [HideInInspector] public int outputScore;
+    [HideInInspector] public float thinkTime;
 
     bool isRunning;
     bool useNnet;
@@ -53,19 +68,19 @@ public class Engine : MonoBehaviour
         switch (Strength)
         {
             case 1:
-                useNnet = false;
-                depthLimit = 4;
-                thinkTime = 0.1f;
+                useNnet = useNeuralNetwork1;
+                depthLimit = depthLimit1;
+                thinkTime = thinkTime1;
                 break;
             case 2:
-                useNnet = true;
-                depthLimit = 8;
-                thinkTime = 0.5f;
+                useNnet = useNeuralNetwork2;
+                depthLimit = depthLimit2;
+                thinkTime = thinkTime2;
                 break;
             case 3:
-                useNnet = true;
-                depthLimit = 99;
-                thinkTime = 5;
+                useNnet = useNeuralNetwork3;
+                depthLimit = depthLimit3;
+                thinkTime = thinkTime3;
                 break;
         }
     }

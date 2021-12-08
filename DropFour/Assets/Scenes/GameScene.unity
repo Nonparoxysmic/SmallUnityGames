@@ -1363,10 +1363,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2b604b64756344b9ed0611bf68fe77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useNeuralNetwork1: 0
+  depthLimit1: 4
+  thinkTime1: 0.1
+  useNeuralNetwork2: 1
+  depthLimit2: 8
+  thinkTime2: 0.5
+  useNeuralNetwork3: 1
+  depthLimit3: 42
+  thinkTime3: 5
+  neuralNetworkHandler: {fileID: 0}
   depthLimit: 6
   outputScore: 0
   thinkTime: 1
-  neuralNetworkHandler: {fileID: 0}
 --- !u!4 &1236657416
 Transform:
   m_ObjectHideFlags: 0
@@ -2601,10 +2610,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2b604b64756344b9ed0611bf68fe77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useNeuralNetwork1: 0
+  depthLimit1: 4
+  thinkTime1: 0.1
+  useNeuralNetwork2: 1
+  depthLimit2: 8
+  thinkTime2: 0.5
+  useNeuralNetwork3: 1
+  depthLimit3: 42
+  thinkTime3: 5
+  neuralNetworkHandler: {fileID: 0}
   depthLimit: 6
   outputScore: 0
   thinkTime: 1
-  neuralNetworkHandler: {fileID: 0}
 --- !u!4 &1873848569
 Transform:
   m_ObjectHideFlags: 0
