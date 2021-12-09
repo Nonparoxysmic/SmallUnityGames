@@ -2,6 +2,7 @@
 
 public class NeuralNetwork
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "'new(...)' not available in Unity 2019")]
     readonly static Random random = new Random();
 
     public int layerCount;

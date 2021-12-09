@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class Engine : MonoBehaviour
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "'new(...)' not available in Unity 2019")]
+    readonly static System.Random random = new System.Random();
+
     public int Depth { get; set; }
     public int Output { get; set; }
     public int Strength { get; set; }
@@ -35,12 +38,10 @@ public class Engine : MonoBehaviour
     bool isRunning;
     bool useNnet;
     Dictionary<int, int> moveScores;
-    System.Random random;
 
     void Awake()
     {
         neuralNetworkHandler = GetComponent<NeuralNetworkHandler>();
-        random = new System.Random();
     }
 
     public int RandomMove(GameBoard board)
@@ -96,6 +97,8 @@ public class Engine : MonoBehaviour
     void Search(GameBoard board)
     {
         Depth = 0;
+        Output = 0;
+        Thread.Sleep(50);
         for (int i = 1; i <= 42 - board.MovesMade && i <= depthLimit; i++)
         {
             if (!isRunning) { return; }

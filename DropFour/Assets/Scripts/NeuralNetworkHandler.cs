@@ -19,6 +19,6 @@ public class NeuralNetworkHandler : MonoBehaviour
     public int EvaluatePosition(GameBoard board)
     {
         if (neuralNetValues == null) { return 0; }
-        return 0;  // TEMPORARY
+        return nnet.CalculateOutput(board.PositionData());
     }
 }
