@@ -22,6 +22,7 @@ public class GameBoard
 
     public int CurrentPlayer { get => movesMade % 2; }
     public int MovesMade { get => movesMade; }
+    public int[] MoveList { get => moveList; }
 
     public GameBoard()
     {
