@@ -1,6 +1,4 @@
-﻿using System;
-
-public class GameBoard
+﻿public class GameBoard
 {
     readonly int[] bitShiftDirections = new int[] { 1, 7, 8, 9 };
     readonly int[] aboveTopRow = new int[] { 6, 14, 22, 30, 38, 46, 54 };
@@ -20,9 +18,9 @@ public class GameBoard
     readonly int[] moveList;
     int movesMade;
 
-    public int CurrentPlayer { get => movesMade % 2; }
-    public int MovesMade { get => movesMade; }
-    public int[] MoveList { get => moveList; }
+    public int CurrentPlayer { get { return movesMade % 2; } }
+    public int MovesMade { get { return movesMade; } }
+    public int[] MoveList { get { return moveList; } }
 
     public GameBoard()
     {
@@ -78,7 +76,7 @@ public class GameBoard
         return false;
     }
 
-    public int[] PositionData()
+    public int[] PositionData_Separate()
     {
         int[] output = new int[85];
         for (int i = 0; i < 42; i++)
@@ -87,6 +85,18 @@ public class GameBoard
             output[i + 42] = (int)(bitboards[1] >> printOrderedPositions[i]) & 1;
         }
         output[84] = movesMade & 1;
+        return output;
+    }
+
+    public int[] PositionData_Combined()
+    {
+        int[] output = new int[43];
+        for (int i = 0; i < 42; i++)
+        {
+            output[i] = (int)(bitboards[0] >> printOrderedPositions[i]) & 1;
+            output[i] -= (int)(bitboards[1] >> printOrderedPositions[i]) & 1;
+        }
+        output[42] = movesMade & 1;
         return output;
     }
 }
