@@ -31,12 +31,12 @@ public class Engine : MonoBehaviour
 
     [HideInInspector] public NeuralNetworkHandler neuralNetworkHandler;
 
+    [HideInInspector] public bool useNnet;
     [HideInInspector] public int depthLimit;
     [HideInInspector] public int outputScore;
     [HideInInspector] public float thinkTime;
 
     bool isRunning;
-    bool useNnet;
     Dictionary<int, int> moveScores;
 
     void Awake()

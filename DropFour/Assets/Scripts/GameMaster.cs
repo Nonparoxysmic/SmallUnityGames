@@ -249,6 +249,10 @@ public class GameMaster : MonoBehaviour
         {
             scoreString = "Yellow Victory";
         }
+        if (!engine.useNnet && engine.outputScore == 0)
+        {
+            scoreString = "??";
+        }
         if (engine.Strength == 0 || movesMade == 0 || movesMade == 1)
         {
             scoreString = "--";
