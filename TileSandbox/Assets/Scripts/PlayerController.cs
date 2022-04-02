@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
     public int direction;
 
     [SerializeField] float speed;
+    [SerializeField] SpriteRenderer playerSpriteRenderer;
+    [SerializeField] Sprite[] playerSprites;
 
     static readonly int[,] directions = new int[,] { { 5, 6, 7 }, { 4, -1, 0 }, { 3, 2, 1 } };
 
@@ -17,6 +19,7 @@ public class PlayerController : MonoBehaviour
         if (moveInput.x != 0 || moveInput.y != 0)
         {
             direction = Direction(moveInput.x, moveInput.y);
+            playerSpriteRenderer.sprite = playerSprites[direction];
             moveInput /= moveInput.magnitude;
             transform.position += speed * Time.deltaTime * moveInput;
         }
