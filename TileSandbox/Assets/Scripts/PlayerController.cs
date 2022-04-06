@@ -3,10 +3,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public int direction;
+    public Vector2Int facing;
 
     [SerializeField] float speed;
     [SerializeField] SpriteRenderer playerSpriteRenderer;
     [SerializeField] Sprite[] playerSprites;
+    [SerializeField] Transform targetTest;
 
     static readonly int[,] directions = new int[,] { { 5, 6, 7 }, { 4, -1, 0 }, { 3, 2, 1 } };
 
@@ -20,8 +22,10 @@ public class PlayerController : MonoBehaviour
         {
             direction = Direction(moveInput.x, moveInput.y);
             playerSpriteRenderer.sprite = playerSprites[direction];
-            moveInput /= moveInput.magnitude;
-            transform.position += speed * Time.deltaTime * moveInput;
+            transform.position += speed * Time.deltaTime * (moveInput / moveInput.magnitude);
+            facing = new Vector2Int(Mathf.FloorToInt(transform.position.x) + (int)moveInput.x,
+                Mathf.FloorToInt(transform.position.y) + (int)moveInput.y);
+            targetTest.position = new Vector3(facing.x + 0.5f, facing.y + 0.5f, targetTest.position.z);
         }
     }
 
