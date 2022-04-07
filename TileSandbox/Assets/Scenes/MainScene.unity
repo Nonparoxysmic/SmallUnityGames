@@ -3686,7 +3686,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 0
-  facing: {x: 0, y: 0}
+  facing: {x: 0, y: 0, z: 0}
   speed: 8
   playerSpriteRenderer: {fileID: 785799995}
   playerSprites:
@@ -3699,8 +3699,10 @@ MonoBehaviour:
   - {fileID: -7905275962017797664, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   - {fileID: -2468653096531919643, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   targetTest: {fileID: 14947831}
---- !u!61 &1816152308
-BoxCollider2D:
+  collisionTilemap: {fileID: 577702542}
+  squareTile: {fileID: 11400000, guid: 8fe27c4901ba04642a32f6406c3cdca0, type: 2}
+--- !u!58 &1816152308
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3713,18 +3715,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.75, y: 0.75}
-  m_EdgeRadius: 0
+  m_Radius: 0.375
 --- !u!50 &1816152309
 Rigidbody2D:
   serializedVersion: 4
