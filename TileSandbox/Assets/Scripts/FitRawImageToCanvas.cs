@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class FitRawImageToCanvas : MonoBehaviour
 {
+    float previousHeight;
+    float previousWidth;
+    Rect canvasRect;
     RectTransform canvasTransform;
     RectTransform rawImageTransform;
 
@@ -14,7 +17,13 @@ public class FitRawImageToCanvas : MonoBehaviour
 
     void Update()
     {
-        float imageSize = Math.Min(canvasTransform.rect.width, canvasTransform.rect.height);
-        rawImageTransform.sizeDelta = new Vector2(imageSize, imageSize);
+        canvasRect = canvasTransform.rect;
+        if (canvasRect.height != previousHeight || canvasRect.width != previousWidth)
+        {
+            float imageSize = Math.Min(canvasRect.width, canvasRect.height);
+            rawImageTransform.sizeDelta = new Vector2(imageSize, imageSize);
+            previousHeight = canvasRect.height;
+            previousWidth = canvasRect.width;
+        }
     }
 }
