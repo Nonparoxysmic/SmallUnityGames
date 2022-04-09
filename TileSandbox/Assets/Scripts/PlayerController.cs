@@ -18,6 +18,11 @@ public class PlayerController : MonoBehaviour
 
     Vector3 moveInput;
 
+    void Start()
+    {
+        facing = new Vector3Int(0, 1, 0);
+    }
+
     void Update()
     {
         moveInput.x = (int)Input.GetAxisRaw("Horizontal");
@@ -36,7 +41,7 @@ public class PlayerController : MonoBehaviour
             }
             targetTest.position = new Vector3(Mathf.FloorToInt(transform.position.x) + facing.x + 0.5f, Mathf.FloorToInt(transform.position.y) + facing.y + 0.5f, targetTest.position.z);
         }
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Vector3Int target = new Vector3Int(Mathf.FloorToInt(transform.position.x) + facing.x,
                 Mathf.FloorToInt(transform.position.y) + facing.y, 0);
