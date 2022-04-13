@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14947830}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -0.9}
+  m_LocalPosition: {x: 0, y: -1, z: -0.9}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 1816152306}
@@ -916,7 +916,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2429919002490121231, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
+  m_Sprite: {fileID: -6198066232139300319, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3690,14 +3690,14 @@ MonoBehaviour:
   speed: 8
   playerSpriteRenderer: {fileID: 785799995}
   playerSprites:
-  - {fileID: -2429919002490121231, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
-  - {fileID: 67926103340967526, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
-  - {fileID: -2938970880757876879, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
-  - {fileID: 5635105361348811957, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   - {fileID: -6198066232139300319, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   - {fileID: -4500868321734961790, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   - {fileID: -7905275962017797664, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   - {fileID: -2468653096531919643, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
+  - {fileID: -2429919002490121231, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
+  - {fileID: 67926103340967526, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
+  - {fileID: -2938970880757876879, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
+  - {fileID: 5635105361348811957, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   targetTest: {fileID: 14947831}
   collisionTilemap: {fileID: 577702542}
   squareTile: {fileID: 11400000, guid: 8fe27c4901ba04642a32f6406c3cdca0, type: 2}
@@ -3736,7 +3736,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!1 &1909448486
 GameObject:
@@ -3767,6 +3767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01098a61732299548ba7abdb23de8de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1816152307}
 --- !u!4 &1909448488
 Transform:
   m_ObjectHideFlags: 0

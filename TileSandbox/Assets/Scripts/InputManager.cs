@@ -1,13 +1,30 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    Vector3 inputDirection;
+    [SerializeField] PlayerController player;
+
+    bool testAction;
+    Vector3Int directionalInput;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            testAction = true;
+        }
+    }
 
     void FixedUpdate()
     {
-        inputDirection.x = (int)Input.GetAxisRaw("Horizontal");
-        inputDirection.y = (int)Input.GetAxisRaw("Vertical");
+        directionalInput.x = (int)Input.GetAxisRaw("Horizontal");
+        directionalInput.y = (int)Input.GetAxisRaw("Vertical");
+        player.IsStrafing = Input.GetKey(KeyCode.LeftShift);
+        player.PlayerMovement(directionalInput);
+        if (testAction)
+        {
+            player.TestAction();
+            testAction = false;
+        }
     }
 }
