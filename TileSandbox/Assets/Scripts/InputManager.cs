@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
     {
         directionalInput.x = (int)Input.GetAxisRaw("Horizontal");
         directionalInput.y = (int)Input.GetAxisRaw("Vertical");
-        player.IsStrafing = Input.GetKey(KeyCode.LeftShift);
+        player.isStrafing = Input.GetKey(KeyCode.LeftShift);
         player.PlayerMovement(directionalInput);
         if (testAction)
         {
