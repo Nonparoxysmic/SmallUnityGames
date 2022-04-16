@@ -5,23 +5,35 @@ using UnityEngine.Tilemaps;
 public class PlayerController : MonoBehaviour
 {
     static readonly int[,] directions = new int[,] { { 1, 2, 3 }, { 0, -99, 4 }, { 7, 6, 5 } };
+    static readonly Vector3Int[] targetingVectors = new Vector3Int[]
+    {
+        new Vector3Int( 0, -1,  0),
+        new Vector3Int(-1, -1,  0),
+        new Vector3Int(-1,  0,  0),
+        new Vector3Int(-1,  1,  0),
+        new Vector3Int( 0,  1,  0),
+        new Vector3Int( 1,  1,  0),
+        new Vector3Int( 1,  0,  0),
+        new Vector3Int( 1, -1,  0)
+    };
 
+    [SerializeField] SpriteRenderer playerSpriteRenderer;
+    [SerializeField] Transform target;
+
+    [SerializeField] float speed;
     [SerializeField] int direction;
     public bool isStrafing;
 
-    [SerializeField] Vector3Int facing;
-    [SerializeField] float speed;
-    [SerializeField] SpriteRenderer playerSpriteRenderer;
     [SerializeField] Sprite[] playerSprites;
-    [SerializeField] Transform targetTest;
     [SerializeField] Tilemap collisionTilemap;
     [SerializeField] Tile squareTile;
 
     int previousInputDirection;
+    Vector3Int targetingVector;
 
     void Start()
     {
-        facing = new Vector3Int(0, -1, 0);
+        targetingVector = new Vector3Int(0, -1, 0);
     }
 
     internal void PlayerMovement(Vector3Int directionalInput)
@@ -45,21 +57,21 @@ public class PlayerController : MonoBehaviour
             else
             {
                 direction = inputDirection;
-                facing = new Vector3Int(directionalInput.x, directionalInput.y, 0);
+                targetingVector = targetingVectors[direction];
                 playerSpriteRenderer.sprite = playerSprites[direction];
                 transform.position += speed * Time.fixedDeltaTime / directionalInput.magnitude
                     * (Vector3)directionalInput;
             }
-            targetTest.position = new Vector3(Mathf.FloorToInt(transform.position.x) + facing.x + 0.5f,
-                Mathf.FloorToInt(transform.position.y) + facing.y + 0.5f, targetTest.position.z);
+            target.position = new Vector3(Mathf.FloorToInt(transform.position.x) + targetingVector.x + 0.5f,
+                Mathf.FloorToInt(transform.position.y) + targetingVector.y + 0.5f, target.position.z);
         }
         previousInputDirection = inputDirection;
     }
 
     internal void TestAction()
     {
-        Vector3Int target = new Vector3Int(Mathf.FloorToInt(transform.position.x) + facing.x,
-            Mathf.FloorToInt(transform.position.y) + facing.y, 0);
+        Vector3Int target = new Vector3Int(Mathf.FloorToInt(transform.position.x) + targetingVector.x,
+            Mathf.FloorToInt(transform.position.y) + targetingVector.y, 0);
         if (collisionTilemap.GetTile(target) == squareTile)
         {
             collisionTilemap.SetTile(target, null);
