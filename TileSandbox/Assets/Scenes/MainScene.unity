@@ -3715,11 +3715,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0bd85a34ce690a46981a600084ee0b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerSpriteRenderer: {fileID: 785799995}
   target: {fileID: 1340933167}
-  speed: 8
+  normalSpeed: 8
   direction: 0
   isStrafing: 0
-  playerSpriteRenderer: {fileID: 785799995}
   playerSprites:
   - {fileID: -6198066232139300319, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   - {fileID: -4500868321734961790, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}

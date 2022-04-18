@@ -16,11 +16,12 @@ public class PlayerController : MonoBehaviour
         new Vector3Int( 1,  0,  0),
         new Vector3Int( 1, -1,  0)
     };
+    static readonly Vector3 tileOffset = new Vector3(0.5f, 0.5f);
 
     [SerializeField] SpriteRenderer playerSpriteRenderer;
     [SerializeField] Transform target;
 
-    [SerializeField] float speed;
+    [SerializeField] float normalSpeed;
     [SerializeField] int direction;
     public bool isStrafing;
 
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
 
     int previousInputDirection;
     Vector3Int targetingVector;
+    Vector3Int targetTile;
 
     void Start()
     {
@@ -43,42 +45,39 @@ public class PlayerController : MonoBehaviour
         {
             // If input direction just changed from a diagonal to an adjacent orthogonal...
             if (inputDirection.EqualsOneOf(0, 2, 4, 6)
-                && (Math.Abs(inputDirection - previousInputDirection) == 1
-                || (inputDirection == 0 && previousInputDirection == 7)))
+                && DirectionsAreAdjacent(inputDirection, previousInputDirection))
             {
                 // TODO: Make diagonal aiming feel better.
             }
 
+            float currentSpeed = normalSpeed * Time.fixedDeltaTime / directionalInput.magnitude;
             if (isStrafing)
             {
-                transform.position += 0.5f * speed * Time.fixedDeltaTime / directionalInput.magnitude
-                * (Vector3)directionalInput;
+                currentSpeed /= 2;
             }
             else
             {
                 direction = inputDirection;
                 targetingVector = targetingVectors[direction];
                 playerSpriteRenderer.sprite = playerSprites[direction];
-                transform.position += speed * Time.fixedDeltaTime / directionalInput.magnitude
-                    * (Vector3)directionalInput;
             }
-            target.position = new Vector3(Mathf.FloorToInt(transform.position.x) + targetingVector.x + 0.5f,
-                Mathf.FloorToInt(transform.position.y) + targetingVector.y + 0.5f, target.position.z);
+            transform.position += currentSpeed * (Vector3)directionalInput;
+            targetTile.x = Mathf.FloorToInt(transform.position.x) + targetingVector.x;
+            targetTile.y = Mathf.FloorToInt(transform.position.y) + targetingVector.y;
+            target.position = targetTile + tileOffset;
         }
         previousInputDirection = inputDirection;
     }
 
     internal void TestAction()
     {
-        Vector3Int target = new Vector3Int(Mathf.FloorToInt(transform.position.x) + targetingVector.x,
-            Mathf.FloorToInt(transform.position.y) + targetingVector.y, 0);
-        if (collisionTilemap.GetTile(target) == squareTile)
+        if (collisionTilemap.GetTile(targetTile) == squareTile)
         {
-            collisionTilemap.SetTile(target, null);
+            collisionTilemap.SetTile(targetTile, null);
         }
         else
         {
-            collisionTilemap.SetTile(target, squareTile);
+            collisionTilemap.SetTile(targetTile, squareTile);
         }
     }
 
@@ -87,5 +86,10 @@ public class PlayerController : MonoBehaviour
         int col = (int)x + 1;
         int row = (int)y + 1;
         return directions[col, row];
+    }
+
+    static bool DirectionsAreAdjacent(int a, int b)
+    {
+        return Math.Abs(a - b) == 1 || (a == 0 && b == 7) || (b == 0 && a == 7);
     }
 }
