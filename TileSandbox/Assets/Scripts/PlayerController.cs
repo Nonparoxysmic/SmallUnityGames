@@ -24,11 +24,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float normalSpeed;
     [SerializeField] int direction;
     public bool isStrafing;
+    [SerializeField] int diagonalFrames;
 
     [SerializeField] Sprite[] playerSprites;
     [SerializeField] Tilemap collisionTilemap;
     [SerializeField] Tile squareTile;
 
+    int diagonalLockCountdown;
+    int lockedDirection;
     int previousInputDirection;
     Vector3Int targetingVector;
     Vector3Int targetTile;
@@ -47,24 +50,43 @@ public class PlayerController : MonoBehaviour
             if (inputDirection.EqualsOneOf(0, 2, 4, 6)
                 && DirectionsAreAdjacent(inputDirection, previousInputDirection))
             {
-                // TODO: Make diagonal aiming feel better.
+                diagonalLockCountdown = diagonalFrames;
+                lockedDirection = previousInputDirection;
             }
 
-            float currentSpeed = normalSpeed * Time.fixedDeltaTime / directionalInput.magnitude;
-            if (isStrafing)
+            float distance = normalSpeed * Time.fixedDeltaTime;
+            if (diagonalLockCountdown > 0)
             {
-                currentSpeed /= 2;
+                if (inputDirection == lockedDirection
+                    || DirectionsAreAdjacent(inputDirection, lockedDirection))
+                {
+                    direction = lockedDirection;
+                }
+                else
+                {
+                    direction = inputDirection;
+                    diagonalLockCountdown = 0;
+                }
             }
             else
             {
                 direction = inputDirection;
+            }
+            if (isStrafing)
+            {
+                distance /= 2;
+            }
+            else
+            {
                 targetingVector = targetingVectors[direction];
                 playerSpriteRenderer.sprite = playerSprites[direction];
             }
-            transform.position += currentSpeed * (Vector3)directionalInput;
+            Vector3 v = targetingVectors[direction];
+            transform.position += distance / v.magnitude * v;
             targetTile.x = Mathf.FloorToInt(transform.position.x) + targetingVector.x;
             targetTile.y = Mathf.FloorToInt(transform.position.y) + targetingVector.y;
             target.position = targetTile + tileOffset;
+            if (diagonalLockCountdown > 0) { diagonalLockCountdown--; }
         }
         previousInputDirection = inputDirection;
     }
