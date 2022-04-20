@@ -3721,6 +3721,7 @@ MonoBehaviour:
   direction: 0
   isStrafing: 0
   diagonalFrames: 3
+  workingFrames: 5
   playerSprites:
   - {fileID: -6198066232139300319, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   - {fileID: -4500868321734961790, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
@@ -3732,6 +3733,7 @@ MonoBehaviour:
   - {fileID: 5635105361348811957, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   collisionTilemap: {fileID: 577702542}
   squareTile: {fileID: 11400000, guid: 8fe27c4901ba04642a32f6406c3cdca0, type: 2}
+  workingTargetClock: 0
 --- !u!58 &1816152308
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -9,10 +9,7 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            testAction = true;
-        }
+        testAction = Input.GetKey(KeyCode.Space);
     }
 
     void FixedUpdate()
@@ -21,10 +18,6 @@ public class InputManager : MonoBehaviour
         directionalInput.y = (int)Input.GetAxisRaw("Vertical");
         player.isStrafing = Input.GetKey(KeyCode.LeftShift);
         player.PlayerMovement(directionalInput);
-        if (testAction)
-        {
-            player.TestAction();
-            testAction = false;
-        }
+        player.TestAction(testAction);
     }
 }

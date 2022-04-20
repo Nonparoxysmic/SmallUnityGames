@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] int direction;
     public bool isStrafing;
     [SerializeField] int diagonalFrames;
+    [SerializeField] int workingFrames;
 
     [SerializeField] Sprite[] playerSprites;
     [SerializeField] Tilemap collisionTilemap;
@@ -33,12 +34,16 @@ public class PlayerController : MonoBehaviour
     int diagonalLockCountdown;
     int lockedDirection;
     int previousInputDirection;
+    int workingTargetClock;
+    (int, int) workingTarget;
     Vector3Int targetingVector;
     Vector3Int targetTile;
 
     void Start()
     {
         targetingVector = new Vector3Int(0, -1, 0);
+        targetTile.x = Mathf.FloorToInt(transform.position.x) + targetingVector.x;
+        targetTile.y = Mathf.FloorToInt(transform.position.y) + targetingVector.y;
     }
 
     internal void PlayerMovement(Vector3Int directionalInput)
@@ -91,7 +96,29 @@ public class PlayerController : MonoBehaviour
         previousInputDirection = inputDirection;
     }
 
-    internal void TestAction()
+    internal void TestAction(bool isActive)
+    {
+        if (!isActive)
+        {
+            workingTargetClock = 0;
+        }
+        else if (workingTarget.Item1 != targetTile.x || workingTarget.Item2 != targetTile.y)
+        {
+            workingTarget = (targetTile.x, targetTile.y);
+            workingTargetClock = 0;
+        }
+        else
+        {
+            workingTargetClock++;
+            if (workingTargetClock >= workingFrames)
+            {
+                TestAction2();
+                workingTargetClock = 0;
+            }
+        }
+    }
+
+    internal void TestAction2()
     {
         if (collisionTilemap.GetTile(targetTile) == squareTile)
         {
