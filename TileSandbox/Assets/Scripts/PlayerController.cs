@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] SpriteRenderer playerSpriteRenderer;
     [SerializeField] Transform target;
+    [SerializeField] SpriteRenderer workingSprite;
 
     [SerializeField] float normalSpeed;
     [SerializeField] int direction;
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
     int previousInputDirection;
     int workingTargetClock;
     (int, int) workingTarget;
+    Transform workingSpriteTransform;
     Vector3Int targetingVector;
     Vector3Int targetTile;
 
@@ -44,6 +46,7 @@ public class PlayerController : MonoBehaviour
         targetingVector = new Vector3Int(0, -1, 0);
         targetTile.x = Mathf.FloorToInt(transform.position.x) + targetingVector.x;
         targetTile.y = Mathf.FloorToInt(transform.position.y) + targetingVector.y;
+        workingSpriteTransform = workingSprite.gameObject.transform;
     }
 
     internal void PlayerMovement(Vector3Int directionalInput)
@@ -98,6 +101,7 @@ public class PlayerController : MonoBehaviour
 
     internal void TestAction(bool isActive)
     {
+        float bar = 0;
         if (!isActive)
         {
             workingTargetClock = 0;
@@ -106,6 +110,7 @@ public class PlayerController : MonoBehaviour
         {
             workingTarget = (targetTile.x, targetTile.y);
             workingTargetClock = 0;
+            bar = 3;
         }
         else
         {
@@ -115,7 +120,9 @@ public class PlayerController : MonoBehaviour
                 TestAction2();
                 workingTargetClock = 0;
             }
+            bar = 3.0f * (workingFrames - workingTargetClock) / workingFrames;
         }
+        workingSpriteTransform.localScale = new Vector3(bar, 0.125f, 1);
     }
 
     internal void TestAction2()
