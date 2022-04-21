@@ -9,14 +9,14 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        testAction = Input.GetKey(KeyCode.Space);
+        testAction = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q);
     }
 
     void FixedUpdate()
     {
         directionalInput.x = (int)Input.GetAxisRaw("Horizontal");
         directionalInput.y = (int)Input.GetAxisRaw("Vertical");
-        player.isStrafing = Input.GetKey(KeyCode.LeftShift);
+        player.isStrafing = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         player.PlayerMovement(directionalInput);
         player.TestAction(testAction);
     }

@@ -26,7 +26,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] int direction;
     public bool isStrafing;
     [SerializeField] int diagonalFrames;
-    [SerializeField] int workingFrames;
+    [SerializeField] int addingFrames;
+    [SerializeField] int removingFrames;
 
     [SerializeField] Sprite[] playerSprites;
     [SerializeField] Tilemap collisionTilemap;
@@ -115,6 +116,15 @@ public class PlayerController : MonoBehaviour
         else
         {
             workingTargetClock++;
+            int workingFrames;
+            if (collisionTilemap.GetTile(targetTile) == squareTile)
+            {
+                workingFrames = removingFrames;
+            }
+            else
+            {
+                workingFrames = addingFrames;
+            }
             if (workingTargetClock >= workingFrames)
             {
                 TestAction2();
