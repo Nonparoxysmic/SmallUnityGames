@@ -100,6 +100,11 @@ public class PlayerController : MonoBehaviour
         previousInputDirection = inputDirection;
     }
 
+    internal void ChangeTool(int option)
+    {
+
+    }
+
     internal void TestAction(bool isActive)
     {
         float bar = 0;

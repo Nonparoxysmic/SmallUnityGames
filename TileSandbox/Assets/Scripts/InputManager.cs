@@ -3,6 +3,7 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     [SerializeField] PlayerController player;
+    [SerializeField] Toolbar toolbar;
 
     bool testAction;
     Vector3Int directionalInput;
@@ -10,6 +11,16 @@ public class InputManager : MonoBehaviour
     void Update()
     {
         testAction = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q);
+        for (int i = 1; i <= toolbar.numberOfOptions; i++)
+        {
+            int key = i + 48;
+            if (Input.GetKeyDown((KeyCode)key))
+            {
+                toolbar.SetOption(i);
+                player.ChangeTool(i);
+                break;
+            }
+        }
     }
 
     void FixedUpdate()
