@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Sprite[] playerSprites;
     [SerializeField] Tilemap collisionTilemap;
     [SerializeField] Tile squareTile;
+    bool testTool = true;
 
     int diagonalLockCountdown;
     int lockedDirection;
@@ -102,13 +103,20 @@ public class PlayerController : MonoBehaviour
 
     internal void ChangeTool(int option)
     {
-
+        testTool = option == 1;
     }
 
     internal void TestAction(bool isActive)
     {
         float bar = 0;
-        if (!isActive)
+        var currentTile = collisionTilemap.GetTile(targetTile);
+        if ((currentTile == squareTile && !testTool)
+            || (currentTile == null && testTool))
+        {
+            // Wrong tool
+            workingTargetClock = 0;
+        }
+        else if (!isActive)
         {
             workingTargetClock = 0;
         }
@@ -122,7 +130,7 @@ public class PlayerController : MonoBehaviour
         {
             workingTargetClock++;
             int workingFrames;
-            if (collisionTilemap.GetTile(targetTile) == squareTile)
+            if (currentTile == squareTile)
             {
                 workingFrames = removingFrames;
             }
@@ -130,12 +138,12 @@ public class PlayerController : MonoBehaviour
             {
                 workingFrames = addingFrames;
             }
+            bar = 3.0f * (workingFrames - workingTargetClock) / workingFrames;
             if (workingTargetClock >= workingFrames)
             {
                 TestAction2();
                 workingTargetClock = 0;
             }
-            bar = 3.0f * (workingFrames - workingTargetClock) / workingFrames;
         }
         workingSpriteTransform.localScale = new Vector3(bar, 0.125f, 1);
     }

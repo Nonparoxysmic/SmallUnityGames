@@ -3971,7 +3971,7 @@ MonoBehaviour:
   isStrafing: 0
   diagonalFrames: 3
   addingFrames: 5
-  removingFrames: 45
+  removingFrames: 30
   playerSprites:
   - {fileID: -6198066232139300319, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   - {fileID: -4500868321734961790, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
