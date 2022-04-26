@@ -51,20 +51,21 @@ public class PlayerController : MonoBehaviour
         workingSpriteTransform = workingSprite.gameObject.transform;
     }
 
-    internal void PlayerMovement(Vector3Int directionalInput)
+    internal void PlayerMovement(Vector3Int directionalInput, Vector3? mousePosition = null)
     {
         int inputDirection = Direction(directionalInput.x, directionalInput.y);
         if (inputDirection >= 0)
         {
+            float distance = normalSpeed * Time.fixedDeltaTime;
+
             // If input direction just changed from a diagonal to an adjacent orthogonal...
             if (inputDirection.EqualsOneOf(0, 2, 4, 6)
                 && DirectionsAreAdjacent(inputDirection, previousInputDirection))
             {
+                // Lock the diagonal orientation for a few frames.
                 diagonalLockCountdown = diagonalFrames;
                 lockedDirection = previousInputDirection;
             }
-
-            float distance = normalSpeed * Time.fixedDeltaTime;
             if (diagonalLockCountdown > 0)
             {
                 if (inputDirection == lockedDirection
@@ -82,6 +83,9 @@ public class PlayerController : MonoBehaviour
             {
                 direction = inputDirection;
             }
+
+            // If strafing, reduce speed.
+            // If not, update facing direction.
             if (isStrafing)
             {
                 distance /= 2;
@@ -91,11 +95,23 @@ public class PlayerController : MonoBehaviour
                 targetingVector = targetingVectors[direction];
                 playerSpriteRenderer.sprite = playerSprites[direction];
             }
+
+            // Move.
             Vector3 v = targetingVectors[direction];
             transform.position += distance / v.magnitude * v;
-            targetTile.x = Mathf.FloorToInt(transform.position.x) + targetingVector.x;
-            targetTile.y = Mathf.FloorToInt(transform.position.y) + targetingVector.y;
-            target.position = targetTile + tileOffset;
+
+            // Update target cursor position.
+            if (mousePosition == null)
+            {
+                targetTile.x = Mathf.FloorToInt(transform.position.x) + targetingVector.x;
+                targetTile.y = Mathf.FloorToInt(transform.position.y) + targetingVector.y;
+                target.position = targetTile + tileOffset;
+            }
+            else
+            {
+                // TODO: Mouse selection
+            }
+
             if (diagonalLockCountdown > 0) { diagonalLockCountdown--; }
         }
         previousInputDirection = inputDirection;
