@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     int workingTargetClock;
     (int, int) workingTarget;
     Transform workingSpriteTransform;
+    Vector3Int mouseDirection;
     Vector3Int targetingVector;
     Vector3Int targetTile;
 
@@ -100,20 +101,22 @@ public class PlayerController : MonoBehaviour
             Vector3 v = targetingVectors[direction];
             transform.position += distance / v.magnitude * v;
 
-            // Update target cursor position.
-            if (mousePosition == null)
-            {
-                targetTile.x = Mathf.FloorToInt(transform.position.x) + targetingVector.x;
-                targetTile.y = Mathf.FloorToInt(transform.position.y) + targetingVector.y;
-                target.position = targetTile + tileOffset;
-            }
-            else
-            {
-                // TODO: Mouse selection
-            }
-
             if (diagonalLockCountdown > 0) { diagonalLockCountdown--; }
         }
+
+        // Update target cursor position.
+        if (mousePosition != null)
+        {
+            mouseDirection.x = (int)((Vector3)mousePosition).x - Screen.width / 2;
+            mouseDirection.y = (int)((Vector3)mousePosition).y - Screen.height / 2;
+            double angle = Math.Atan2(mouseDirection.y, mouseDirection.x);
+            int newDirection = (int)(Math.Round(angle * -4 / Math.PI + 4) + 2) % 8;
+            targetingVector = targetingVectors[newDirection];
+        }
+        targetTile.x = Mathf.FloorToInt(transform.position.x) + targetingVector.x;
+        targetTile.y = Mathf.FloorToInt(transform.position.y) + targetingVector.y;
+        target.position = targetTile + tileOffset;
+
         previousInputDirection = inputDirection;
     }
 

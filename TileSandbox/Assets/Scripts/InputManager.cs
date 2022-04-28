@@ -39,7 +39,8 @@ public class InputManager : MonoBehaviour
             mouseMoved = false;
         }
         else player.PlayerMovement(directionalInput);
-        bool testAction = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q);
+        bool testAction = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q)
+            || Input.GetMouseButton(0);
         player.TestAction(testAction);
     }
 }
