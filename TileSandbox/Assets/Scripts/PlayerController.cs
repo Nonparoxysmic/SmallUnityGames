@@ -4,7 +4,6 @@ using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
-    static readonly int[,] directions = new int[,] { { 1, 2, 3 }, { 0, -99, 4 }, { 7, 6, 5 } };
     static readonly Vector3Int[] targetingVectors = new Vector3Int[]
     {
         new Vector3Int( 0, -1,  0),
@@ -54,14 +53,14 @@ public class PlayerController : MonoBehaviour
 
     internal void PlayerMovement(Vector3Int directionalInput, Vector3? mousePosition = null)
     {
-        int inputDirection = Direction(directionalInput.x, directionalInput.y);
+        int inputDirection = Utilities.Direction(directionalInput.x, directionalInput.y);
         if (inputDirection >= 0)
         {
             float distance = normalSpeed * Time.fixedDeltaTime;
 
             // If input direction just changed from a diagonal to an adjacent orthogonal...
             if (inputDirection.EqualsOneOf(0, 2, 4, 6)
-                && DirectionsAreAdjacent(inputDirection, previousInputDirection))
+                && Utilities.DirectionsAreAdjacent(inputDirection, previousInputDirection))
             {
                 // Lock the diagonal orientation for a few frames.
                 diagonalLockCountdown = diagonalFrames;
@@ -70,7 +69,7 @@ public class PlayerController : MonoBehaviour
             if (diagonalLockCountdown > 0)
             {
                 if (inputDirection == lockedDirection
-                    || DirectionsAreAdjacent(inputDirection, lockedDirection))
+                    || Utilities.DirectionsAreAdjacent(inputDirection, lockedDirection))
                 {
                     direction = lockedDirection;
                 }
@@ -177,17 +176,5 @@ public class PlayerController : MonoBehaviour
         {
             collisionTilemap.SetTile(targetTile, squareTile);
         }
-    }
-
-    static int Direction(float x, float y)
-    {
-        int col = (int)x + 1;
-        int row = (int)y + 1;
-        return directions[col, row];
-    }
-
-    static bool DirectionsAreAdjacent(int a, int b)
-    {
-        return Math.Abs(a - b) == 1 || (a == 0 && b == 7) || (b == 0 && a == 7);
     }
 }
