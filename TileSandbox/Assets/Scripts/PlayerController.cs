@@ -1,10 +1,9 @@
-using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
-    static readonly Vector3Int[] targetingVectors = new Vector3Int[]
+    public readonly Vector3Int[] targetingVectors = new Vector3Int[]
     {
         new Vector3Int( 0, -1,  0),
         new Vector3Int(-1, -1,  0),
@@ -15,7 +14,6 @@ public class PlayerController : MonoBehaviour
         new Vector3Int( 1,  0,  0),
         new Vector3Int( 1, -1,  0)
     };
-    static readonly Vector3 tileOffset = new Vector3(0.5f, 0.5f);
 
     [SerializeField] SpriteRenderer playerSpriteRenderer;
     [SerializeField] Transform target;
@@ -39,9 +37,8 @@ public class PlayerController : MonoBehaviour
     int workingTargetClock;
     (int, int) workingTarget;
     Transform workingSpriteTransform;
-    Vector3Int mouseDirection;
-    Vector3Int targetingVector;
-    Vector3Int targetTile;
+    [HideInInspector] public Vector3Int targetingVector;
+    [HideInInspector] public Vector3Int targetTile;
 
     void Start()
     {
@@ -51,9 +48,8 @@ public class PlayerController : MonoBehaviour
         workingSpriteTransform = workingSprite.gameObject.transform;
     }
 
-    internal void PlayerMovement(Vector3Int directionalInput, Vector3? mousePosition = null)
+    internal void PlayerMovement(int inputDirection)
     {
-        int inputDirection = Utilities.Direction(directionalInput.x, directionalInput.y);
         if (inputDirection >= 0)
         {
             float distance = normalSpeed * Time.fixedDeltaTime;
@@ -99,23 +95,8 @@ public class PlayerController : MonoBehaviour
             // Move.
             Vector3 v = targetingVectors[direction];
             transform.position += distance / v.magnitude * v;
-
-            if (diagonalLockCountdown > 0) { diagonalLockCountdown--; }
         }
-
-        // Update target cursor position.
-        if (mousePosition != null)
-        {
-            mouseDirection.x = (int)((Vector3)mousePosition).x - Screen.width / 2;
-            mouseDirection.y = (int)((Vector3)mousePosition).y - Screen.height / 2;
-            double angle = Math.Atan2(mouseDirection.y, mouseDirection.x);
-            int newDirection = (int)(Math.Round(angle * -4 / Math.PI + 4) + 2) % 8;
-            targetingVector = targetingVectors[newDirection];
-        }
-        targetTile.x = Mathf.FloorToInt(transform.position.x) + targetingVector.x;
-        targetTile.y = Mathf.FloorToInt(transform.position.y) + targetingVector.y;
-        target.position = targetTile + tileOffset;
-
+        if (diagonalLockCountdown > 0) { diagonalLockCountdown--; }
         previousInputDirection = inputDirection;
     }
 

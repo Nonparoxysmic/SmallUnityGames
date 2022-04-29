@@ -1,13 +1,24 @@
+using System;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    static readonly Vector3 tileOffset = new Vector3(0.5f, 0.5f);
+
     [SerializeField] PlayerController player;
     [SerializeField] Toolbar toolbar;
+
+    [SerializeField] Transform target;
 
     bool mouseMoved;
     Vector3 previousMousePosition;
     Vector3Int directionalInput;
+    Vector3Int mouseDirection;
+
+    void Start()
+    {
+        previousMousePosition = Input.mousePosition;
+    }
 
     void Update()
     {
@@ -32,13 +43,24 @@ public class InputManager : MonoBehaviour
     {
         directionalInput.x = (int)Input.GetAxisRaw("Horizontal");
         directionalInput.y = (int)Input.GetAxisRaw("Vertical");
+        int inputDirection = Utilities.Direction(directionalInput.x, directionalInput.y);
         player.isStrafing = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        if (mouseMoved)
+        player.PlayerMovement(inputDirection);
+
+        // Update target cursor position.
+        if (mouseMoved || Input.GetMouseButton(0))
         {
-            player.PlayerMovement(directionalInput, Input.mousePosition);
             mouseMoved = false;
+            mouseDirection.x = (int)Input.mousePosition.x - Screen.width / 2;
+            mouseDirection.y = (int)Input.mousePosition.y - Screen.height / 2;
+            double angle = Math.Atan2(mouseDirection.y, mouseDirection.x);
+            int newDirection = (int)(Math.Round(angle * -4 / Math.PI + 4) + 2) % 8;
+            player.targetingVector = player.targetingVectors[newDirection];
         }
-        else player.PlayerMovement(directionalInput);
+        player.targetTile.x = Mathf.FloorToInt(player.transform.position.x) + player.targetingVector.x;
+        player.targetTile.y = Mathf.FloorToInt(player.transform.position.y) + player.targetingVector.y;
+        target.position = player.targetTile + tileOffset;
+
         bool testAction = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q)
             || Input.GetMouseButton(0);
         player.TestAction(testAction);
