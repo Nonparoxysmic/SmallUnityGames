@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     };
 
     [SerializeField] SpriteRenderer playerSpriteRenderer;
-    [SerializeField] Transform target;
     [SerializeField] SpriteRenderer workingSprite;
 
     [SerializeField] float normalSpeed;
@@ -38,13 +37,10 @@ public class PlayerController : MonoBehaviour
     (int, int) workingTarget;
     Transform workingSpriteTransform;
     [HideInInspector] public Vector3Int targetingVector;
-    [HideInInspector] public Vector3Int targetTile;
 
     void Start()
     {
         targetingVector = new Vector3Int(0, -1, 0);
-        targetTile.x = Mathf.FloorToInt(transform.position.x) + targetingVector.x;
-        targetTile.y = Mathf.FloorToInt(transform.position.y) + targetingVector.y;
         workingSpriteTransform = workingSprite.gameObject.transform;
     }
 
@@ -105,7 +101,7 @@ public class PlayerController : MonoBehaviour
         testTool = option == 1;
     }
 
-    internal void TestAction(bool isActive)
+    internal void TestAction(Vector3Int targetTile, bool isActive)
     {
         float bar = 0;
         var currentTile = collisionTilemap.GetTile(targetTile);
@@ -140,14 +136,14 @@ public class PlayerController : MonoBehaviour
             bar = 3.0f * (workingFrames - workingTargetClock) / workingFrames;
             if (workingTargetClock >= workingFrames)
             {
-                TestAction2();
+                TestAction2(targetTile);
                 workingTargetClock = 0;
             }
         }
         workingSpriteTransform.localScale = new Vector3(bar, 0.125f, 1);
     }
 
-    internal void TestAction2()
+    internal void TestAction2(Vector3Int targetTile)
     {
         if (collisionTilemap.GetTile(targetTile) == squareTile)
         {

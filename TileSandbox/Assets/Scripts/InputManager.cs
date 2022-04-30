@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
     Vector3 previousMousePosition;
     Vector3Int directionalInput;
     Vector3Int mouseDirection;
+    Vector3Int targetTile;
 
     void Start()
     {
@@ -57,12 +58,12 @@ public class InputManager : MonoBehaviour
             int newDirection = (int)(Math.Round(angle * -4 / Math.PI + 4) + 2) % 8;
             player.targetingVector = player.targetingVectors[newDirection];
         }
-        player.targetTile.x = Mathf.FloorToInt(player.transform.position.x) + player.targetingVector.x;
-        player.targetTile.y = Mathf.FloorToInt(player.transform.position.y) + player.targetingVector.y;
-        target.position = player.targetTile + tileOffset;
+        targetTile.x = Mathf.FloorToInt(player.transform.position.x) + player.targetingVector.x;
+        targetTile.y = Mathf.FloorToInt(player.transform.position.y) + player.targetingVector.y;
+        target.position = targetTile + tileOffset;
 
         bool testAction = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q)
             || Input.GetMouseButton(0);
-        player.TestAction(testAction);
+        player.TestAction(targetTile, testAction);
     }
 }
