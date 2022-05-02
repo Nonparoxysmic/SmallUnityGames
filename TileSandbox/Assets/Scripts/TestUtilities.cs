@@ -1,6 +1,6 @@
 using System;
 
-public static class Utilities
+public static class TestUtilities
 {
     static readonly int[,] directions = new int[,] { { 1, 2, 3 }, { 0, -99, 4 }, { 7, 6, 5 } };
 

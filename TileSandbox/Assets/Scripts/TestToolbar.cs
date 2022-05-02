@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Toolbar : MonoBehaviour
+public class TestToolbar : MonoBehaviour
 {
     [SerializeField] Transform cursor;
 

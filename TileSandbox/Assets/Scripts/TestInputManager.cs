@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour
+public class TestInputManager : MonoBehaviour
 {
     static readonly Vector3 tileOffset = new Vector3(0.5f, 0.5f);
 
-    [SerializeField] PlayerController player;
-    [SerializeField] Toolbar toolbar;
+    [SerializeField] TestPlayerController player;
+    [SerializeField] TestToolbar toolbar;
 
     [SerializeField] Transform target;
 
@@ -44,7 +44,7 @@ public class InputManager : MonoBehaviour
     {
         directionalInput.x = (int)Input.GetAxisRaw("Horizontal");
         directionalInput.y = (int)Input.GetAxisRaw("Vertical");
-        int inputDirection = Utilities.Direction(directionalInput.x, directionalInput.y);
+        int inputDirection = TestUtilities.Direction(directionalInput.x, directionalInput.y);
         player.isStrafing = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         player.PlayerMovement(inputDirection);
 

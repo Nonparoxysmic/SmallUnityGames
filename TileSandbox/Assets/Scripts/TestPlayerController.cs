@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class PlayerController : MonoBehaviour
+public class TestPlayerController : MonoBehaviour
 {
     public readonly Vector3Int[] targetingVectors = new Vector3Int[]
     {
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
 
             // If input direction just changed from a diagonal to an adjacent orthogonal...
             if (inputDirection.EqualsOneOf(0, 2, 4, 6)
-                && Utilities.DirectionsAreAdjacent(inputDirection, previousInputDirection))
+                && TestUtilities.DirectionsAreAdjacent(inputDirection, previousInputDirection))
             {
                 // Lock the diagonal orientation for a few frames.
                 diagonalLockCountdown = diagonalFrames;
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
             if (diagonalLockCountdown > 0)
             {
                 if (inputDirection == lockedDirection
-                    || Utilities.DirectionsAreAdjacent(inputDirection, lockedDirection))
+                    || TestUtilities.DirectionsAreAdjacent(inputDirection, lockedDirection))
                 {
                     direction = lockedDirection;
                 }
