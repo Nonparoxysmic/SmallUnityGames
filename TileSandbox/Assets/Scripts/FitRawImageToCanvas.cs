@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class FitRawImageToCanvas : MonoBehaviour
 {
+    float baseHeight;
+    float baseWidth;
     float previousHeight;
     float previousWidth;
     Rect canvasRect;
@@ -28,8 +30,8 @@ public class FitRawImageToCanvas : MonoBehaviour
             return;
         }
 
-        canvasTransform = transform.parent.GetComponent<RectTransform>();
         rawImageTransform = GetComponent<RectTransform>();
+        canvasTransform = transform.parent.GetComponent<RectTransform>();
 
         if (rawImageTransform == null)
         {
@@ -41,23 +43,27 @@ public class FitRawImageToCanvas : MonoBehaviour
             LogErrorAndDisableComponent("Missing or unavailable parent RectTransform.");
             return;
         }
+
+        baseWidth = rawImageTransform.sizeDelta.x;
+        baseHeight = rawImageTransform.sizeDelta.y;
+    }
+
+    void Update()
+    {
+        canvasRect = canvasTransform.rect;
+        if (canvasRect.width != previousWidth || canvasRect.height != previousHeight)
+        {
+            previousWidth = canvasRect.width;
+            previousHeight = canvasRect.height;
+
+            float scale = Math.Min(canvasRect.width / baseWidth, canvasRect.height / baseHeight);
+            rawImageTransform.sizeDelta = new Vector2(scale * baseWidth, scale * baseHeight);
+        }
     }
 
     void LogErrorAndDisableComponent(string message)
     {
         Debug.LogError(name + ": " + nameof(FitRawImageToCanvas) + ": " + message);
         enabled = false;
-    }
-
-    void Update()
-    {
-        canvasRect = canvasTransform.rect;
-        if (canvasRect.height != previousHeight || canvasRect.width != previousWidth)
-        {
-            float imageSize = Math.Min(canvasRect.width, canvasRect.height);
-            rawImageTransform.sizeDelta = new Vector2(imageSize, imageSize);
-            previousHeight = canvasRect.height;
-            previousWidth = canvasRect.width;
-        }
     }
 }
