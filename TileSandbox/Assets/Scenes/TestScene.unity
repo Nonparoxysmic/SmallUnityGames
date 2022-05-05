@@ -3964,7 +3964,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpriteRenderer: {fileID: 785799995}
-  target: {fileID: 1340933167}
   workingSprite: {fileID: 1598544134}
   normalSpeed: 8
   direction: 0
@@ -3983,6 +3982,7 @@ MonoBehaviour:
   - {fileID: 5635105361348811957, guid: a3bf5f6ccd610424a9aa3fb767654053, type: 3}
   collisionTilemap: {fileID: 577702542}
   squareTile: {fileID: 11400000, guid: 8fe27c4901ba04642a32f6406c3cdca0, type: 2}
+  targetingVector: {x: 0, y: 0, z: 0}
 --- !u!58 &1816152308
 CircleCollider2D:
   m_ObjectHideFlags: 0
