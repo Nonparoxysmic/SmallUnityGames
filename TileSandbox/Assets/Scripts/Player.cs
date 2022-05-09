@@ -10,7 +10,8 @@ public class Player : MonoBehaviour
     {
         if (transform.childCount == 0)
         {
-            // TODO: Handle errors.
+            Utilities.ComponentError(this, "No child GameObjects.");
+            return;
         }
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -24,7 +25,8 @@ public class Player : MonoBehaviour
         }
         if (playerCollider is null)
         {
-            // TODO: Handle errors.
+            Utilities.ComponentError(this, "No Collider2D found.");
+            return;
         }
     }
 
