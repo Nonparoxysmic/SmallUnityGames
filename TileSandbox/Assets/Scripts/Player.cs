@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Move(int direction)
+    public void Move(int direction)
     {
         if (direction < 0 || direction >= 8) { return; }
 

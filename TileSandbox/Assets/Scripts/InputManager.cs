@@ -3,11 +3,19 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    GameMaster gm;
+
     bool mouseMoved;
     Vector3 previousMousePosition;
 
     void Start()
     {
+        gm = GetComponent<GameMaster>();
+        if (gm is null)
+        {
+            Utilities.ComponentError(this, "Missing or unavailable Game Master.");
+            return;
+        }
         previousMousePosition = Input.mousePosition;
     }
 
@@ -33,5 +41,6 @@ public class InputManager : MonoBehaviour
         {
             inputDirection = (int)(4 * (Math.Atan2(vert, horz) / Math.PI + 1) % 8);
         }
+        gm.OnDirectionalInput(inputDirection);
     }
 }
