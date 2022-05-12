@@ -21,6 +21,5 @@ public class GameMaster : MonoBehaviour
     public void OnDirectionalInput(int direction)
     {
         player.Move(direction);
-        transform.position = PlayerPosition();
     }
 }
