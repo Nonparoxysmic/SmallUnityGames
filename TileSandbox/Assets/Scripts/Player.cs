@@ -30,10 +30,25 @@ public class Player : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (transform.position != playerCollider.transform.position)
+        {
+            transform.position = playerCollider.transform.position;
+            playerCollider.transform.localPosition = new Vector3(0, 0, 0);
+        }
+    }
+
     public void Move(int direction)
     {
         if (direction < 0 || direction >= 8) { return; }
 
-        // TODO: Implement movement.
+        Vector3 move = normalSpeed * Time.fixedDeltaTime * Utilities.DirectionVector(direction);
+        playerCollider.transform.position += move;
+    }
+
+    public Vector3 ColliderPosition()
+    {
+        return playerCollider.transform.position;
     }
 }

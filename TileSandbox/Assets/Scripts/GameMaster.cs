@@ -13,9 +13,9 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    public Vector3 PlayerPosition()
+    public Vector3 PlayerColliderPosition()
     {
-        return player.transform.position;
+        return player.ColliderPosition();
     }
 
     public void OnDirectionalInput(int direction)
