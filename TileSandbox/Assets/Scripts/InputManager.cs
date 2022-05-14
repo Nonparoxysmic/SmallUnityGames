@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    [SerializeField] GameObject cursor;
+
     GameMaster gm;
 
     bool mouseMoved;
+    int prevDirection = 2;
     Vector3 previousMousePosition;
 
     void Start()
@@ -14,6 +17,11 @@ public class InputManager : MonoBehaviour
         if (gm is null)
         {
             Utilities.ComponentError(this, "Missing or unavailable Game Master.");
+            return;
+        }
+        if (cursor is null)
+        {
+            Utilities.ComponentError(this, "Cursor GameObject not set in Inspector.");
             return;
         }
         previousMousePosition = Input.mousePosition;
@@ -26,6 +34,12 @@ public class InputManager : MonoBehaviour
             previousMousePosition = Input.mousePosition;
             mouseMoved = true;
         }
+
+        Vector3 pos = gm.PlayerColliderPosition() + Utilities.DirectionVector(prevDirection);
+        pos.x = Mathf.Floor(pos.x + 0.5f);
+        pos.y = Mathf.Floor(pos.y + 0.5f);
+        pos.z = cursor.transform.position.z;
+        cursor.transform.position = pos;
     }
 
     void FixedUpdate()
@@ -40,6 +54,7 @@ public class InputManager : MonoBehaviour
         else
         {
             inputDirection = (int)(4 * (Math.Atan2(vert, horz) / Math.PI + 1) % 8);
+            prevDirection = inputDirection;
         }
         gm.OnDirectionalInput(inputDirection);
     }
