@@ -20,6 +20,8 @@ public class GameMaster : MonoBehaviour
 
     public void OnDirectionalInput(int direction)
     {
+        if (direction < 0 || direction >= 8) { return; }
+
         player.Move(direction);
     }
 }
