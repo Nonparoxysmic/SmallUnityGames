@@ -10,7 +10,6 @@ public class InputManager : MonoBehaviour
 
     bool mouseMoved;
     int diagonalLockCountdown;
-    int facingDirection = 2;
     int inputDirection;
     int lockedDirection;
     int previousRawInputDirection;
@@ -34,17 +33,20 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
+        Vector3 pos = gm.PlayerFacingPosition();
+        pos.x = Mathf.Floor(pos.x + 0.5f);
+        pos.y = Mathf.Floor(pos.y + 0.5f);
+        pos.z = cursor.transform.position.z;
+        cursor.transform.position = pos;
+
         if (Input.mousePosition != previousMousePosition)
         {
             previousMousePosition = Input.mousePosition;
             mouseMoved = true;
         }
 
-        Vector3 pos = gm.PlayerColliderPosition() + Utilities.DirectionVector(facingDirection);
-        pos.x = Mathf.Floor(pos.x + 0.5f);
-        pos.y = Mathf.Floor(pos.y + 0.5f);
-        pos.z = cursor.transform.position.z;
-        cursor.transform.position = pos;
+        bool shiftIsPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        gm.SetPlayerStrafing(shiftIsPressed);
     }
 
     void FixedUpdate()
@@ -91,7 +93,7 @@ public class InputManager : MonoBehaviour
 
         if (inputDirection >= 0)
         {
-            facingDirection = inputDirection;
+            gm.SetPlayerFacingDirection(inputDirection);
         }
         gm.OnDirectionalInput(inputDirection);
     }

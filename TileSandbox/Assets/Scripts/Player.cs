@@ -4,6 +4,9 @@ public class Player : MonoBehaviour
 {
     [SerializeField] float normalSpeed;
 
+    [HideInInspector] public bool isStrafing;
+    [HideInInspector] public int facingDirection = 2;
+
     Collider2D playerCollider;
 
     void Start()
@@ -43,7 +46,8 @@ public class Player : MonoBehaviour
     {
         if (direction < 0 || direction >= 8) { return; }
 
-        Vector3 move = normalSpeed * Time.fixedDeltaTime * Utilities.DirectionVector(direction);
+        float speed = isStrafing ? normalSpeed / 2 : normalSpeed;
+        Vector3 move = speed * Time.fixedDeltaTime * Utilities.DirectionVector(direction);
         playerCollider.transform.position += move;
     }
 
