@@ -8,7 +8,7 @@ public class GameMaster : MonoBehaviour
     {
         if (player is null)
         {
-            Utilities.ComponentError(this, "Player GameObject not set in Inspector.");
+            this.Error("Player GameObject not set in Inspector.");
             return;
         }
     }

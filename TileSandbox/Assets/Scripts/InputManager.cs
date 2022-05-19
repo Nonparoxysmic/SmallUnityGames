@@ -20,12 +20,12 @@ public class InputManager : MonoBehaviour
         gm = GetComponent<GameMaster>();
         if (gm is null)
         {
-            Utilities.ComponentError(this, "Missing or unavailable Game Master.");
+            this.Error("Missing or unavailable Game Master.");
             return;
         }
         if (cursor is null)
         {
-            Utilities.ComponentError(this, "Cursor GameObject not set in Inspector.");
+            this.Error("Cursor GameObject not set in Inspector.");
             return;
         }
         previousMousePosition = Input.mousePosition;

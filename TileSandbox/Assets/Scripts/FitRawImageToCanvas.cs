@@ -16,17 +16,17 @@ public class FitRawImageToCanvas : MonoBehaviour
     {
         if (GetComponent<RawImage>() is null)
         {
-            Utilities.ComponentError(this, "GameObject is not a Raw Image.");
+            this.Error("GameObject is not a Raw Image.");
             return;
         }
         if (transform.parent is null)
         {
-            Utilities.ComponentError(this, "No parent GameObject.");
+            this.Error("No parent GameObject.");
             return;
         }
         if (transform.parent.GetComponent<Canvas>() is null)
         {
-            Utilities.ComponentError(this, "Parent GameObject is not a Canvas.");
+            this.Error("Parent GameObject is not a Canvas.");
             return;
         }
 
@@ -35,12 +35,12 @@ public class FitRawImageToCanvas : MonoBehaviour
 
         if (rawImageTransform is null)
         {
-            Utilities.ComponentError(this, "Missing or unavailable RectTransform.");
+            this.Error("Missing or unavailable RectTransform.");
             return;
         }
         if (canvasTransform is null)
         {
-            Utilities.ComponentError(this, "Missing or unavailable parent RectTransform.");
+            this.Error("Missing or unavailable parent RectTransform.");
             return;
         }
 

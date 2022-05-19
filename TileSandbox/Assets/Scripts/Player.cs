@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     {
         if (transform.childCount == 0)
         {
-            Utilities.ComponentError(this, "No child GameObjects.");
+            this.Error("No child GameObjects.");
             return;
         }
         for (int i = 0; i < transform.childCount; i++)
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
         }
         if (playerCollider is null)
         {
-            Utilities.ComponentError(this, "No Collider2D found.");
+            this.Error("No Collider2D found.");
             return;
         }
     }

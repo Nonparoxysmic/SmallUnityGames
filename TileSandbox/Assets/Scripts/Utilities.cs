@@ -3,15 +3,6 @@ using UnityEngine;
 
 public static class Utilities
 {
-    public static void ComponentError(Component component, string message)
-    {
-        Debug.LogError(component.name + ": " + component.GetType() + ": " + message);
-        if (component is Behaviour behaviour)
-        {
-            behaviour.enabled = false;
-        }
-    }
-
     static readonly Vector3[] directionVectors = new Vector3[]
     {
         new Vector3(-1, 0, 0),

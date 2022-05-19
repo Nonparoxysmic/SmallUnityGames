@@ -18,7 +18,7 @@ public class CoreFocus : MonoBehaviour
         }
         if (speedFactor < 0 || speedFactor > 1)
         {
-            Utilities.ComponentError(this, nameof(speedFactor) + " must be in the range [0, 1].");
+            this.Error("Variable '" + nameof(speedFactor) + "' must be in the range [0, 1].");
             return;
         }
         transform.position += speedFactor * delta;
