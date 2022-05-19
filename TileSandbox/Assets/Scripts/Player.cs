@@ -4,8 +4,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] float normalSpeed;
 
-    [HideInInspector] public bool isStrafing;
-    [HideInInspector] public int facingDirection = 2;
+    public bool isStrafing;
+    public int facingDirection = 2;
 
     Collider2D playerCollider;
 
@@ -13,12 +13,12 @@ public class Player : MonoBehaviour
     {
         if (transform.childCount == 0)
         {
-            this.Error("No child GameObjects.");
+            this.Error("No child GameObjects for collider.");
             return;
         }
         for (int i = 0; i < transform.childCount; i++)
         {
-            var component = transform.GetChild(i).GetComponent<Collider2D>();
+            Collider2D component = transform.GetChild(i).GetComponent<Collider2D>();
             if (component is null)
             {
                 continue;
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
         if (transform.position != playerCollider.transform.position)
         {
             transform.position = playerCollider.transform.position;
-            playerCollider.transform.localPosition = new Vector3(0, 0, 0);
+            playerCollider.transform.localPosition = Vector3.zero;
         }
     }
 

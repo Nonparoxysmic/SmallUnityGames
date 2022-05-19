@@ -91,10 +91,7 @@ public class InputManager : MonoBehaviour
         if (diagonalLockCountdown > 0) { diagonalLockCountdown--; }
         previousRawInputDirection = rawInputDirection;
 
-        if (inputDirection >= 0)
-        {
-            gm.SetPlayerFacingDirection(inputDirection);
-        }
+        gm.SetPlayerFacingDirection(inputDirection);
         gm.OnDirectionalInput(inputDirection);
     }
 }
