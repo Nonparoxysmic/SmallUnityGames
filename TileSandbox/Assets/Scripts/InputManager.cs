@@ -13,6 +13,7 @@ public class InputManager : MonoBehaviour
     int inputDirection;
     int lockedDirection;
     int previousRawInputDirection;
+    Vector3 mouseDirection;
     Vector3 previousMousePosition;
 
     void Start()
@@ -33,12 +34,6 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        Vector3 pos = gm.PlayerFacingPosition();
-        pos.x = Mathf.Floor(pos.x + 0.5f);
-        pos.y = Mathf.Floor(pos.y + 0.5f);
-        pos.z = cursor.transform.position.z;
-        cursor.transform.position = pos;
-
         if (Input.mousePosition != previousMousePosition)
         {
             previousMousePosition = Input.mousePosition;
@@ -93,5 +88,33 @@ public class InputManager : MonoBehaviour
 
         gm.SetPlayerFacingDirection(inputDirection);
         gm.OnDirectionalInput(inputDirection);
+        UpdateCursorPosition();
+
+        mouseMoved = false;
+        gm.playerIsMoving = false;
+    }
+
+    void UpdateCursorPosition()
+    {
+        if (mouseMoved || Input.GetMouseButton(0))
+        {
+            mouseDirection.x = Input.mousePosition.x - Screen.width / 2;
+            mouseDirection.y = Input.mousePosition.y - Screen.height / 2;
+            double angle = Math.Atan2(mouseDirection.y, mouseDirection.x);
+            int direction = (int)(4 * (angle / Math.PI + 1) % 8);
+            SetCursorPosition(gm.PlayerFacingPosition(direction));
+        }
+        else if (gm.playerIsMoving)
+        {
+            SetCursorPosition(gm.PlayerFacingPosition());
+        }
+    }
+
+    void SetCursorPosition(Vector3 cursorPosition)
+    {
+        cursorPosition.x = Mathf.Floor(cursorPosition.x + 0.5f);
+        cursorPosition.y = Mathf.Floor(cursorPosition.y + 0.5f);
+        cursorPosition.z = cursor.transform.position.z;
+        cursor.transform.position = cursorPosition;
     }
 }
