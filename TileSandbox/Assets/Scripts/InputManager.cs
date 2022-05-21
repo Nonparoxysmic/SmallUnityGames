@@ -10,10 +10,8 @@ public class InputManager : MonoBehaviour
 
     bool mouseMoved;
     int diagonalLockCountdown;
-    int inputDirection;
     int lockedDirection;
     int previousRawInputDirection;
-    Vector3 mouseDirection;
     Vector3 previousMousePosition;
 
     void Start()
@@ -46,30 +44,20 @@ public class InputManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        int horz = (int)Input.GetAxisRaw("Horizontal");
-        int vert = (int)Input.GetAxisRaw("Vertical");
-        int rawInputDirection;
-        if (horz == 0 && vert == 0)
-        {
-            rawInputDirection = -8;
-        }
-        else
-        {
-            rawInputDirection = (int)(4 * (Math.Atan2(vert, horz) / Math.PI + 1) % 8);
-        }
+        float horz = Input.GetAxisRaw("Horizontal");
+        float vert = Input.GetAxisRaw("Vertical");
+        int rawInputDirection = Utilities.Direction(vert, horz);
 
-        // If raw input direction just changed from a diagonal to an adjacent orthogonal...
-        if (rawInputDirection.EqualsOneOf(0, 2, 4, 6)
-            && Utilities.DirectionsAreAdjacent(rawInputDirection, previousRawInputDirection))
+        if (StartOfDiagonalLock(rawInputDirection, previousRawInputDirection))
         {
-            // Lock the diagonal orientation for a few frames.
             diagonalLockCountdown = diagonalLockFrames;
             lockedDirection = previousRawInputDirection;
         }
+
+        int inputDirection;
         if (diagonalLockCountdown > 0)
         {
-            if (rawInputDirection == lockedDirection
-                || Utilities.DirectionsAreAdjacent(rawInputDirection, lockedDirection))
+            if (ContinuingDiagonalLock(rawInputDirection, lockedDirection))
             {
                 inputDirection = lockedDirection;
             }
@@ -98,11 +86,10 @@ public class InputManager : MonoBehaviour
     {
         if (mouseMoved || Input.GetMouseButton(0))
         {
-            mouseDirection.x = Input.mousePosition.x - Screen.width / 2;
-            mouseDirection.y = Input.mousePosition.y - Screen.height / 2;
-            double angle = Math.Atan2(mouseDirection.y, mouseDirection.x);
-            int direction = (int)(4 * (angle / Math.PI + 1) % 8);
-            SetCursorPosition(gm.PlayerFacingPosition(direction));
+            float horz = Input.mousePosition.x - Screen.width / 2;
+            float vert = Input.mousePosition.y - Screen.height / 2;
+            int mouseDirection = Utilities.Direction(vert, horz);
+            SetCursorPosition(gm.PlayerFacingPosition(mouseDirection));
         }
         else if (gm.playerIsMoving)
         {
@@ -116,5 +103,17 @@ public class InputManager : MonoBehaviour
         cursorPosition.y = Mathf.Floor(cursorPosition.y + 0.5f);
         cursorPosition.z = cursor.transform.position.z;
         cursor.transform.position = cursorPosition;
+    }
+
+    bool StartOfDiagonalLock(int direction, int previousDirection)
+    {
+        return direction.EqualsOneOf(0, 2, 4, 6)
+            && Utilities.DirectionsAreAdjacent(direction, previousDirection);
+    }
+
+    bool ContinuingDiagonalLock(int direction, int lockedDirection)
+    {
+        return direction == lockedDirection
+            || Utilities.DirectionsAreAdjacent(direction, lockedDirection);
     }
 }

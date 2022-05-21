@@ -15,6 +15,12 @@ public static class Utilities
         new Vector3(-0.7071068f, 0.7071068f, 0)
     };
 
+    public static int Direction(double vertical, double horizontal)
+    {
+        if (vertical == 0 && horizontal == 0) { return -8; }
+        return (int)(4 * (Math.Atan2(vertical, horizontal) / Math.PI + 1) % 8);
+    }
+
     public static Vector3 DirectionVector(int direction)
     {
         if (direction < 0 || direction >= 8)
