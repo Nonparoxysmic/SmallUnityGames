@@ -18,7 +18,7 @@ public static class Utilities
     public static int Direction(double vertical, double horizontal)
     {
         if (vertical == 0 && horizontal == 0) { return -8; }
-        return (int)(4 * (Math.Atan2(vertical, horizontal) / Math.PI + 1) % 8);
+        return (int)(Math.Round(4 * (Math.Atan2(vertical, horizontal) / Math.PI + 1)) % 8);
     }
 
     public static Vector3 DirectionVector(int direction)
