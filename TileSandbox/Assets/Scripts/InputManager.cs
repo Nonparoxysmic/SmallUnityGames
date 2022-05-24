@@ -37,6 +37,15 @@ public class InputManager : MonoBehaviour
             previousMousePosition = Input.mousePosition;
             mouseMoved = true;
         }
+        for (int i = 0; i < Math.Min(gm.toolbarSize, 9); i++)
+        {
+            int key = i + 49;
+            if (Input.GetKeyDown((KeyCode)key))
+            {
+                gm.ChangeTool(i);
+                break;
+            }
+        }
 
         bool shiftIsPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         gm.SetPlayerStrafing(shiftIsPressed);
@@ -77,6 +86,13 @@ public class InputManager : MonoBehaviour
         gm.SetPlayerFacingDirection(inputDirection);
         gm.OnDirectionalInput(inputDirection);
         UpdateCursorPosition();
+
+        bool actionKeyPressed = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q)
+            || Input.GetMouseButton(0);
+        if (actionKeyPressed)
+        {
+            gm.OnActionKey(cursor.transform.position);
+        }
 
         mouseMoved = false;
         gm.playerIsMoving = false;
