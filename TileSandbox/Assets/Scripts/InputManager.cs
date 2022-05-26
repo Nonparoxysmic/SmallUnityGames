@@ -89,10 +89,7 @@ public class InputManager : MonoBehaviour
 
         bool actionKeyPressed = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Q)
             || Input.GetMouseButton(0);
-        if (actionKeyPressed)
-        {
-            gm.OnActionKey(cursor.transform.position);
-        }
+        gm.OnActionKey(actionKeyPressed, cursor.transform.position);
 
         mouseMoved = false;
         gm.playerIsMoving = false;

@@ -5,8 +5,12 @@ public class GameMaster : MonoBehaviour
     [SerializeField] Player player;
     [SerializeField] Toolbar toolbar;
 
-    public bool playerIsMoving;
+    [HideInInspector] public bool playerIsMoving;
     public int toolbarSize;
+    public int actionProgress;
+
+    int previousTool;
+    (int, int) previousTarget;
 
     void Start()
     {
@@ -66,9 +70,28 @@ public class GameMaster : MonoBehaviour
         playerIsMoving = true;
     }
 
-    public void OnActionKey(Vector3 position)
+    public void OnActionKey(bool actionKeyPressed, Vector3 position)
     {
+        if (!actionKeyPressed)
+        {
+            previousTool = -1;
+        }
+        (int, int) currentTarget = ((int)position.x, (int)position.y);
+        if (currentTarget != previousTarget || toolbar.current != previousTool)
+        {
+            previousTarget = currentTarget;
+            previousTool = toolbar.current;
+            actionProgress = -1;
+            return;
+        }
+        actionProgress++;
 
+        // TODO: Implement actions
+        if (actionProgress > 30)
+        {
+            Debug.Log("Action completed.");
+            actionProgress = -5;
+        }
     }
 
     public void ChangeTool(int option)
