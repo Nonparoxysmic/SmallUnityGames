@@ -62,6 +62,11 @@ public class GameMaster : MonoBehaviour
         player.isStrafing = strafeKeyDown;
     }
 
+    public bool GetPlayerStrafing()
+    {
+        return player.isStrafing;
+    }
+
     public void OnDirectionalInput(int direction)
     {
         if (direction < 0 || direction >= 8) { return; }

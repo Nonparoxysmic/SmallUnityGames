@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
     bool mouseMoved;
     int diagonalLockCountdown;
     int lockedDirection;
+    int? mouseDirection;
     int previousRawInputDirection;
     Vector3 previousMousePosition;
 
@@ -101,12 +102,23 @@ public class InputManager : MonoBehaviour
         {
             float horz = Input.mousePosition.x - Screen.width / 2;
             float vert = Input.mousePosition.y - Screen.height / 2;
-            int mouseDirection = Utilities.Direction(vert, horz);
-            SetCursorPosition(gm.PlayerFacingPosition(mouseDirection));
+            mouseDirection = Utilities.Direction(vert, horz);
+            SetCursorPosition(gm.PlayerFacingPosition((int)mouseDirection));
         }
         else if (gm.playerIsMoving)
         {
-            SetCursorPosition(gm.PlayerFacingPosition());
+            if (mouseDirection is null)
+            {
+                SetCursorPosition(gm.PlayerFacingPosition());
+            }
+            else
+            {
+                SetCursorPosition(gm.PlayerFacingPosition((int)mouseDirection));
+            }
+        }
+        if (!gm.GetPlayerStrafing())
+        {
+            mouseDirection = null;
         }
     }
 
