@@ -1364,6 +1364,7 @@ GameObject:
   - component: {fileID: 1937505617}
   - component: {fileID: 1937505618}
   - component: {fileID: 1937505619}
+  - component: {fileID: 1937505620}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -1433,3 +1434,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1502007576}
   speedFactor: 0.15
+--- !u!114 &1937505620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937505615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99f9b2ab00ab72944920cbd5a84fe2f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundTilemap: {fileID: 1119367439}
+  collisionTilemap: {fileID: 777854494}

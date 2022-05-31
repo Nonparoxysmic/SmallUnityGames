@@ -9,11 +9,19 @@ public class GameMaster : MonoBehaviour
     public int toolbarSize;
     public int actionProgress;
 
+    WorldManager worldManager;
+
     int previousTool;
     (int, int) previousTarget;
 
     void Start()
     {
+        worldManager = GetComponent<WorldManager>();
+        if (worldManager is null)
+        {
+            this.Error("Missing or unavailable World Manager.");
+            return;
+        }
         if (player is null)
         {
             this.Error("Player GameObject not set in Inspector.");
