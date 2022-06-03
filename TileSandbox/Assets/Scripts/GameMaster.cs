@@ -41,6 +41,11 @@ public class GameMaster : MonoBehaviour
         playerIsMoving = true;
     }
 
+    public Vector3 PlayerPosition()
+    {
+        return player.ColliderPosition();
+    }
+
     public Vector3 PlayerFacingPosition()
     {
         return player.ColliderPosition() + Utilities.DirectionVector(player.facingDirection);
