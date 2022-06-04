@@ -72,10 +72,7 @@ public class WorldManager : MonoBehaviour
         else
         {
             collisionTilemap.SetTile(position, null);
-            if (collidersToAdd.Contains((x, y)))
-            {
-                // TODO: Remove tile position from queue
-            }
+            collidersToAdd.Remove((x, y));
         }
     }
 }

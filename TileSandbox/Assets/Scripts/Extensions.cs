@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class Extensions
@@ -14,5 +15,24 @@ public static class Extensions
         {
             behaviour.enabled = false;
         }
+    }
+
+    public static bool Remove<T>(this Queue<T> queue, T itemToRemove)
+    {
+        bool itemFound = false;
+        int count = queue.Count;
+        for (int i = 0; i < count; i++)
+        {
+            T item = queue.Dequeue();
+            if (!itemFound && EqualityComparer<T>.Default.Equals(item, itemToRemove))
+            {
+                itemFound = true;
+            }
+            else
+            {
+                queue.Enqueue(item);
+            }
+        }
+        return itemFound;
     }
 }
