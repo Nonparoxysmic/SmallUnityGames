@@ -7,9 +7,11 @@ public class WorldManager : MonoBehaviour
     [SerializeField] Tilemap backgroundTilemap;
     [SerializeField] Tilemap collisionTilemap;
     [SerializeField] Tile collisionTile;
+    [SerializeField] Tile[] tiles;
 
     GameMaster gm;
 
+    Noise noise;
     readonly Queue<(int, int)> collidersToAdd = new Queue<(int, int)>();
 
     void Start()
@@ -34,6 +36,17 @@ public class WorldManager : MonoBehaviour
         {
             this.Error("Collision Tile reference not set in Inspector.");
             return;
+        }
+
+        noise = new Noise();
+        int size = 10;
+        for (int y = -size; y <= size; y++)
+        {
+            for (int x = -size; x <= size; x++)
+            {
+                int temp = (int)(4 * noise.Value(x, y));
+                SetTile(backgroundTilemap, x, y, tiles[temp], temp == 0);
+            }
         }
     }
 
