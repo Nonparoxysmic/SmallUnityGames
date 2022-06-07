@@ -7,6 +7,7 @@ public class WorldManager : MonoBehaviour
     [SerializeField] Tilemap backgroundTilemap;
     [SerializeField] Tilemap collisionTilemap;
     [SerializeField] Tile collisionTile;
+    [SerializeField] int randomSeed;
     [SerializeField] Tile[] tiles;
 
     GameMaster gm;
@@ -38,13 +39,17 @@ public class WorldManager : MonoBehaviour
             return;
         }
 
-        noise = new Noise();
+        noise = new Noise(randomSeed);
         int size = 10;
         for (int y = -size; y <= size; y++)
         {
             for (int x = -size; x <= size; x++)
             {
                 int temp = (int)(4 * noise.Value(x, y));
+                if (Mathf.Abs(x) < 2 && Mathf.Abs(y) < 2)
+                {
+                    temp = Mathf.Max(temp, 1);
+                }
                 SetTile(backgroundTilemap, x, y, tiles[temp], temp == 0);
             }
         }

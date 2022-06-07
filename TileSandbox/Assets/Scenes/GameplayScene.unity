@@ -1305,6 +1305,7 @@ MonoBehaviour:
   backgroundTilemap: {fileID: 1119367439}
   collisionTilemap: {fileID: 777854494}
   collisionTile: {fileID: 11400000, guid: 83abd0d3768cf6a41b8ead391ce5d32b, type: 2}
+  randomSeed: 0
   tiles:
   - {fileID: 11400000, guid: 21b714b85b8e87543b741000435d9a26, type: 2}
   - {fileID: 11400000, guid: c1bdc822ba25c0c45bdc8f56f280ab1a, type: 2}
