@@ -8,6 +8,7 @@ public class WorldManager : MonoBehaviour
     [SerializeField] Tilemap collisionTilemap;
     [SerializeField] Tile collisionTile;
     [SerializeField] int randomSeed;
+    [SerializeField] Vector2Int noiseScale;
     [SerializeField] Tile[] tiles;
 
     GameMaster gm;
@@ -39,7 +40,7 @@ public class WorldManager : MonoBehaviour
             return;
         }
 
-        noise = new Noise(randomSeed);
+        noise = new Noise(randomSeed, noiseScale.x, noiseScale.y);
         int size = 10;
         for (int y = -size; y <= size; y++)
         {
