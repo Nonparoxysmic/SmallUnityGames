@@ -31,8 +31,8 @@ public class Noise
     {
         if (horzScale == 1 && vertScale == 1) { return SeededRandomValue(x, y); }
 
-        int cellX = Floor(x, horzScale);
-        int cellY = Floor(y, vertScale);
+        int cellX = x.Floor(horzScale);
+        int cellY = y.Floor(vertScale);
         float sum = 0;
         foreach (Vector2Int cornerVector in cornerVectors)
         {
@@ -52,10 +52,5 @@ public class Noise
         uint hashOutput = BitConverter.ToUInt32(hashAlgorithm.ComputeHash(hashInput), 0);
         float output = (float)hashOutput / uint.MaxValue;
         return output == 1 ? 0 : output;
-    }
-
-    int Floor(int input, int multiple)
-    {
-        return (int)Math.Floor((float)input / multiple) * multiple;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,5 +35,16 @@ public static class Extensions
             }
         }
         return itemFound;
+    }
+
+    public static int Floor(this int input, int significance)
+    {
+        return ((float)input).Floor(significance);
+    }
+
+    public static int Floor(this float input, int significance)
+    {
+        if (significance == 0) { return 0; }
+        return (int)Math.Floor(input / significance) * significance;
     }
 }
