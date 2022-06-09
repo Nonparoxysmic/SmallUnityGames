@@ -8,6 +8,7 @@ public class WorldManager : MonoBehaviour
     [SerializeField] Tilemap collisionTilemap;
     [SerializeField] Tile collisionTile;
     [SerializeField] int randomSeed;
+    [SerializeField] bool randomizeSeed;
     [SerializeField] Vector2Int noiseScale;
     [SerializeField] Tile[] tiles;
 
@@ -40,20 +41,12 @@ public class WorldManager : MonoBehaviour
             return;
         }
 
+        if (randomizeSeed) { randomSeed = Random.Range(int.MinValue, int.MaxValue); }
         noise = new Noise(randomSeed, noiseScale.x, noiseScale.y);
-        int size = 10;
-        for (int y = -size; y <= size; y++)
-        {
-            for (int x = -size; x <= size; x++)
-            {
-                int temp = (int)(4 * noise.Value(x, y));
-                if (Mathf.Abs(x) < 2 && Mathf.Abs(y) < 2)
-                {
-                    temp = Mathf.Max(temp, 1);
-                }
-                SetTile(backgroundTilemap, x, y, tiles[temp], temp == 0);
-            }
-        }
+        GenerateChunk(-1, -1);
+        GenerateChunk(0, -1);
+        GenerateChunk(-1, 0);
+        GenerateChunk(0, 0);
     }
 
     void FixedUpdate()
@@ -92,6 +85,28 @@ public class WorldManager : MonoBehaviour
         {
             collisionTilemap.SetTile(position, null);
             collidersToAdd.Remove((x, y));
+        }
+    }
+
+    void GenerateChunk(int offsetX, int offsetY)
+    {
+        Vector2Int chunkPos = new Vector2Int(10 * offsetX, 10 * offsetY);
+        Vector2Int tilePos = Vector2Int.zero;
+        for (int deltaY = 0; deltaY < 10; deltaY++)
+        {
+            for (int deltaX = 0; deltaX < 10; deltaX++)
+            {
+                tilePos.x = chunkPos.x + deltaX;
+                tilePos.y = chunkPos.y + deltaY;
+
+                // Temporary tile generation:
+                int temp = (int)(4 * noise.Value(tilePos.x, tilePos.y));
+                if (Mathf.Abs(tilePos.x) < 2 && Mathf.Abs(tilePos.y) < 2)
+                {
+                    temp = Mathf.Max(temp, 1);
+                }
+                SetTile(backgroundTilemap, tilePos.x, tilePos.y, tiles[temp], temp == 0);
+            }
         }
     }
 }
