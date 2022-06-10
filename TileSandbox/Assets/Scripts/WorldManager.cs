@@ -4,16 +4,30 @@ using UnityEngine.Tilemaps;
 
 public class WorldManager : MonoBehaviour
 {
+    static readonly Vector3Int[] adjacentDirections = new Vector3Int[]
+    {
+        new Vector3Int(-1,  0,  0),
+        new Vector3Int(-1, -1,  0),
+        new Vector3Int( 0, -1,  0),
+        new Vector3Int( 1, -1,  0),
+        new Vector3Int( 1,  0,  0),
+        new Vector3Int( 1,  1,  0),
+        new Vector3Int( 0,  1,  0),
+        new Vector3Int(-1,  1,  0)
+    };
+
     [SerializeField] Tilemap backgroundTilemap;
     [SerializeField] Tilemap collisionTilemap;
     [SerializeField] Tile collisionTile;
     [SerializeField] int randomSeed;
     [SerializeField] bool randomizeSeed;
     [SerializeField] Vector2Int noiseScale;
+    [SerializeField] Vector3Int playerChunk;
     [SerializeField] Tile[] tiles;
 
     GameMaster gm;
 
+    readonly int chunkSize = 16;
     Noise noise;
     readonly Queue<(int, int)> collidersToAdd = new Queue<(int, int)>();
 
@@ -43,15 +57,32 @@ public class WorldManager : MonoBehaviour
 
         if (randomizeSeed) { randomSeed = Random.Range(int.MinValue, int.MaxValue); }
         noise = new Noise(randomSeed, noiseScale.x, noiseScale.y);
-        GenerateChunk(-1, -1);
-        GenerateChunk(0, -1);
-        GenerateChunk(-1, 0);
+        playerChunk = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
         GenerateChunk(0, 0);
     }
 
     void FixedUpdate()
     {
         Vector3 playerPos = gm.PlayerPosition();
+        Vector3Int currentPlayerChunk = ChunkOffset(playerPos);
+        bool changedChunk = false;
+        if (currentPlayerChunk != playerChunk)
+        {
+            changedChunk = true;
+            playerChunk = currentPlayerChunk;
+        }
+        if (changedChunk)
+        {
+            foreach (Vector3Int adjacentDirection in adjacentDirections)
+            {
+                Vector3Int chunk = playerChunk + adjacentDirection;
+                if (backgroundTilemap.GetTile(chunkSize * chunk) == null)
+                {
+                    GenerateChunk(chunk);
+                }
+            }
+        }
+
         int pending = collidersToAdd.Count;
         for (int i = 0; i < pending; i++)
         {
@@ -88,13 +119,18 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+    void GenerateChunk(Vector3Int offsetVector)
+    {
+        GenerateChunk(offsetVector.x, offsetVector.y);
+    }
+
     void GenerateChunk(int offsetX, int offsetY)
     {
-        Vector2Int chunkPos = new Vector2Int(10 * offsetX, 10 * offsetY);
+        Vector2Int chunkPos = new Vector2Int(chunkSize * offsetX, chunkSize * offsetY);
         Vector2Int tilePos = Vector2Int.zero;
-        for (int deltaY = 0; deltaY < 10; deltaY++)
+        for (int deltaY = 0; deltaY < chunkSize; deltaY++)
         {
-            for (int deltaX = 0; deltaX < 10; deltaX++)
+            for (int deltaX = 0; deltaX < chunkSize; deltaX++)
             {
                 tilePos.x = chunkPos.x + deltaX;
                 tilePos.y = chunkPos.y + deltaY;
@@ -108,5 +144,12 @@ public class WorldManager : MonoBehaviour
                 SetTile(backgroundTilemap, tilePos.x, tilePos.y, tiles[temp], temp == 0);
             }
         }
+    }
+
+    Vector3Int ChunkOffset(Vector3 position)
+    {
+        int x = position.x.Floor(chunkSize) / chunkSize;
+        int y = position.y.Floor(chunkSize) / chunkSize;
+        return new Vector3Int(x, y, 0);
     }
 }
