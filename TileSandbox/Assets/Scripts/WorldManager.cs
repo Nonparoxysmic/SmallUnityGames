@@ -29,6 +29,7 @@ public class WorldManager : MonoBehaviour
 
     readonly int chunkSize = 16;
     Noise noise;
+    readonly Queue<Vector3Int> chunksToGenerate = new Queue<Vector3Int>();
     readonly Queue<(int, int)> collidersToAdd = new Queue<(int, int)>();
 
     void Start()
@@ -78,9 +79,13 @@ public class WorldManager : MonoBehaviour
                 Vector3Int chunk = playerChunk + adjacentDirection;
                 if (backgroundTilemap.GetTile(chunkSize * chunk) == null)
                 {
-                    GenerateChunk(chunk);
+                    chunksToGenerate.Enqueue(chunk);
                 }
             }
+        }
+        if (chunksToGenerate.Count > 0)
+        {
+            GenerateChunk(chunksToGenerate.Dequeue());
         }
 
         int pending = collidersToAdd.Count;
