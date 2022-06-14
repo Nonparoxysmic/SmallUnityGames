@@ -18,17 +18,18 @@ public class WorldManager : MonoBehaviour
 
     [SerializeField] Tilemap backgroundTilemap;
     [SerializeField] Tilemap collisionTilemap;
+    [SerializeField] Tilemap objectTilemap;
     [SerializeField] Tile collisionTile;
     [SerializeField] int randomSeed;
     [SerializeField] bool randomizeSeed;
-    [SerializeField] Vector2Int noiseScale;
     [SerializeField] Vector3Int playerChunk;
     [SerializeField] Tile[] tiles;
 
     GameMaster gm;
 
     readonly int chunkSize = 16;
-    Noise noise;
+    Noise noise1;
+    Noise noise3;
     readonly Queue<Vector3Int> chunksToGenerate = new Queue<Vector3Int>();
     readonly Queue<(int, int)> collidersToAdd = new Queue<(int, int)>();
 
@@ -57,7 +58,8 @@ public class WorldManager : MonoBehaviour
         }
 
         if (randomizeSeed) { randomSeed = Random.Range(int.MinValue, int.MaxValue); }
-        noise = new Noise(randomSeed, noiseScale.x, noiseScale.y);
+        noise1 = new Noise(randomSeed, 1, 1);
+        noise3 = new Noise(randomSeed, 3, 3);
         playerChunk = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
         GenerateChunk(0, 0);
     }
@@ -141,12 +143,18 @@ public class WorldManager : MonoBehaviour
                 tilePos.y = chunkPos.y + deltaY;
 
                 // Temporary tile generation:
-                int temp = (int)(4 * noise.Value(tilePos.x, tilePos.y));
+                bool spawnArea = false;
+                int temp = (int)(4 * noise3.Value(tilePos.x, tilePos.y));
                 if (Mathf.Abs(tilePos.x) < 2 && Mathf.Abs(tilePos.y) < 2)
                 {
+                    spawnArea = true;
                     temp = Mathf.Max(temp, 1);
                 }
                 SetTile(backgroundTilemap, tilePos.x, tilePos.y, tiles[temp], temp == 0);
+                if (temp == 1 && !spawnArea && noise1.Value(tilePos.x, tilePos.y) < 0.0625)
+                {
+                    SetTile(objectTilemap, tilePos.x, tilePos.y, tiles[4], true);
+                }
             }
         }
     }
