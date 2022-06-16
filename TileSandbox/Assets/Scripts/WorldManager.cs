@@ -151,9 +151,15 @@ public class WorldManager : MonoBehaviour
                     temp = Mathf.Max(temp, 1);
                 }
                 SetTile(backgroundTilemap, tilePos.x, tilePos.y, tiles[temp], temp == 0);
-                if (temp == 1 && !spawnArea && noise1.Value(tilePos.x, tilePos.y) < 0.0625)
+                if (spawnArea) { continue; }
+                float objectNoise = noise1.Value(tilePos.x, tilePos.y);
+                if (temp == 1 && objectNoise < 0.0625)
                 {
                     SetTile(objectTilemap, tilePos.x, tilePos.y, tiles[4], true);
+                }
+                else if (temp > 0 && 0.0625 <= objectNoise && objectNoise < 0.0833)
+                {
+                    SetTile(objectTilemap, tilePos.x, tilePos.y, tiles[5], true);
                 }
             }
         }
