@@ -30,6 +30,7 @@ public class WorldManager : MonoBehaviour
     readonly int chunkSize = 16;
     Noise noise1;
     Noise noise3;
+    Noise noiseWide;
     readonly Queue<Vector3Int> chunksToGenerate = new Queue<Vector3Int>();
     readonly Queue<(int, int)> collidersToAdd = new Queue<(int, int)>();
 
@@ -60,6 +61,7 @@ public class WorldManager : MonoBehaviour
         if (randomizeSeed) { randomSeed = Random.Range(int.MinValue, int.MaxValue); }
         noise1 = new Noise(randomSeed, 1, 1);
         noise3 = new Noise(randomSeed, 3, 3);
+        noiseWide = new Noise(randomSeed, 29, 29);
         playerChunk = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
         GenerateChunk(0, 0);
     }
@@ -144,7 +146,21 @@ public class WorldManager : MonoBehaviour
 
                 // Temporary tile generation:
                 bool spawnArea = false;
-                int temp = (int)(4 * noise3.Value(tilePos.x, tilePos.y));
+                float noise3Value = noise3.Value(tilePos.x, tilePos.y);
+                float noiseWideValue = noiseWide.Value(tilePos.x, tilePos.y);
+                int temp;
+                if (noiseWideValue < 0.25)
+                {
+                    temp = (int)(4 * noise3Value * noiseWideValue);
+                }
+                else if (noiseWideValue < 0.5)
+                {
+                    temp = (int)(2 * (noise3Value + noiseWideValue));
+                }
+                else
+                {
+                    temp = (int)(4 * noise3Value);
+                }
                 if (Mathf.Abs(tilePos.x) < 2 && Mathf.Abs(tilePos.y) < 2)
                 {
                     spawnArea = true;
