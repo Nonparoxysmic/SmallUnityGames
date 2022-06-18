@@ -143,41 +143,45 @@ public class WorldManager : MonoBehaviour
             {
                 tilePos.x = chunkPos.x + deltaX;
                 tilePos.y = chunkPos.y + deltaY;
-
-                // Temporary tile generation:
-                bool spawnArea = false;
-                float noise3Value = noise3.Value(tilePos.x, tilePos.y);
-                float noiseWideValue = noiseWide.Value(tilePos.x, tilePos.y);
-                int temp;
-                if (noiseWideValue < 0.25)
-                {
-                    temp = (int)(4 * noise3Value * noiseWideValue);
-                }
-                else if (noiseWideValue < 0.5)
-                {
-                    temp = (int)(2 * (noise3Value + noiseWideValue));
-                }
-                else
-                {
-                    temp = (int)(4 * noise3Value);
-                }
-                if (Mathf.Abs(tilePos.x) < 2 && Mathf.Abs(tilePos.y) < 2)
-                {
-                    spawnArea = true;
-                    temp = Mathf.Max(temp, 1);
-                }
-                SetTile(backgroundTilemap, tilePos.x, tilePos.y, tiles[temp], temp == 0);
-                if (spawnArea) { continue; }
-                float objectNoise = noise1.Value(tilePos.x, tilePos.y);
-                if (temp == 1 && objectNoise < 0.0625)
-                {
-                    SetTile(objectTilemap, tilePos.x, tilePos.y, tiles[4], true);
-                }
-                else if (temp > 0 && 0.0625 <= objectNoise && objectNoise < 0.0833)
-                {
-                    SetTile(objectTilemap, tilePos.x, tilePos.y, tiles[5], true);
-                }
+                GenerateTile(tilePos.x, tilePos.y);
             }
+        }
+    }
+
+    void GenerateTile(int x, int y)
+    {
+        // Temporary tile generation:
+        bool spawnArea = false;
+        float noise3Value = noise3.Value(x, y);
+        float noiseWideValue = noiseWide.Value(x, y);
+        int temp;
+        if (noiseWideValue < 0.25)
+        {
+            temp = (int)(4 * noise3Value * noiseWideValue);
+        }
+        else if (noiseWideValue < 0.5)
+        {
+            temp = (int)(2 * (noise3Value + noiseWideValue));
+        }
+        else
+        {
+            temp = (int)(4 * noise3Value);
+        }
+        if (Mathf.Abs(x) < 2 && Mathf.Abs(y) < 2)
+        {
+            spawnArea = true;
+            temp = Mathf.Max(temp, 1);
+        }
+        SetTile(backgroundTilemap, x, y, tiles[temp], temp == 0);
+        if (spawnArea) { return; }
+        float objectNoise = noise1.Value(x, y);
+        if (temp == 1 && objectNoise < 0.0625)
+        {
+            SetTile(objectTilemap, x, y, tiles[4], true);
+        }
+        else if (temp > 0 && 0.0625 <= objectNoise && objectNoise < 0.0833)
+        {
+            SetTile(objectTilemap, x, y, tiles[5], true);
         }
     }
 
