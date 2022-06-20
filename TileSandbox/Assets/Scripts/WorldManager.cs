@@ -23,9 +23,9 @@ public class WorldManager : MonoBehaviour
     [SerializeField] int randomSeed;
     [SerializeField] bool randomizeSeed;
     [SerializeField] Vector3Int playerChunk;
-    [SerializeField] Tile[] tiles;
 
     GameMaster gm;
+    TileCollection tileCollection;
 
     readonly int chunkSize = 16;
     Noise noise1;
@@ -37,9 +37,15 @@ public class WorldManager : MonoBehaviour
     void Start()
     {
         gm = GetComponent<GameMaster>();
+        tileCollection = GetComponent<TileCollection>();
         if (gm is null)
         {
             this.Error("Missing or unavailable Game Master");
+            return;
+        }
+        if (tileCollection is null)
+        {
+            this.Error("Missing or unavailable Tile Collection");
             return;
         }
         if (backgroundTilemap is null)
@@ -150,7 +156,7 @@ public class WorldManager : MonoBehaviour
 
     void GenerateTile(int x, int y)
     {
-        // Temporary tile generation:
+        // TODO: Redo this method.
         bool spawnArea = false;
         float noise3Value = noise3.Value(x, y);
         float noiseWideValue = noiseWide.Value(x, y);
@@ -172,16 +178,16 @@ public class WorldManager : MonoBehaviour
             spawnArea = true;
             temp = Mathf.Max(temp, 1);
         }
-        SetTile(backgroundTilemap, x, y, tiles[temp], temp == 0);
+        SetTile(backgroundTilemap, x, y, GetTile(temp), temp == 0);
         if (spawnArea) { return; }
         float objectNoise = noise1.Value(x, y);
         if (temp == 1 && objectNoise < 0.0625)
         {
-            SetTile(objectTilemap, x, y, tiles[4], true);
+            SetTile(objectTilemap, x, y, GetTile(4), true);
         }
         else if (temp > 0 && 0.0625 <= objectNoise && objectNoise < 0.0833)
         {
-            SetTile(objectTilemap, x, y, tiles[5], true);
+            SetTile(objectTilemap, x, y, GetTile(5), true);
         }
     }
 
@@ -190,5 +196,10 @@ public class WorldManager : MonoBehaviour
         int x = position.x.Floor(chunkSize) / chunkSize;
         int y = position.y.Floor(chunkSize) / chunkSize;
         return new Vector3Int(x, y, 0);
+    }
+
+    Tile GetTile(int index)
+    {
+        return tileCollection.GetTile(index);
     }
 }

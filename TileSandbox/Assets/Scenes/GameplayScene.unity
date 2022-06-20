@@ -1340,6 +1340,7 @@ GameObject:
   - component: {fileID: 1937505618}
   - component: {fileID: 1937505619}
   - component: {fileID: 1937505620}
+  - component: {fileID: 1937505621}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -1428,7 +1429,19 @@ MonoBehaviour:
   randomSeed: 0
   randomizeSeed: 0
   playerChunk: {x: 0, y: 0, z: 0}
-  tiles:
+--- !u!114 &1937505621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937505615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be31bf59185c9304f9725406291e8431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicTiles:
   - {fileID: 11400000, guid: 21b714b85b8e87543b741000435d9a26, type: 2}
   - {fileID: 11400000, guid: c1bdc822ba25c0c45bdc8f56f280ab1a, type: 2}
   - {fileID: 11400000, guid: 42206e31e5eb88f4aae4acbfbe1178c0, type: 2}
