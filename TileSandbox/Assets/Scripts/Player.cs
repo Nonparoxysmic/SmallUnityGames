@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
 
     public void Move(int direction)
     {
-        if (direction < 0 || direction >= 8) { return; }
+        if (!direction.InRange(0, 8)) { return; }
 
         float speed = isStrafing ? normalSpeed / 2 : normalSpeed;
         Vector3 move = speed * Time.fixedDeltaTime * Utilities.DirectionVector(direction);

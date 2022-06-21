@@ -30,7 +30,7 @@ public class TileCollection : MonoBehaviour
 
     public Tile GetTile(int index)
     {
-        if (0 <= index && index < basicTiles.Length)
+        if (index.InRange(0, basicTiles.Length))
         {
             return basicTiles[index];
         }

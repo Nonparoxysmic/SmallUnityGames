@@ -37,7 +37,7 @@ public class Toolbar : MonoBehaviour
 
     public void SetCurrent(int option)
     {
-        if (option < 0 || option >= Size) { return; }
+        if (!option.InRange(0, Size)) { return; }
 
         current = option;
         float x = -0.5f * (Size - 1) + current;

@@ -53,7 +53,7 @@ public class GameMaster : MonoBehaviour
 
     public Vector3 PlayerFacingPosition(int direction)
     {
-        if (direction < 0 || direction >= 8)
+        if (!direction.InRange(0, 8))
         {
             return PlayerFacingPosition();
         }
@@ -62,7 +62,7 @@ public class GameMaster : MonoBehaviour
 
     public void SetPlayerFacingDirection(int direction)
     {
-        if (direction < 0 || direction >= 8) { return; }
+        if (!direction.InRange(0, 8)) { return; }
 
         if (!player.isStrafing)
         {
@@ -82,7 +82,7 @@ public class GameMaster : MonoBehaviour
 
     public void OnDirectionalInput(int direction)
     {
-        if (direction < 0 || direction >= 8) { return; }
+        if (!direction.InRange(0, 8)) { return; }
 
         player.Move(direction);
         playerIsMoving = true;
@@ -114,7 +114,7 @@ public class GameMaster : MonoBehaviour
 
     public void ChangeTool(int option)
     {
-        if (option < 0 || option >= toolbar.Size) { return; }
+        if (!option.InRange(0, toolbar.Size)) { return; }
 
         toolbar.SetCurrent(option);
     }

@@ -23,7 +23,7 @@ public static class Utilities
 
     public static Vector3 DirectionVector(int direction)
     {
-        if (direction < 0 || direction >= 8)
+        if (!direction.InRange(0, 8))
         {
             return Vector3.zero;
         }

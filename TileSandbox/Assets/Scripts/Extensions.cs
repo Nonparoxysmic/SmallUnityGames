@@ -47,4 +47,10 @@ public static class Extensions
         if (significance == 0) { return 0; }
         return (int)Math.Floor(input / significance) * significance;
     }
+
+    public static bool InRange(this int N, int inclusiveLowerBound, int exclusiveUpperBound)
+    {
+        if (inclusiveLowerBound >= exclusiveUpperBound) { return false; }
+        return inclusiveLowerBound <= N && N < exclusiveUpperBound;
+    }
 }
