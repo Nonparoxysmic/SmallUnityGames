@@ -185,7 +185,7 @@ public class WorldManager : MonoBehaviour
         {
             SetTile(objectTilemap, x, y, GetTile(4), true);
         }
-        else if (temp > 0 && 0.0625 <= objectNoise && objectNoise < 0.0833)
+        else if (temp > 0 && objectNoise.InRange(0.0625, 0.0833))
         {
             SetTile(objectTilemap, x, y, GetTile(5), true);
         }

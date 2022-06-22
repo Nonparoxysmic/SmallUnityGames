@@ -53,4 +53,10 @@ public static class Extensions
         if (inclusiveLowerBound >= exclusiveUpperBound) { return false; }
         return inclusiveLowerBound <= N && N < exclusiveUpperBound;
     }
+
+    public static bool InRange(this float X, double inclusiveLowerBound, double exclusiveUpperBound)
+    {
+        if (inclusiveLowerBound >= exclusiveUpperBound) { return false; }
+        return inclusiveLowerBound <= X && X < exclusiveUpperBound;
+    }
 }
