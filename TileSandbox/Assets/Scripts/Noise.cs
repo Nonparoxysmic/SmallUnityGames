@@ -51,6 +51,6 @@ public class Noise
         byte[] hashInput = seed.Concat(coordBytes).ToArray();
         uint hashOutput = BitConverter.ToUInt32(hashAlgorithm.ComputeHash(hashInput), 0);
         float output = (float)hashOutput / uint.MaxValue;
-        return output == 1 ? 0 : output;
+        return output;
     }
 }

@@ -28,9 +28,9 @@ public class WorldManager : MonoBehaviour
     TileCollection tileCollection;
 
     readonly int chunkSize = 16;
-    Noise noise1;
-    Noise noise3;
-    Noise noiseWide;
+    Noise biomeNoise;
+    Noise biomeType;
+    Noise objectNoise;
     readonly Queue<Vector3Int> chunksToGenerate = new Queue<Vector3Int>();
     readonly Queue<(int, int)> collidersToAdd = new Queue<(int, int)>();
 
@@ -65,9 +65,9 @@ public class WorldManager : MonoBehaviour
         }
 
         if (randomizeSeed) { randomSeed = Random.Range(int.MinValue, int.MaxValue); }
-        noise1 = new Noise(randomSeed, 1, 1);
-        noise3 = new Noise(randomSeed, 3, 3);
-        noiseWide = new Noise(randomSeed, 29, 29);
+        biomeType = new Noise(randomSeed, 11, 11);
+        biomeNoise = new Noise(randomSeed, 5, 5);
+        objectNoise = new Noise(randomSeed, 1, 1);
         playerChunk = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
         GenerateChunk(0, 0);
     }
@@ -156,38 +156,56 @@ public class WorldManager : MonoBehaviour
 
     void GenerateTile(int x, int y)
     {
-        // TODO: Redo this method.
-        bool spawnArea = false;
-        float noise3Value = noise3.Value(x, y);
-        float noiseWideValue = noiseWide.Value(x, y);
-        int temp;
-        if (noiseWideValue < 0.25)
+        float biomeValue = biomeType.Value(x, y) + 0.25f * biomeNoise.Value(x, y) - 0.125f;
+        float objectValue = objectNoise.Value(x, y);
+
+        // Near the spawn point, force land and disallow objects.
+        int stepsFromSpawn = Mathf.Abs(x) + Mathf.Abs(y);
+        float spawnRadius = 16f;
+        if (stepsFromSpawn < spawnRadius)
         {
-            temp = (int)(4 * noise3Value * noiseWideValue);
+            biomeValue = Mathf.Max(biomeValue, (spawnRadius - stepsFromSpawn) / spawnRadius);
+            if (stepsFromSpawn < 3)
+            {
+                objectValue = 0;
+            }
         }
-        else if (noiseWideValue < 0.5)
+
+        if (biomeValue < 0.5)
         {
-            temp = (int)(2 * (noise3Value + noiseWideValue));
+            // Ocean Tile
+            SetTile(backgroundTilemap, x, y, GetTile(0), true);
+            if (objectValue >= 0.98)
+            {
+                SetTile(objectTilemap, x, y, GetTile(5), true);
+            }
+        }
+        else if (biomeValue.InRange(0.5, 0.667))
+        {
+            // Beach Tile
+            SetTile(backgroundTilemap, x, y, GetTile(1), false);
+            if (objectValue >= 0.96)
+            {
+                SetTile(objectTilemap, x, y, GetTile(4), true);
+            }
+            else if (objectValue >= 0.92)
+            {
+                SetTile(objectTilemap, x, y, GetTile(5), true);
+            }
         }
         else
         {
-            temp = (int)(4 * noise3Value);
-        }
-        if (Mathf.Abs(x) < 2 && Mathf.Abs(y) < 2)
-        {
-            spawnArea = true;
-            temp = Mathf.Max(temp, 1);
-        }
-        SetTile(backgroundTilemap, x, y, GetTile(temp), temp == 0);
-        if (spawnArea) { return; }
-        float objectNoise = noise1.Value(x, y);
-        if (temp == 1 && objectNoise < 0.0625)
-        {
-            SetTile(objectTilemap, x, y, GetTile(4), true);
-        }
-        else if (temp > 0 && objectNoise.InRange(0.0625, 0.0833))
-        {
-            SetTile(objectTilemap, x, y, GetTile(5), true);
+            // Land Tile
+            SetTile(backgroundTilemap, x, y, GetTile(2), false);
+            if (objectValue >= 0.92)
+            {
+                SetTile(objectTilemap, x, y, GetTile(4), true);
+            }
+            else if (objectValue >= 0.84)
+            {
+                SetTile(backgroundTilemap, x, y, GetTile(3), true);
+                SetTile(objectTilemap, x, y, GetTile(5), true);
+            }
         }
     }
 
