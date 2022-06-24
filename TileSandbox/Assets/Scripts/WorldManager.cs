@@ -19,12 +19,12 @@ public class WorldManager : MonoBehaviour
     [SerializeField] Tilemap backgroundTilemap;
     [SerializeField] Tilemap collisionTilemap;
     [SerializeField] Tilemap objectTilemap;
-    [SerializeField] Tile collisionTile;
     [SerializeField] int randomSeed;
     [SerializeField] bool randomizeSeed;
     [SerializeField] Vector3Int playerChunk;
 
     GameMaster gm;
+    Tile collisionTile;
     TileCollection tileCollection;
 
     readonly int chunkSize = 16;
@@ -58,11 +58,15 @@ public class WorldManager : MonoBehaviour
             this.Error("Collision Tilemap reference not set in Inspector.");
             return;
         }
-        if (collisionTile is null)
-        {
-            this.Error("Collision Tile reference not set in Inspector.");
-            return;
-        }
+        collisionTile = ScriptableObject.CreateInstance<Tile>();
+        collisionTile.sprite = Sprite.Create
+            (
+                Texture2D.whiteTexture,
+                new Rect(0, 0, 4, 4),
+                new Vector2(0.5f, 0.5f),
+                4
+            );
+        collisionTile.colliderType = Tile.ColliderType.Sprite;
 
         if (randomizeSeed) { randomSeed = Random.Range(int.MinValue, int.MaxValue); }
         biomeType = new Noise(randomSeed, 11, 11);

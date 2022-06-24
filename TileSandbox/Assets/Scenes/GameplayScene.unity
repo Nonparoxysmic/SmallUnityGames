@@ -1425,7 +1425,6 @@ MonoBehaviour:
   backgroundTilemap: {fileID: 1119367439}
   collisionTilemap: {fileID: 777854494}
   objectTilemap: {fileID: 554954545}
-  collisionTile: {fileID: 11400000, guid: 83abd0d3768cf6a41b8ead391ce5d32b, type: 2}
   randomSeed: 0
   randomizeSeed: 0
   playerChunk: {x: 0, y: 0, z: 0}
