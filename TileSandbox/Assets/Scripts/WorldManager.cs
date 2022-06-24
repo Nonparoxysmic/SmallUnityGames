@@ -224,4 +224,9 @@ public class WorldManager : MonoBehaviour
     {
         return tileCollection.GetTile(index);
     }
+
+    Tile GetHoleTile(int index)
+    {
+        return tileCollection.GetHoleTile(index);
+    }
 }

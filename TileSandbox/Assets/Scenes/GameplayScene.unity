@@ -1447,3 +1447,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e447af76df872aa4e8516c9e5b8ed2bf, type: 2}
   - {fileID: 11400000, guid: 0d49c7fadb530c4419c323450e7fe1cc, type: 2}
   - {fileID: 11400000, guid: e7ce762adf2ccb64ca892a7ba5597049, type: 2}
+  holeGradientSprite: {fileID: 21300000, guid: c0529bca110c4c64b83631fdbed65c34, type: 3}
