@@ -34,4 +34,28 @@ public static class Utilities
     {
         return Math.Abs(a - b) == 1 || (a == 0 && b == 7) || (b == 0 && a == 7);
     }
+
+    public static Sprite BlankSquareSprite(int size, Color color)
+    {
+        size = Math.Max(1, Math.Abs(size));
+
+        Texture2D texture = new Texture2D(size, size);
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                texture.SetPixel(x, y, color);
+            }
+        }
+        texture.Apply();
+
+        Sprite sprite = Sprite.Create
+            (
+                texture,
+                new Rect(0, 0, size, size),
+                new Vector2(0.5f, 0.5f),
+                size
+            );
+        return sprite;
+    }
 }

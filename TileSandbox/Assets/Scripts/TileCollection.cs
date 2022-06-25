@@ -8,6 +8,7 @@ public class TileCollection : MonoBehaviour
     [SerializeField] Sprite holeGradientSprite;
 
     readonly Dictionary<int, Tile> holeTiles = new Dictionary<int, Tile>();
+    Tile holeBaseTile;
     Tile noTile;
 
     void Start()
@@ -25,14 +26,10 @@ public class TileCollection : MonoBehaviour
         }
 
         noTile = ScriptableObject.CreateInstance<Tile>();
-        noTile.sprite = Sprite.Create
-            (
-                Texture2D.whiteTexture,
-                new Rect(0, 0, 4, 4),
-                new Vector2(0.5f, 0.5f),
-                4
-            );
-        noTile.color = Color.magenta;
+        noTile.sprite = Utilities.BlankSquareSprite(128, Color.magenta);
+
+        holeBaseTile = ScriptableObject.CreateInstance<Tile>();
+        holeBaseTile.sprite = Utilities.BlankSquareSprite(4, Color.black);
     }
 
     public Tile GetTile(int index)
@@ -56,6 +53,11 @@ public class TileCollection : MonoBehaviour
             holeTiles.Add(index, holeTile);
             return holeTile;
         }
+    }
+
+    public Tile HoleBase()
+    {
+        return holeBaseTile;
     }
 
     private Tile CreateHoleTile(int index)

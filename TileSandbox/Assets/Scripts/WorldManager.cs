@@ -59,13 +59,7 @@ public class WorldManager : MonoBehaviour
             return;
         }
         collisionTile = ScriptableObject.CreateInstance<Tile>();
-        collisionTile.sprite = Sprite.Create
-            (
-                Texture2D.whiteTexture,
-                new Rect(0, 0, 4, 4),
-                new Vector2(0.5f, 0.5f),
-                4
-            );
+        collisionTile.sprite = Utilities.BlankSquareSprite(4, Color.white);
         collisionTile.colliderType = Tile.ColliderType.Sprite;
 
         if (randomizeSeed) { randomSeed = Random.Range(int.MinValue, int.MaxValue); }
@@ -223,6 +217,11 @@ public class WorldManager : MonoBehaviour
     Tile GetTile(int index)
     {
         return tileCollection.GetTile(index);
+    }
+
+    Tile GetHoleTile()
+    {
+        return tileCollection.HoleBase();
     }
 
     Tile GetHoleTile(int index)
