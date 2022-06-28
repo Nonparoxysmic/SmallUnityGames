@@ -31,6 +31,7 @@ public class WorldManager : MonoBehaviour
     Noise biomeNoise;
     Noise biomeType;
     Noise objectNoise;
+    readonly HashSet<(int, int)> holes = new HashSet<(int, int)>();
     readonly Queue<Vector3Int> chunksToGenerate = new Queue<Vector3Int>();
     readonly Queue<(int, int)> collidersToAdd = new Queue<(int, int)>();
 
@@ -114,6 +115,11 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+    void SetTile(Tilemap tilemap, int x, int y, Tile tile)
+    {
+        tilemap.SetTile(new Vector3Int(x, y, 0), tile);
+    }
+
     void SetTile(Tilemap tilemap, int x, int y, Tile tile, bool collision)
     {
         Vector3Int position = new Vector3Int(x, y, 0);
@@ -181,7 +187,7 @@ public class WorldManager : MonoBehaviour
         else if (biomeValue.InRange(0.5, 0.667))
         {
             // Beach Tile
-            SetTile(backgroundTilemap, x, y, GetTile(1), false);
+            SetTile(backgroundTilemap, x, y, GetTile(1));
             if (objectValue >= 0.96)
             {
                 SetTile(objectTilemap, x, y, GetTile(4), true);
@@ -194,7 +200,7 @@ public class WorldManager : MonoBehaviour
         else
         {
             // Land Tile
-            SetTile(backgroundTilemap, x, y, GetTile(2), false);
+            SetTile(backgroundTilemap, x, y, GetTile(2));
             if (objectValue >= 0.92)
             {
                 SetTile(objectTilemap, x, y, GetTile(4), true);
@@ -227,5 +233,26 @@ public class WorldManager : MonoBehaviour
     Tile GetHoleTile(int index)
     {
         return tileCollection.GetHoleTile(index);
+    }
+
+    public void AddHole(int x, int y)
+    {
+        if (!holes.Add((x, y))) { return; }
+
+        if (holes.Contains((x, y - 1)))
+        {
+            SetTile(backgroundTilemap, x, y - 1, GetHoleTile());
+        }
+
+        if (holes.Contains((x, y + 1)))
+        {
+            SetTile(backgroundTilemap, x, y, GetHoleTile(), true);
+        }
+        else
+        {
+            string nameOfTileAbove = backgroundTilemap.GetTile(new Vector3Int(x, y + 1, 0)).name;
+            int indexOfTileAbove = tileCollection.GetTileIndex(nameOfTileAbove);
+            SetTile(backgroundTilemap, x, y, GetHoleTile(indexOfTileAbove), true);
+        }
     }
 }

@@ -32,6 +32,19 @@ public class TileCollection : MonoBehaviour
         holeBaseTile.sprite = Utilities.BlankSquareSprite(4, Color.black);
     }
 
+    public int GetTileIndex(string name)
+    {
+        for (int i = 0; i < basicTiles.Length; i++)
+        {
+            Tile tile = basicTiles[i];
+            if (tile.name == name)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public Tile GetTile(int index)
     {
         if (index.InRange(0, basicTiles.Length))
@@ -43,6 +56,9 @@ public class TileCollection : MonoBehaviour
 
     public Tile GetHoleTile(int index)
     {
+        // Use dirt instead of grass.
+        if (index == 2) { index = 3; }
+
         if (holeTiles.ContainsKey(index))
         {
             return holeTiles[index];
@@ -105,6 +121,7 @@ public class TileCollection : MonoBehaviour
             }
         }
         outputTx.Apply();
+        outputTx.wrapMode = TextureWrapMode.Clamp;
         return outputTx;
     }
 }
