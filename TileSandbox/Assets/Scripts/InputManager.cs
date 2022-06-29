@@ -38,7 +38,7 @@ public class InputManager : MonoBehaviour
             previousMousePosition = Input.mousePosition;
             mouseMoved = true;
         }
-        for (int i = 0; i < Math.Min(gm.toolbarSize, 9); i++)
+        for (int i = 0; i < Math.Min(gm.ToolbarSize, 9); i++)
         {
             int key = i + 49;
             if (Input.GetKeyDown((KeyCode)key))

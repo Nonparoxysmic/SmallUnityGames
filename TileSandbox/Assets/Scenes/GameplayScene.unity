@@ -600,7 +600,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursor: {fileID: 1315982518}
-  squarePrefab: {fileID: 1408360812554045818, guid: f68ead33438d8074ea7dc9dd9cdd2e3d, type: 3}
+  backgroundPrefab: {fileID: 1408360812554045818, guid: f68ead33438d8074ea7dc9dd9cdd2e3d, type: 3}
+  iconPrefab: {fileID: 1540436522252478964, guid: eb48c4b4357f54f4ba07d1b977617731, type: 3}
+  toolSprites:
+  - {fileID: 21300000, guid: 2d0dfefb3fc65e2469387f59da6e0db2, type: 3}
+  - {fileID: 21300000, guid: 2d0dfefb3fc65e2469387f59da6e0db2, type: 3}
+  - {fileID: 21300000, guid: 2d0dfefb3fc65e2469387f59da6e0db2, type: 3}
+  - {fileID: 21300000, guid: 2d0dfefb3fc65e2469387f59da6e0db2, type: 3}
   current: 0
 --- !u!1 &777854491
 GameObject:
@@ -1102,7 +1108,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1315982517}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 657855918}
@@ -1394,7 +1400,6 @@ MonoBehaviour:
   player: {fileID: 1502007579}
   toolbar: {fileID: 657855919}
   playerIsMoving: 0
-  toolbarSize: 4
   actionProgress: 0
 --- !u!114 &1937505619
 MonoBehaviour:

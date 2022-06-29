@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour
 {
+    public int ToolbarSize { get => 4; }
+
     [SerializeField] Player player;
     [SerializeField] Toolbar toolbar;
 
     [HideInInspector] public bool playerIsMoving;
-    public int toolbarSize;
     public int actionProgress;
 
     WorldManager worldManager;
@@ -32,12 +33,7 @@ public class GameMaster : MonoBehaviour
             this.Error("Toolbar reference not set in Inspector.");
             return;
         }
-        if (toolbarSize < 1 || toolbarSize > 9)
-        {
-            this.Error("Toolbar size must be in the range [1, 9].");
-            return;
-        }
-        toolbar.Create(toolbarSize);
+        toolbar.Create(ToolbarSize);
         playerIsMoving = true;
     }
 
@@ -114,8 +110,6 @@ public class GameMaster : MonoBehaviour
 
     public void ChangeTool(int option)
     {
-        if (!option.InRange(0, toolbar.Size)) { return; }
-
         toolbar.SetCurrent(option);
     }
 }
