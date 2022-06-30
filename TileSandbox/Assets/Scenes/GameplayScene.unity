@@ -603,7 +603,7 @@ MonoBehaviour:
   backgroundPrefab: {fileID: 1408360812554045818, guid: f68ead33438d8074ea7dc9dd9cdd2e3d, type: 3}
   iconPrefab: {fileID: 1540436522252478964, guid: eb48c4b4357f54f4ba07d1b977617731, type: 3}
   toolSprites:
-  - {fileID: 21300000, guid: 2d0dfefb3fc65e2469387f59da6e0db2, type: 3}
+  - {fileID: 21300000, guid: 7c65b923138446a4fa3f58f34e559a94, type: 3}
   - {fileID: 21300000, guid: 2d0dfefb3fc65e2469387f59da6e0db2, type: 3}
   - {fileID: 21300000, guid: 2d0dfefb3fc65e2469387f59da6e0db2, type: 3}
   - {fileID: 21300000, guid: 2d0dfefb3fc65e2469387f59da6e0db2, type: 3}

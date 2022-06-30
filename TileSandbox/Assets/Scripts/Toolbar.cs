@@ -58,7 +58,7 @@ public class Toolbar : MonoBehaviour
         iconSpriteRenderers = srList.ToArray();
         for (int i = 0; i < toolSprites.Length; i++)
         {
-            SetIcon(i, toolSprites[i]);
+            ResetIcon(i);
         }
         SetCurrent(0);
     }
@@ -80,5 +80,11 @@ public class Toolbar : MonoBehaviour
             this.Error("Missing or unavailable Sprite Renderer.");
         }
         iconSpriteRenderers[index].sprite = sprite;
+    }
+
+    void ResetIcon(int index)
+    {
+        if (!index.InRange(0, toolSprites.Length)) { return; }
+        SetIcon(index, toolSprites[index]);
     }
 }
