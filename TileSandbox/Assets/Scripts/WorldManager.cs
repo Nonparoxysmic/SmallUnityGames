@@ -255,4 +255,16 @@ public class WorldManager : MonoBehaviour
             SetTile(backgroundTilemap, x, y, GetHoleTile(indexOfTileAbove), true);
         }
     }
+
+    public bool RemoveHole(int x, int y, int tileIndex)
+    {
+        if (!holes.Remove((x, y))) { return false; }
+
+        if (holes.Contains((x, y - 1)))
+        {
+            SetTile(backgroundTilemap, x, y - 1, GetHoleTile(tileIndex));
+        }
+        SetTile(backgroundTilemap, x, y, GetTile(tileIndex), false);
+        return true;
+    }
 }
