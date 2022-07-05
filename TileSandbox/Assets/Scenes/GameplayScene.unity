@@ -605,7 +605,7 @@ MonoBehaviour:
   toolSprites:
   - {fileID: 21300000, guid: 7c65b923138446a4fa3f58f34e559a94, type: 3}
   - {fileID: 21300000, guid: fa80fc4cc8a92dd489a52e5d07035aaf, type: 3}
-  - {fileID: 21300000, guid: 2d0dfefb3fc65e2469387f59da6e0db2, type: 3}
+  - {fileID: 21300000, guid: c0d5b6d51527636498ee52de7592ccb6, type: 3}
   - {fileID: 21300000, guid: 2d0dfefb3fc65e2469387f59da6e0db2, type: 3}
   current: 0
 --- !u!1 &777854491
