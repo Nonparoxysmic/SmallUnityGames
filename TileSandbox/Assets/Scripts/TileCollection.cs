@@ -4,6 +4,8 @@ using UnityEngine.Tilemaps;
 
 public class TileCollection : MonoBehaviour
 {
+    public string WaterTileName { get; private set; }
+
     [SerializeField] Tile[] basicTiles;
     [SerializeField] Sprite holeGradientSprite;
 
@@ -24,6 +26,8 @@ public class TileCollection : MonoBehaviour
         {
             this.Error("Hole gradient sprite not set in Inspector.");
         }
+
+        WaterTileName = basicTiles[0].name;
 
         noTile = ScriptableObject.CreateInstance<Tile>();
         noTile.sprite = Utilities.BlankSquareSprite(128, Color.magenta);

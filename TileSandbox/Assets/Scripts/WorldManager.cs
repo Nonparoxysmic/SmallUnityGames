@@ -34,6 +34,7 @@ public class WorldManager : MonoBehaviour
     readonly HashSet<(int, int)> holes = new HashSet<(int, int)>();
     readonly Queue<Vector3Int> chunksToGenerate = new Queue<Vector3Int>();
     readonly Queue<(int, int)> collidersToAdd = new Queue<(int, int)>();
+    readonly Queue<(int, int)> pendingTileUpdates = new Queue<(int, int)>();
 
     void Start()
     {
@@ -111,6 +112,30 @@ public class WorldManager : MonoBehaviour
             else
             {
                 collidersToAdd.Enqueue(target);
+            }
+        }
+
+        if (pendingTileUpdates.Count > 0)
+        {
+            (int, int) tileCoords = pendingTileUpdates.Dequeue();
+            if (holes.Contains(tileCoords))
+            {
+                Vector3Int tilePosition = new Vector3Int(tileCoords.Item1, tileCoords.Item2, 0);
+                for (int i = 0; i < adjacentDirections.Length; i += 2)
+                {
+                    Vector3Int pos = tilePosition + adjacentDirections[i];
+                    if (backgroundTilemap.GetTile(pos).name == tileCollection.WaterTileName)
+                    {
+                        SetTile(backgroundTilemap, tileCoords.Item1, tileCoords.Item2, GetTile(0));
+                        holes.Remove(tileCoords);
+                        for (int j = 0; j < adjacentDirections.Length; j += 2)
+                        {
+                            pendingTileUpdates.Enqueue((tileCoords.Item1 + adjacentDirections[j].x,
+                                tileCoords.Item2 + adjacentDirections[j].y));
+                        }
+                        break;
+                    }
+                }
             }
         }
     }
@@ -254,6 +279,8 @@ public class WorldManager : MonoBehaviour
             int indexOfTileAbove = tileCollection.GetTileIndex(nameOfTileAbove);
             SetTile(backgroundTilemap, x, y, GetHoleTile(indexOfTileAbove), true);
         }
+
+        pendingTileUpdates.Enqueue((x, y));
     }
 
     public bool RemoveHole(int x, int y, int tileIndex)
