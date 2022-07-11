@@ -163,6 +163,21 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+    public int GetBackgroundTileIndex(int x, int y)
+    {
+        return GetTileIndex(backgroundTilemap, x, y);
+    }
+
+    public int GetObjectTileIndex(int x, int y)
+    {
+        return GetTileIndex(objectTilemap, x, y);
+    }
+
+    int GetTileIndex(Tilemap tilemap, int x, int y)
+    {
+        return tileCollection.GetTileIndex(tilemap.GetTile(new Vector3Int(x, y, 0)).name);
+    }
+
     void GenerateChunk(Vector3Int offsetVector)
     {
         GenerateChunk(offsetVector.x, offsetVector.y);

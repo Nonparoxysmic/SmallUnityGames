@@ -100,6 +100,11 @@ public class GameMaster : MonoBehaviour
         }
         actionProgress++;
 
+        int targetBackgroundTile = worldManager
+            .GetBackgroundTileIndex(currentTarget.Item1, currentTarget.Item2);
+        int targetObjectTile = worldManager
+            .GetObjectTileIndex(currentTarget.Item1, currentTarget.Item2);
+
         // TODO: Implement actions
         if (actionProgress > 30)
         {
