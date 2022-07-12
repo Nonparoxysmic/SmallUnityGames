@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour
 {
+    static readonly int[] actionTimes = new int[] { 10, 30, 30, 30, 10, 10, 10, 10 };
+
     public int ToolbarSize { get => 4; }
 
     [SerializeField] Player player;
@@ -12,8 +14,11 @@ public class GameMaster : MonoBehaviour
 
     WorldManager worldManager;
 
+    (int, int) currentTarget;
     int previousTool;
     (int, int) previousTarget;
+    int targetBackgroundTile;
+    int targetObjectTile;
 
     void Start()
     {
@@ -90,7 +95,7 @@ public class GameMaster : MonoBehaviour
         {
             previousTool = -1;
         }
-        (int, int) currentTarget = ((int)position.x, (int)position.y);
+        currentTarget = ((int)position.x, (int)position.y);
         if (currentTarget != previousTarget || toolbar.current != previousTool)
         {
             previousTarget = currentTarget;
@@ -100,21 +105,60 @@ public class GameMaster : MonoBehaviour
         }
         actionProgress++;
 
-        int targetBackgroundTile = worldManager
+        targetBackgroundTile = worldManager
             .GetBackgroundTileIndex(currentTarget.Item1, currentTarget.Item2);
-        int targetObjectTile = worldManager
+        targetObjectTile = worldManager
             .GetObjectTileIndex(currentTarget.Item1, currentTarget.Item2);
-
-        // TODO: Implement actions
-        if (actionProgress > 30)
+        if (IsValidTool(out int completeTime, out int actionNumber))
         {
-            Debug.Log("Action completed.");
-            actionProgress = -5;
+            if (actionProgress >= completeTime)
+            {
+                DoAction(actionNumber);
+                actionProgress = -5;
+            }
         }
     }
 
     public void ChangeTool(int option)
     {
         toolbar.SetCurrent(option);
+    }
+
+    bool IsValidTool(out int completeTime, out int actionNumber)
+    {
+        int x = currentTarget.Item1;
+        int y = currentTarget.Item2;
+        actionNumber = toolbar.current;
+        int item = player.inventory[toolbar.current];
+        if (item > 0) { actionNumber += 4; }
+        completeTime = actionTimes[actionNumber];
+
+        switch (actionNumber)
+        {
+            case 0:
+                return targetObjectTile == 5;
+            case 1:
+                if (targetObjectTile > 0) return false;
+                return targetBackgroundTile == 1 || 
+                    targetBackgroundTile == 2 || targetBackgroundTile == 3;
+            case 2:
+            case 3:
+                if (targetObjectTile < 0) return false;
+                return true;
+            case 4:
+                return targetObjectTile < 0;
+            case 5:
+                return targetBackgroundTile == 0 || worldManager.IsHole(x, y);
+            case 6:
+            case 7:
+            default:
+                return false;
+        }
+    }
+
+    void DoAction(int actionNumber)
+    {
+        // TODO: Implement actions.
+        Debug.Log($"Action #{actionNumber} fired.");
     }
 }

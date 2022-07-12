@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 
     public bool isStrafing;
     public int facingDirection = 2;
+    public int[] inventory = new int[4];
 
     Collider2D playerCollider;
 

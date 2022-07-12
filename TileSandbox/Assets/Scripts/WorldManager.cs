@@ -175,7 +175,8 @@ public class WorldManager : MonoBehaviour
 
     int GetTileIndex(Tilemap tilemap, int x, int y)
     {
-        return tileCollection.GetTileIndex(tilemap.GetTile(new Vector3Int(x, y, 0)).name);
+        TileBase tile = tilemap.GetTile(new Vector3Int(x, y, 0));
+        return tile is null ? -1 : tileCollection.GetTileIndex(tile.name);
     }
 
     void GenerateChunk(Vector3Int offsetVector)
@@ -308,5 +309,10 @@ public class WorldManager : MonoBehaviour
         }
         SetTile(backgroundTilemap, x, y, GetTile(tileIndex), false);
         return true;
+    }
+
+    public bool IsHole(int x, int y)
+    {
+        return holes.Contains((x, y));
     }
 }
