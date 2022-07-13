@@ -72,7 +72,7 @@ public class Toolbar : MonoBehaviour
         cursor.localPosition = new Vector3(x, cursor.localPosition.y, cursor.localPosition.z);
     }
 
-    void SetIcon(int index, Sprite sprite)
+    public void SetIcon(int index, Sprite sprite)
     {
         if (!index.InRange(0, iconSpriteRenderers.Length)) { return; }
         if (iconSpriteRenderers[index] == null)
@@ -82,7 +82,7 @@ public class Toolbar : MonoBehaviour
         iconSpriteRenderers[index].sprite = sprite;
     }
 
-    void ResetIcon(int index)
+    public void ResetIcon(int index)
     {
         if (!index.InRange(0, toolSprites.Length)) { return; }
         SetIcon(index, toolSprites[index]);

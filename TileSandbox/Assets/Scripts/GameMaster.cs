@@ -105,15 +105,15 @@ public class GameMaster : MonoBehaviour
         }
         actionProgress++;
 
-        targetBackgroundTile = worldManager
-            .GetBackgroundTileIndex(currentTarget.Item1, currentTarget.Item2);
-        targetObjectTile = worldManager
-            .GetObjectTileIndex(currentTarget.Item1, currentTarget.Item2);
-        if (IsValidTool(out int completeTime, out int actionNumber))
+        int x = currentTarget.Item1;
+        int y = currentTarget.Item2;
+        targetBackgroundTile = worldManager.GetBackgroundTileIndex(x, y);
+        targetObjectTile = worldManager.GetObjectTileIndex(x, y);
+        if (IsValidTool(x, y, out int completeTime, out int actionNumber))
         {
             if (actionProgress >= completeTime)
             {
-                DoAction(actionNumber);
+                DoAction(actionNumber, x, y);
                 actionProgress = -5;
             }
         }
@@ -124,10 +124,8 @@ public class GameMaster : MonoBehaviour
         toolbar.SetCurrent(option);
     }
 
-    bool IsValidTool(out int completeTime, out int actionNumber)
+    bool IsValidTool(int x, int y, out int completeTime, out int actionNumber)
     {
-        int x = currentTarget.Item1;
-        int y = currentTarget.Item2;
         actionNumber = toolbar.current;
         int item = player.inventory[toolbar.current];
         if (item > 0) { actionNumber += 4; }
@@ -156,9 +154,39 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    void DoAction(int actionNumber)
+    void DoAction(int actionNumber, int x, int y)
     {
         // TODO: Implement actions.
         Debug.Log($"Action #{actionNumber} fired.");
+
+        switch (actionNumber)
+        {
+            case 0:
+                player.inventory[toolbar.current] = targetObjectTile;
+                toolbar.SetIcon(toolbar.current, worldManager.GetTileSprite(targetObjectTile));
+                if (targetBackgroundTile == 0)
+                {
+                    worldManager.ClearObjectTile(x, y);
+                }
+                else
+                {
+                    worldManager.ClearObjectTile(x, y, false);
+                }
+                return;
+            case 1:
+            case 2:
+            case 3:
+                return;
+            case 4:
+                worldManager.SetObjectTile(x, y, player.inventory[toolbar.current], true);
+                player.inventory[toolbar.current] = 0;
+                toolbar.ResetIcon(0);
+                return;
+            case 5:
+            case 6:
+            case 7:
+            default:
+                return;
+        }
     }
 }

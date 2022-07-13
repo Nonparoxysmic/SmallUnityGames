@@ -163,6 +163,26 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+    public void SetObjectTile(int x, int y, int index)
+    {
+        SetTile(objectTilemap, x, y, GetTile(index));
+    }
+
+    public void SetObjectTile(int x, int y, int index, bool collision)
+    {
+        SetTile(objectTilemap, x, y, GetTile(index), collision);
+    }
+
+    public void ClearObjectTile(int x, int y)
+    {
+        SetTile(objectTilemap, x, y, null);
+    }
+
+    public void ClearObjectTile(int x, int y, bool collision)
+    {
+        SetTile(objectTilemap, x, y, null, collision);
+    }
+
     public int GetBackgroundTileIndex(int x, int y)
     {
         return GetTileIndex(backgroundTilemap, x, y);
@@ -264,6 +284,11 @@ public class WorldManager : MonoBehaviour
     Tile GetTile(int index)
     {
         return tileCollection.GetTile(index);
+    }
+
+    public Sprite GetTileSprite(int index)
+    {
+        return GetTile(index).sprite;
     }
 
     Tile GetHoleTile()
