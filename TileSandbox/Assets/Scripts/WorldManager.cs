@@ -183,6 +183,16 @@ public class WorldManager : MonoBehaviour
         SetTile(objectTilemap, x, y, null, collision);
     }
 
+    public void SetBackgroundTile(int x, int y, int index)
+    {
+        SetTile(backgroundTilemap, x, y, GetTile(index));
+    }
+
+    public void SetBackgroundTile(int x, int y, int index, bool collision)
+    {
+        SetTile(backgroundTilemap, x, y, GetTile(index), collision);
+    }
+
     public int GetBackgroundTileIndex(int x, int y)
     {
         return GetTileIndex(backgroundTilemap, x, y);

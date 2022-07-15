@@ -134,18 +134,29 @@ public class GameMaster : MonoBehaviour
         switch (actionNumber)
         {
             case 0:
+                // Pick Up
                 return targetObjectTile == 5;
             case 1:
-                if (targetObjectTile > 0) return false;
-                return targetBackgroundTile == 1 || 
-                    targetBackgroundTile == 2 || targetBackgroundTile == 3;
+                // Dig
+                if (targetObjectTile < 0)
+                {
+                    return targetBackgroundTile.EqualsOneOf(1, 2, 3);
+                }
+                if (targetObjectTile == 4) { return true; }
+                return false;
             case 2:
             case 3:
                 if (targetObjectTile < 0) return false;
                 return true;
             case 4:
+                // Drop
                 return targetObjectTile < 0;
             case 5:
+                // Un-Dig
+                if (player.inventory[toolbar.current] == 4)
+                {
+                    return targetObjectTile < 0 && targetBackgroundTile.EqualsOneOf(1, 2, 3);
+                }
                 return targetBackgroundTile == 0 || worldManager.IsHole(x, y);
             case 6:
             case 7:
@@ -156,37 +167,84 @@ public class GameMaster : MonoBehaviour
 
     void DoAction(int actionNumber, int x, int y)
     {
-        // TODO: Implement actions.
-        Debug.Log($"Action #{actionNumber} fired.");
-
         switch (actionNumber)
         {
             case 0:
-                player.inventory[toolbar.current] = targetObjectTile;
-                toolbar.SetIcon(toolbar.current, worldManager.GetTileSprite(targetObjectTile));
-                if (targetBackgroundTile == 0)
-                {
-                    worldManager.ClearObjectTile(x, y);
-                }
-                else
-                {
-                    worldManager.ClearObjectTile(x, y, false);
-                }
+                // Pick Up
+                PickUpObject(x, y);
                 return;
             case 1:
+                // Dig
+                if (targetObjectTile < 0)
+                {
+                    Dig(x, y);
+                }
+                if (targetObjectTile == 4)
+                {
+                    PickUpObject(x, y);
+                }
+                return;
             case 2:
             case 3:
                 return;
             case 4:
-                worldManager.SetObjectTile(x, y, player.inventory[toolbar.current], true);
-                player.inventory[toolbar.current] = 0;
-                toolbar.ResetIcon(0);
+                // Drop
+                DropObject(x, y);
                 return;
             case 5:
+                // Un-Dig
+                if (player.inventory[toolbar.current] == 4)
+                {
+                    DropObject(x, y);
+                }
+                else
+                {
+                    UnDig(x, y);
+                }
+                return;
             case 6:
             case 7:
             default:
                 return;
+        }
+
+        void PickUpObject(int x, int y)
+        {
+            player.inventory[toolbar.current] = targetObjectTile;
+            toolbar.SetIcon(toolbar.current, worldManager.GetTileSprite(targetObjectTile));
+            if (targetBackgroundTile == 0)
+            {
+                worldManager.ClearObjectTile(x, y);
+            }
+            else
+            {
+                worldManager.ClearObjectTile(x, y, false);
+            }
+        }
+
+        void DropObject(int x, int y)
+        {
+            worldManager.SetObjectTile(x, y, player.inventory[toolbar.current], true);
+            player.inventory[toolbar.current] = 0;
+            toolbar.ResetIcon(toolbar.current);
+        }
+
+        void Dig(int x, int y)
+        {
+            if (targetBackgroundTile == 2) { targetBackgroundTile = 3; }
+            player.inventory[toolbar.current] = targetBackgroundTile;
+            toolbar.SetIcon(toolbar.current, worldManager.GetTileSprite(targetBackgroundTile));
+            worldManager.AddHole(x, y);
+        }
+
+        void UnDig(int x, int y)
+        {
+            if (!worldManager.RemoveHole(x, y, player.inventory[toolbar.current]))
+            {
+                worldManager.SetBackgroundTile(x, y, player.inventory[toolbar.current], false);
+            }
+            player.inventory[toolbar.current] = 0;
+            toolbar.ResetIcon(toolbar.current);
         }
     }
 }

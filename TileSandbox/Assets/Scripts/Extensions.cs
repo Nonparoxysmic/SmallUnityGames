@@ -4,6 +4,11 @@ using UnityEngine;
 
 public static class Extensions
 {
+    public static bool EqualsOneOf(this int N, int a, int b, int c)
+    {
+        return N == a || N == b || N == c;
+    }
+
     public static bool EqualsOneOf(this int N, int a, int b, int c, int d)
     {
         return N == a || N == b || N == c || N == d;
