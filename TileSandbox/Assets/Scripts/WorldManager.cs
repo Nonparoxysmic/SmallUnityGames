@@ -28,6 +28,7 @@ public class WorldManager : MonoBehaviour
     TileCollection tileCollection;
 
     readonly int chunkSize = 16;
+    readonly int grassRange = 32;
     Noise biomeNoise;
     Noise biomeType;
     Noise objectNoise;
@@ -137,6 +138,28 @@ public class WorldManager : MonoBehaviour
                     }
                 }
             }
+        }
+
+        int grassTargetX = (int)playerPos.x + Random.Range(-grassRange, grassRange + 1);
+        int grassTargetY = (int)playerPos.y + Random.Range(-grassRange, grassRange + 1);
+        int grassTargetTile = GetBackgroundTileIndex(grassTargetX, grassTargetY);
+        if (grassTargetTile == 3)
+        {
+            for (int i = 0; i < adjacentDirections.Length; i += 2)
+            {
+                int adjacentX = grassTargetX + adjacentDirections[i].x;
+                int adjacentY = grassTargetY + adjacentDirections[i].y;
+                if (GetBackgroundTileIndex(adjacentX, adjacentY) == 2
+                    && GetObjectTileIndex(grassTargetX, grassTargetY) != 5)
+                {
+                    SetTile(backgroundTilemap, grassTargetX, grassTargetY, GetTile(2));
+                    break;
+                }
+            }
+        }
+        else if (GetObjectTileIndex(grassTargetX, grassTargetY) == 5 && grassTargetTile == 2)
+        {
+            SetTile(backgroundTilemap, grassTargetX, grassTargetY, GetTile(3));
         }
     }
 
