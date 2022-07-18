@@ -135,7 +135,7 @@ public class GameMaster : MonoBehaviour
         {
             case 0:
                 // Pick Up
-                return targetObjectTile == 5;
+                return targetObjectTile == 5 || targetObjectTile == 6;
             case 1:
                 // Dig
                 if (targetObjectTile < 0)
@@ -145,9 +145,11 @@ public class GameMaster : MonoBehaviour
                 if (targetObjectTile == 4) { return true; }
                 return false;
             case 2:
+                // Break
+                return false;
             case 3:
-                if (targetObjectTile < 0) return false;
-                return true;
+                // Carve
+                return targetObjectTile == 5;
             case 4:
                 // Drop
                 return targetObjectTile < 0;
@@ -185,7 +187,14 @@ public class GameMaster : MonoBehaviour
                 }
                 return;
             case 2:
+                // Break
+                return;
             case 3:
+                // Carve
+                if (targetObjectTile == 5)
+                {
+                    ChangeObject(x, y, 6);
+                }
                 return;
             case 4:
                 // Drop
@@ -245,6 +254,11 @@ public class GameMaster : MonoBehaviour
             }
             player.inventory[toolbar.current] = 0;
             toolbar.ResetIcon(toolbar.current);
+        }
+
+        void ChangeObject(int x, int y, int index)
+        {
+            worldManager.SetObjectTile(x, y, index);
         }
     }
 }
