@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
     [SerializeField] float normalSpeed;
 
     public bool isStrafing;
+    public bool onRaft;
     public int facingDirection = 2;
     public int[] inventory = new int[4];
 
@@ -48,12 +49,24 @@ public class Player : MonoBehaviour
         if (!direction.InRange(0, 8)) { return; }
 
         float speed = isStrafing ? normalSpeed / 2 : normalSpeed;
+        speed = onRaft ? speed / 2 : speed;
         Vector3 move = speed * Time.fixedDeltaTime * Utilities.DirectionVector(direction);
+        playerCollider.transform.position += move;
+    }
+
+    public void Teleport(int deltaX, int deltaY)
+    {
+        Vector3 move = new Vector3(deltaX, deltaY, 0);
         playerCollider.transform.position += move;
     }
 
     public Vector3 ColliderPosition()
     {
         return playerCollider.transform.position;
+    }
+
+    public void Collision(bool doCollision)
+    {
+        playerCollider.enabled = doCollision;
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -372,5 +373,22 @@ public class WorldManager : MonoBehaviour
     public bool IsHole(int x, int y)
     {
         return holes.Contains((x, y));
+    }
+
+    public void DropRaft(int x, int y)
+    {
+        (int, int) openWater = NearestOpenBackgroundTile(x, y, new int[] { 0 });
+        SetBackgroundTile(openWater.Item1, openWater.Item2, 8, false);
+    }
+
+    public (int, int) NearestOpenLand(int x, int y)
+    {
+        return NearestOpenBackgroundTile(x, y, new int[] { 1, 2, 3 });
+    }
+
+    (int, int) NearestOpenBackgroundTile(int x, int y, int[] tiles)
+    {
+        // TODO: Implement this.
+        return (x, y);
     }
 }
