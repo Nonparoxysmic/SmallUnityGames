@@ -1455,6 +1455,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0d49c7fadb530c4419c323450e7fe1cc, type: 2}
   - {fileID: 11400000, guid: e7ce762adf2ccb64ca892a7ba5597049, type: 2}
   - {fileID: 11400000, guid: 573fffdf1b3075b49aa3a113f38b92de, type: 2}
-  - {fileID: 11400000, guid: 83abd0d3768cf6a41b8ead391ce5d32b, type: 2}
-  - {fileID: 11400000, guid: 899082515f88a4049a059587a7398937, type: 2}
+  - {fileID: 11400000, guid: 054ea7131261edb42b9dfb4fc93e74ce, type: 2}
+  - {fileID: 11400000, guid: 0b164ce8e4546b2478f29d6bfbf420e5, type: 2}
   holeGradientSprite: {fileID: 21300000, guid: c0529bca110c4c64b83631fdbed65c34, type: 3}
