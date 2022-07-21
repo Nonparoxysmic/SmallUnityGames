@@ -388,7 +388,71 @@ public class WorldManager : MonoBehaviour
 
     (int, int) NearestOpenBackgroundTile(int x, int y, int[] tiles)
     {
-        // TODO: Implement this.
+        int currentBackground = GetTileIndex(backgroundTilemap, x, y);
+        int currentObject = GetTileIndex(objectTilemap, x, y);
+        if (tiles.Contains(currentBackground) && currentObject < 0)
+        {
+            return (x, y);
+        }
+        for (int i = 0; i < adjacentDirections.Length; i += 2)
+        {
+            int adjacentX = x + adjacentDirections[i].x;
+            int adjacentY = y + adjacentDirections[i].y;
+            currentBackground = GetTileIndex(backgroundTilemap, adjacentX, adjacentY);
+            currentObject = GetTileIndex(objectTilemap, adjacentX, adjacentY);
+            if (tiles.Contains(currentBackground) && currentObject < 0)
+            {
+                return (adjacentX, adjacentY);
+            }
+        }
+        for (int i = 1; i < adjacentDirections.Length; i += 2)
+        {
+            int adjacentX = x + adjacentDirections[i].x;
+            int adjacentY = y + adjacentDirections[i].y;
+            currentBackground = GetTileIndex(backgroundTilemap, adjacentX, adjacentY);
+            currentObject = GetTileIndex(objectTilemap, adjacentX, adjacentY);
+            if (tiles.Contains(currentBackground) && currentObject < 0)
+            {
+                return (adjacentX, adjacentY);
+            }
+        }
+
+        int currentX = x, currentY = y;
+        int xStop = x, yStop = y;
+        int xRange = 1, yRange = 1, xSign = 1, ySign = 1;
+        int timeout = 0;
+        while (timeout++ < 4096)
+        {
+            xStop += xRange * xSign;
+            while (currentX != xStop)
+            {
+                currentBackground = GetTileIndex(backgroundTilemap, currentX, currentY);
+                currentObject = GetTileIndex(objectTilemap, currentX, currentY);
+                if (tiles.Contains(currentBackground) && currentObject < 0)
+                {
+                    return (currentX, currentY);
+                }
+                currentX += xSign;
+            }
+            xRange++;
+            xSign *= -1;
+
+            yStop += yRange * ySign;
+            while (currentY != yStop)
+            {
+                currentBackground = GetTileIndex(backgroundTilemap, currentX, currentY);
+                currentObject = GetTileIndex(objectTilemap, currentX, currentY);
+                if (tiles.Contains(currentBackground) && currentObject < 0)
+                {
+                    return (currentX, currentY);
+                }
+                currentY += ySign;
+            }
+            yRange++;
+            ySign *= -1;
+        }
+        Debug.LogError(name + ": " + GetType() + ": "
+            + nameof(NearestOpenBackgroundTile) + ": No land found.");
         return (x, y);
     }
 }

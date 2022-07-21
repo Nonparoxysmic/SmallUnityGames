@@ -157,7 +157,7 @@ public class GameMaster : MonoBehaviour
         {
             case 0:
                 // Pick Up
-                return targetObjectTile == 5 || targetObjectTile == 6;
+                return targetObjectTile == 5 || targetObjectTile == 6 || targetBackgroundTile == 8;
             case 1:
                 // Dig
                 if (targetObjectTile < 0)
@@ -197,7 +197,14 @@ public class GameMaster : MonoBehaviour
         {
             case 0:
                 // Pick Up
-                PickUpObject(x, y);
+                if (targetBackgroundTile == 8)
+                {
+                    Dig(x, y);
+                }
+                else
+                {
+                    PickUpObject(x, y);
+                }
                 return;
             case 1:
                 // Dig
@@ -231,7 +238,17 @@ public class GameMaster : MonoBehaviour
                 return;
             case 4:
                 // Drop
-                DropObject(x, y);
+                if (player.inventory[toolbar.current] == 8)
+                {
+                    if (targetBackgroundTile == 0)
+                    {
+                        UnDig(x, y);
+                    }
+                }
+                else
+                {
+                    DropObject(x, y);
+                }
                 return;
             case 5:
                 // Un-Dig

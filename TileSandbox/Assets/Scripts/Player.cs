@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public int[] inventory = new int[4];
 
     Collider2D playerCollider;
+    SpriteRenderer raftSpriteRenderer;
 
     void Start()
     {
@@ -20,17 +21,25 @@ public class Player : MonoBehaviour
         }
         for (int i = 0; i < transform.childCount; i++)
         {
-            Collider2D component = transform.GetChild(i).GetComponent<Collider2D>();
-            if (component is null)
+            Collider2D collider = transform.GetChild(i).GetComponent<Collider2D>();
+            SpriteRenderer spriteRenderer = transform.GetChild(i).GetComponent<SpriteRenderer>();
+            if (!(collider == null))
             {
-                continue;
+                playerCollider = collider;
             }
-            playerCollider = component;
-            break;
+            if (!(spriteRenderer == null))
+            {
+                raftSpriteRenderer = spriteRenderer;
+            }
         }
-        if (playerCollider is null)
+        if (playerCollider == null)
         {
             this.Error("No Collider2D found.");
+            return;
+        }
+        if (raftSpriteRenderer == null)
+        {
+            this.Error("No SpriteRenderer found.");
             return;
         }
     }
@@ -42,6 +51,7 @@ public class Player : MonoBehaviour
             transform.position = playerCollider.transform.position;
             playerCollider.transform.localPosition = Vector3.zero;
         }
+        raftSpriteRenderer.enabled = onRaft;
     }
 
     public void Move(int direction)
