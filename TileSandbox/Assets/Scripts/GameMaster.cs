@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour
 {
-    static readonly int[] actionTimes = new int[] { 10, 30, 30, 30, 10, 10, 10, 10 };
+    static readonly int[] actionTimes = new int[] { 15, 30, 30, 30, 15, 30, 30, 30 };
 
     public int ToolbarSize { get => 4; }
 
     [SerializeField] Player player;
     [SerializeField] Toolbar toolbar;
+    [SerializeField] ProgressMeter progressMeter;
 
     [HideInInspector] public bool playerIsMoving;
     public int actionProgress;
@@ -36,6 +37,11 @@ public class GameMaster : MonoBehaviour
         if (toolbar is null)
         {
             this.Error("Toolbar reference not set in Inspector.");
+            return;
+        }
+        if (progressMeter is null)
+        {
+            this.Error("Progress Meter reference not set in Inspector.");
             return;
         }
         toolbar.Create(ToolbarSize);
@@ -123,6 +129,7 @@ public class GameMaster : MonoBehaviour
             previousTarget = currentTarget;
             previousTool = toolbar.current;
             actionProgress = -1;
+            progressMeter.Show(false);
             return;
         }
         actionProgress++;
@@ -136,7 +143,17 @@ public class GameMaster : MonoBehaviour
             if (actionProgress >= completeTime)
             {
                 DoAction(actionNumber, x, y);
-                actionProgress = -5;
+                actionProgress = -10;
+                progressMeter.Show(false);
+            }
+            else if (actionProgress < 0)
+            {
+                progressMeter.Show(false);
+            }
+            else
+            {
+                progressMeter.SetHorzScale((float)(completeTime - actionProgress) / completeTime);
+                progressMeter.Show(true);
             }
         }
     }
