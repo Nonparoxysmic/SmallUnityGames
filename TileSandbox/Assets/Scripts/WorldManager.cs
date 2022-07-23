@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -66,7 +68,9 @@ public class WorldManager : MonoBehaviour
         collisionTile.sprite = Utilities.BlankSquareSprite(4, Color.white);
         collisionTile.colliderType = Tile.ColliderType.Sprite;
 
-        if (randomizeSeed) { randomSeed = Random.Range(int.MinValue, int.MaxValue); }
+        if (randomizeSeed) { randomSeed = UnityEngine.Random.Range(int.MinValue, int.MaxValue); }
+        SaveSeed();
+
         biomeType = new Noise(randomSeed, 11, 11);
         biomeNoise = new Noise(randomSeed, 5, 5);
         objectNoise = new Noise(randomSeed, 1, 1);
@@ -141,8 +145,8 @@ public class WorldManager : MonoBehaviour
             }
         }
 
-        int grassTargetX = (int)playerPos.x + Random.Range(-grassRange, grassRange + 1);
-        int grassTargetY = (int)playerPos.y + Random.Range(-grassRange, grassRange + 1);
+        int grassTargetX = (int)playerPos.x + UnityEngine.Random.Range(-grassRange, grassRange + 1);
+        int grassTargetY = (int)playerPos.y + UnityEngine.Random.Range(-grassRange, grassRange + 1);
         int grassTargetTile = GetBackgroundTileIndex(grassTargetX, grassTargetY);
         if (grassTargetTile == 3)
         {
@@ -454,5 +458,19 @@ public class WorldManager : MonoBehaviour
         Debug.LogError(name + ": " + GetType() + ": "
             + nameof(NearestOpenBackgroundTile) + ": No land found.");
         return (x, y);
+    }
+
+    private void SaveSeed()
+    {
+        try
+        {
+            using StreamWriter sw = File.AppendText(Utilities.LogFilePath);
+            sw.WriteLine($"{DateTime.Now}, {randomSeed}, {randomizeSeed}");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"{name}: {GetType()}: "
+                + $"{nameof(SaveSeed)}: Unable to save seed to log file. ({e.GetType().Name})");
+        }
     }
 }

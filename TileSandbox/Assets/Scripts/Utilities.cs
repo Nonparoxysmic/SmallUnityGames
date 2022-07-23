@@ -3,6 +3,10 @@ using UnityEngine;
 
 public static class Utilities
 {
+    static readonly string _logFilePath = Application.persistentDataPath + "/log.txt";
+
+    public static string LogFilePath { get => _logFilePath; }
+
     static readonly Vector3[] directionVectors = new Vector3[]
     {
         new Vector3(-1, 0, 0),
