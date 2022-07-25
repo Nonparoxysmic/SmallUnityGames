@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class Utilities
 {
@@ -61,5 +64,21 @@ public static class Utilities
                 size
             );
         return sprite;
+    }
+
+    static List<string> sceneNames;
+
+    public static bool SceneNameIsValid(string name)
+    {
+        if (sceneNames == null)
+        {
+            sceneNames = new List<string>();
+            for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+            {
+                sceneNames.Add(Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i)));
+            }
+        }
+        if (sceneNames.Contains(name)) { return true; }
+        return false;
     }
 }
