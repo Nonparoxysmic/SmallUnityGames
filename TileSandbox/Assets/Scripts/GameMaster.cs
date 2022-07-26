@@ -163,6 +163,11 @@ public class GameMaster : MonoBehaviour
         toolbar.SetCurrent(option);
     }
 
+    public void ChangeToolDelta(int delta)
+    {
+        toolbar.SetCurrentDelta(delta);
+    }
+
     bool IsValidTool(int x, int y, out int completeTime, out int actionNumber)
     {
         actionNumber = toolbar.current;

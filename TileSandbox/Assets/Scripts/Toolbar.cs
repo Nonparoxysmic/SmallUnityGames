@@ -72,6 +72,12 @@ public class Toolbar : MonoBehaviour
         cursor.localPosition = new Vector3(x, cursor.localPosition.y, cursor.localPosition.z);
     }
 
+    public void SetCurrentDelta(int delta)
+    {
+        while (delta < 0) { delta += Size; }
+        SetCurrent((current + delta) % Size);
+    }
+
     public void SetIcon(int index, Sprite sprite)
     {
         if (!index.InRange(0, iconSpriteRenderers.Length)) { return; }

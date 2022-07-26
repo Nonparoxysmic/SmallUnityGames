@@ -38,6 +38,11 @@ public class InputManager : MonoBehaviour
             previousMousePosition = Input.mousePosition;
             mouseMoved = true;
         }
+        float scroll = -Input.GetAxis("Mouse ScrollWheel");
+        if (scroll != 0)
+        {
+            gm.ChangeToolDelta((int)Mathf.Round(scroll / 0.3f));
+        }
         for (int i = 0; i < Math.Min(gm.ToolbarSize, 9); i++)
         {
             int key = i + 49;
