@@ -68,7 +68,19 @@ public class WorldManager : MonoBehaviour
         collisionTile.sprite = Utilities.BlankSquareSprite(4, Color.white);
         collisionTile.colliderType = Tile.ColliderType.Sprite;
 
-        if (randomizeSeed) { randomSeed = UnityEngine.Random.Range(int.MinValue, int.MaxValue); }
+        if (PlayerPrefs.HasKey("doRandom"))
+        {
+            randomizeSeed = PlayerPrefs.GetInt("doRandom") > 0;
+        }
+        if (PlayerPrefs.HasKey("seed"))
+        {
+            randomSeed = PlayerPrefs.GetInt("seed");
+        }
+        if (randomizeSeed)
+        {
+            randomSeed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+            PlayerPrefs.SetInt("seed", randomSeed);
+        }
         SaveSeed();
 
         biomeType = new Noise(randomSeed, 11, 11);
@@ -465,12 +477,22 @@ public class WorldManager : MonoBehaviour
         try
         {
             using StreamWriter sw = File.AppendText(Utilities.LogFilePath);
-            sw.WriteLine($"{DateTime.Now}, {randomSeed}, {randomizeSeed}");
+            if (PlayerPrefs.HasKey("hashedValue"))
+            {
+                string inputString = PlayerPrefs.GetString("hashedValue");
+                sw.WriteLine($"{DateTime.Now}, {randomSeed} (\"{inputString}\"), {randomizeSeed}");
+            }
+            else
+            {
+                sw.WriteLine($"{DateTime.Now}, {randomSeed}, {randomizeSeed}");
+            }
         }
         catch (Exception e)
         {
             Debug.LogError($"{name}: {GetType()}: "
                 + $"{nameof(SaveSeed)}: Unable to save seed to log file. ({e.GetType().Name})");
         }
+        PlayerPrefs.DeleteKey("hashedValue");
+        PlayerPrefs.Save();
     }
 }

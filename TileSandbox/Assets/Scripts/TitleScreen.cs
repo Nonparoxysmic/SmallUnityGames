@@ -12,6 +12,8 @@ public class TitleScreen : MonoBehaviour
             this.Error($"Invalid scene name \"{menuSceneName}\".");
             return;
         }
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
     }
 
     void Update()
