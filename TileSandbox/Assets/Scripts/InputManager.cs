@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    [SerializeField] PauseMenu pauseMenu;
     [SerializeField] GameObject cursor;
     [SerializeField] int diagonalLockFrames;
 
     GameMaster gm;
 
     bool mouseMoved;
+    bool paused;
     int diagonalLockCountdown;
     int lockedDirection;
     int? mouseDirection;
@@ -55,6 +57,20 @@ public class InputManager : MonoBehaviour
 
         bool shiftIsPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         gm.SetPlayerStrafing(shiftIsPressed);
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            paused = !paused;
+            Pause(paused);
+        }
+    }
+
+    public void Pause(bool doPause)
+    {
+        paused = doPause;
+        pauseMenu.ShowMenu(paused);
+        gm.PausePlayer(paused);
+        cursor.SetActive(!paused);
     }
 
     void FixedUpdate()

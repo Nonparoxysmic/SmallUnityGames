@@ -338,4 +338,9 @@ public class GameMaster : MonoBehaviour
         worldManager.SetObjectTile(x, y, index);
         targetObjectTile = index;
     }
+
+    public void PausePlayer(bool doPause)
+    {
+        player.paused = doPause;
+    }
 }

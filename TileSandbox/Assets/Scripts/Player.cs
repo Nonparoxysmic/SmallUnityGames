@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 
     public bool isStrafing;
     public bool onRaft;
+    public bool paused;
     public int facingDirection = 2;
     public int[] inventory = new int[4];
 
@@ -57,7 +58,7 @@ public class Player : MonoBehaviour
     public void Move(int direction)
     {
         if (!direction.InRange(0, 8)) { return; }
-
+        if (paused) { return; }
         float speed = isStrafing ? normalSpeed / 2 : normalSpeed;
         speed = onRaft ? speed / 2 : speed;
         Vector3 move = speed * Time.fixedDeltaTime * Utilities.DirectionVector(direction);
