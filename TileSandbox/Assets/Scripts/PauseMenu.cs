@@ -12,6 +12,7 @@ public class PauseMenu : MonoBehaviour
             this.Error($"Invalid scene name \"{menuSceneName}\".");
             return;
         }
+        ShowMenu(false);
     }
 
     public void ShowMenu(bool doShow)

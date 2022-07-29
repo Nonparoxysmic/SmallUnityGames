@@ -493,6 +493,7 @@ public class WorldManager : MonoBehaviour
                 + $"{nameof(SaveSeed)}: Unable to save seed to log file. ({e.GetType().Name})");
         }
         PlayerPrefs.DeleteKey("hashedValue");
+        PlayerPrefs.SetInt("seed", randomSeed);
         PlayerPrefs.Save();
     }
 }
