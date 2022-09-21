@@ -8,17 +8,22 @@ public class StateInitialization : State
         switch (activeScene.name)
         {
             case "TitleScreen":
-                //StateMachine.ChangeState<>();
+                StateMachine.ChangeState<TitleScreenStart>();
                 break;
             case "MainMenu":
-                //StateMachine.ChangeState<>();
+                StateMachine.ChangeState<MainMenuStart>();
                 break;
             case "Battle":
-                //StateMachine.ChangeState<>();
+                StateMachine.ChangeState<BattleStart>();
                 break;
             default:
                 this.Error($"No initial state set for active scene \"{activeScene.name}\".");
                 break;
         }
+    }
+
+    public override void Exit()
+    {
+        Destroy(this);
     }
 }
