@@ -8,7 +8,7 @@ public class TitleScreenStart : State
         KeyboardInput.AnyKeyDown += OnAnyKeyDown;
     }
 
-    private void OnAnyKeyDown(object sender, EventArgs e)
+    void OnAnyKeyDown(object sender, EventArgs e)
     {
         KeyboardInput.AnyKeyDown -= OnAnyKeyDown;
         SceneManager.LoadScene("MainMenu");

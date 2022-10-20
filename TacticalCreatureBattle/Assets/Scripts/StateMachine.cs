@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class StateMachine : MonoBehaviour
 {
-    private State _currentState;
+    State _currentState;
 
     public State CurrentState
     {
@@ -33,7 +33,7 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    private void Awake()
+    void Awake()
     {
         ChangeState<StateInitialization>();
     }
