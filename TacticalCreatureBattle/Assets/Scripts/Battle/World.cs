@@ -2,12 +2,20 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
-    WorldLoader _worldLoader;
+    // This component creates and manages all of the GameObjects (such as Tilemaps and Sprites)
+    // that represent the battle map and the creatures.
 
-    public void CreateWorld(WorldLoader worldLoader)
+    Map _map;
+
+    public void CreateWorld(WorldLoader worldLoader, CreatureData creatureData)
     {
-        _worldLoader = worldLoader;
-
-        // TODO: Get world data from WorldLoader and create world GameObjects. (E.g. Tilemaps and Sprites)
+        _map = worldLoader.Current;
+        if (_map == null)
+        {
+            this.Error("Current world is null.");
+            return;
+        }
+        // TODO: Create world GameObjects. (E.g. Tilemaps and Sprites)
+        // TODO: Create creature sprites.
     }
 }

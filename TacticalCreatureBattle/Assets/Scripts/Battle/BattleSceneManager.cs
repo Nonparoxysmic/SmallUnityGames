@@ -43,8 +43,7 @@ public class BattleSceneManager : MonoBehaviour
 
         // Create the battle.
         World = gameObject.AddComponent<World>();
-        World.CreateWorld(_worldLoader);
-        // TODO: Use creature data from CreatureData.
+        World.CreateWorld(_worldLoader, CreatureData);
         // TODO: Finish creating the battle.
 
         // TODO: Change to the next state after initialization is complete.
