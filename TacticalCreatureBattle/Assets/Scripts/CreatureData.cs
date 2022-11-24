@@ -30,7 +30,7 @@ public class CreatureData : MonoBehaviour
             {
                 continue;
             }
-            Creature c = JsonUtility.FromJson<Creature>(ta.text);
+            Creature c = Serialization.FromJson<Creature>(ta.text);
             creatures.Add(c);
         }
         return creatures.ToArray();

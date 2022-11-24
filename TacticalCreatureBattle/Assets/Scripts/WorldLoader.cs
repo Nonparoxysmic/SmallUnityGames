@@ -28,7 +28,7 @@ public class WorldLoader : MonoBehaviour
             {
                 continue;
             }
-            Map m = JsonUtility.FromJson<Map>(ta.text);
+            Map m = Serialization.FromJson<Map>(ta.text);
             maps.Add(m);
         }
         return maps.ToArray();
