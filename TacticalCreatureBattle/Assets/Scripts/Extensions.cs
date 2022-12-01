@@ -31,4 +31,30 @@ public static class Extensions
             behaviour.enabled = false;
         }
     }
+
+    /// <summary>
+    /// Returns a new string in which all white space characters from the current string are deleted.
+    /// </summary>
+    /// <remarks>
+    /// White space characters are those identified by
+    /// the method <seealso cref="char.IsWhiteSpace(char)"/>.
+    /// </remarks>
+    /// <returns>
+    /// A new string that is equivalent to the current instance
+    /// except for the removed characters.
+    /// </returns>
+    /// <param name="current">The string from which to remove white space characters.</param>
+    public static string RemoveAllWhiteSpace(this string current)
+    {
+        char[] charArray = current.ToCharArray();
+        int outputLength = 0;
+        for (int i = 0; i < charArray.Length; i++)
+        {
+            if (!char.IsWhiteSpace(charArray[i]))
+            {
+                charArray[outputLength++] = charArray[i];
+            }
+        }
+        return new string(charArray, 0, outputLength);
+    }
 }
