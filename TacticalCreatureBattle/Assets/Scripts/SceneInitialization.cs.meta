@@ -5,6 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - DontDestroyPrefab: {fileID: 4279011041759925168, guid: 13cd9cce30e261e4c80d394e1d4c5652, type: 3}
+  - TileLibraryPrefab: {fileID: 7894935552861933005, guid: 2ca0f6f7234a44347905c5fbf860dc4e, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
