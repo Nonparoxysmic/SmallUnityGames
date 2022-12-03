@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DevelopmentTiles:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: f70c7f2e658d0b34683c9023fdf8e6e6, type: 2}
+  - {fileID: 11400000, guid: 3a2335c6f8910fb499ae48a2de4f59c0, type: 2}
