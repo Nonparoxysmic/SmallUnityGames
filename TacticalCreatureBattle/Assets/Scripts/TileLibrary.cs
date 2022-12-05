@@ -17,13 +17,14 @@ public class TileLibrary : MonoBehaviour
         }
     }
 
-    public static Tile GetDevelopmentTile(int index)
+    public static (Tile, Color) GetTile(uint data)
     {
-        if (index < 0)
-        {
-            Debug.LogError($"{nameof(GetDevelopmentTile)}: Negative index passed as argument.");
-            index = 0;
-        }
+        // TODO: Add more tiles.
+        return (GetDevelopmentTile(data), Color.white);
+    }
+
+    public static Tile GetDevelopmentTile(uint index)
+    {
         return Instance.DevelopmentTiles[index % Instance.DevelopmentTiles.Length];
     }
 }
