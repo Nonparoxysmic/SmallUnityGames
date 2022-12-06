@@ -43,6 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a87dbf8e7250a2478621d9b18fcee43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DevelopmentTiles:
-  - {fileID: 11400000, guid: f70c7f2e658d0b34683c9023fdf8e6e6, type: 2}
-  - {fileID: 11400000, guid: 3a2335c6f8910fb499ae48a2de4f59c0, type: 2}
+  DevelopmentTileSprites:
+  - {fileID: 21300000, guid: 34d75e1ed81253e409f13e972c3953ac, type: 3}
+  - {fileID: 21300000, guid: 4db1d9ea55d9fac44b4e8dcee5d98942, type: 3}
+  - {fileID: 21300000, guid: e7dda2eb8a27c144a86b8e482d5928ed, type: 3}
+  - {fileID: 21300000, guid: b5f0c53defacbbf408bac3af2e2c136c, type: 3}
+  - {fileID: 21300000, guid: decda959415064440a04f07789fe085e, type: 3}
