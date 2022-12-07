@@ -37,9 +37,9 @@ public class TileLibrary : MonoBehaviour
     static Tile[] CreateDevelopmentTiles()
     {
         Tile[] output = new Tile[32];
-        for (int i = 0; i < 32; i++)
+        for (int i = 1; i < 32; i++)
         {
-            // Read collision flags of index.
+            // Read index as collision flags.
             bool bottom = (i & 0b0001) > 0;
             bool right_side = (i & 0b0010) > 0;
             bool left_side = (i & 0b0100) > 0;
@@ -68,7 +68,7 @@ public class TileLibrary : MonoBehaviour
                 textures.Add(Instance.DevelopmentTileSprites[4].texture);
             }
             // Create development tile.
-            output[i] = CreateTile(CombineTextures(textures, 100, 100));
+            output[i] = CreateTile(CombineTexture2D(textures, 100, 100));
         }
         return output;
     }
@@ -83,11 +83,11 @@ public class TileLibrary : MonoBehaviour
     /// <param name="textures">An collection of 2D textures, each the same size.</param>
     /// <param name="textureWidth">The width of each texture.</param>
     /// <param name="textureHeight">The height of each texture.</param>
-    static Texture2D CombineTextures(List<Texture2D> textures, int textureWidth, int textureHeight)
+    static Texture2D CombineTexture2D(List<Texture2D> textures, int textureWidth, int textureHeight)
     {
         if (textures.Count == 0)
         {
-            return new Texture2D(textureWidth, textureHeight);
+            return EmptyTexture2D(textureWidth, textureHeight);
         }
         Texture2D outputTexture = CopyTexture2D(textures[0]);
         if (textures.Count == 1)
@@ -118,6 +118,15 @@ public class TileLibrary : MonoBehaviour
         return outputTexture;
     }
 
+    static Texture2D EmptyTexture2D(int width, int height)
+    {
+        Texture2D output = new Texture2D(width, height);
+        Color32[] colors = new Color32[width * height];
+        output.SetPixels32(colors);
+        output.Apply();
+        return output;
+    }
+
     static Texture2D CopyTexture2D(Texture2D texture)
     {
         Texture2D output = new Texture2D(texture.width, texture.height);
@@ -142,6 +151,10 @@ public class TileLibrary : MonoBehaviour
 
     public static (Tile, Color) GetTile(uint data)
     {
+        if (data == 0)
+        {
+            return (null, Color.white);
+        }
         // TODO: Add more tiles.
         return (GetDevelopmentTile(data), GetColor(data));
     }
