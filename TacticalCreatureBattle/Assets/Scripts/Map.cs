@@ -9,13 +9,17 @@ public class Map : ISerializable
     [SerializeField] string name = "";
     public string Name { get => name; }
 
+    [SerializeField] string mainLayer = "";
+    uint[,] _mainLayer;
+    public uint[,] MainLayer { get => _mainLayer; }
+
     public override void Serialize()
     {
-
+        mainLayer = Serialization.SerializeArrayUint2D(_mainLayer);
     }
 
     public override void Deserialize()
     {
-
+        _mainLayer = Serialization.DeserializeArrayUint2D(mainLayer);
     }
 }
