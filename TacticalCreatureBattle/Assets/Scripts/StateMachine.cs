@@ -33,11 +33,6 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    void Awake()
-    {
-        ChangeState<StateInitialization>();
-    }
-
     public void ChangeState<T>() where T : State
     {
         T component = GetComponent<T>();

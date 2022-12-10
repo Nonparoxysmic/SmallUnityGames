@@ -1,6 +1,5 @@
 public abstract class BattleState : State
 {
-    public BattleSceneManager BattleSceneManager { get => BattleSceneManager.Instance; }
-    public CreatureData CreatureData { get => BattleSceneManager.Instance.CreatureData; }
-    public World World { get => BattleSceneManager.Instance.World; }
+    // TODO: Get references to battle scene so they are available to 
+    // states derived from this state.
 }

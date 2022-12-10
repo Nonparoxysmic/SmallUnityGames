@@ -3,11 +3,10 @@ using UnityEngine;
 public class SceneInitialization : MonoBehaviour
 {
     [SerializeField] GameObject DontDestroyPrefab;
-    [SerializeField] GameObject TileLibraryPrefab;
 
     void Awake()
     {
-        if (DontDestroyPrefab == null || TileLibraryPrefab == null)
+        if (DontDestroyPrefab == null)
         {
             this.Error("Prefab reference not set in the inspector.");
             return;
@@ -22,15 +21,16 @@ public class SceneInitialization : MonoBehaviour
         }
         else if (dontDestroyObjects.Length == 0)
         {
-            // Instantiate the core DontDestroy object.
+            // Instantiate the DontDestroy object.
             GameObject dontDestroy = Instantiate(DontDestroyPrefab);
             dontDestroy.name = DontDestroyPrefab.name;
             // Set DontDestroyOnLoad.
             DontDestroyOnLoad(dontDestroy);
-            // Instantiate the child TileLibrary object.
-            GameObject tileLibrary = Instantiate(TileLibraryPrefab);
-            tileLibrary.name = TileLibraryPrefab.name;
-            tileLibrary.transform.parent = dontDestroy.transform;
+            // Create the primary state machine.
+            GameObject smgo = new GameObject { name = "StateMachine" };
+            smgo.transform.parent = dontDestroy.transform;
+            StateMachine stateMachine = smgo.AddComponent<StateMachine>();
+            stateMachine.ChangeState<StateInitialization>();
         }
         Destroy(gameObject);
     }

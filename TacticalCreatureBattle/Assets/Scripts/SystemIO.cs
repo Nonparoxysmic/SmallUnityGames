@@ -3,8 +3,9 @@ using UnityEngine;
 
 public static class SystemIO
 {
-    //static string _creatureDataFolderPath = Application.persistentDataPath + "/creature";
+    // TODO: Provide public static methods to read any save data
+    // from the Application.persistentDataPath folder.
 
-    // TODO: Read data from and write data to files, and make that data
-    // available to components like CreatureData.
+    // TODO: Provide public static methods to write save data
+    // to the Application.persistentDataPath folder.
 }
