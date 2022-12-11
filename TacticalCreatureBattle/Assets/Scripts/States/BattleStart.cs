@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BattleStart : State
+public class BattleStart : BattleState
 {
     public override void Enter()
     {

@@ -41,6 +41,10 @@ public class StateMachine : MonoBehaviour
             component = gameObject.AddComponent<T>();
             component.StateMachine = this;
         }
+        if (CurrentState is BattleState current && component is BattleState next)
+        {
+            next.Battle = current.Battle;
+        }
         CurrentState = component;
     }
 }
