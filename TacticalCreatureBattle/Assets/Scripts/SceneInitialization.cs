@@ -26,10 +26,13 @@ public class SceneInitialization : MonoBehaviour
             dontDestroy.name = DontDestroyPrefab.name;
             // Set DontDestroyOnLoad.
             DontDestroyOnLoad(dontDestroy);
-            // Create the primary state machine.
-            GameObject smgo = new GameObject { name = "StateMachine" };
-            smgo.transform.parent = dontDestroy.transform;
-            StateMachine stateMachine = smgo.AddComponent<StateMachine>();
+            // Initialize the primary state machine.
+            StateMachine stateMachine = dontDestroy.GetComponentInChildren<StateMachine>();
+            if (stateMachine == null)
+            {
+                this.Error($"Missing or unavailable {typeof(StateMachine)} component.");
+                return;
+            }
             stateMachine.ChangeState<StateInitialization>();
         }
         Destroy(gameObject);
