@@ -1,9 +1,14 @@
-using System;
-using System.Text;
 using UnityEngine;
 
 public static class Serialization
 {
-    // TODO: Provide public static methods to serialize and deserialize data
-    // to and from JSON using UnityEngine.JsonUtility.
+    public static string Serialize(CreatureStats creatureStats)
+    {
+        return JsonUtility.ToJson(creatureStats);
+    }
+
+    public static CreatureStats Deserialize<CreatureStats>(string json)
+    {
+        return JsonUtility.FromJson<CreatureStats>(json);
+    }
 }
