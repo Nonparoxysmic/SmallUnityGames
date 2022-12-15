@@ -5,4 +5,6 @@ public class CreatureStats : ScriptableObject
 {
     public string CreatureName;
     public int MaximumHP;
+    public uint PrimarySpriteIndex;
+    public Color PrimarySpriteColor;
 }
