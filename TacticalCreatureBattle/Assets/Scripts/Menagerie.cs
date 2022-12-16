@@ -31,8 +31,18 @@ public class Menagerie : MonoBehaviour
                 return;
             }
         }
+
         // TODO: Load any saved creatures from Application.persistentDataPath folder.
+
         // TODO: Initialize the team arrays.
+        // Temporary initialization for testing purposes:
+        CreatureStats friendly = Instantiate(_prebuiltCreatures[0]);
+        friendly.PrimarySpriteColor = Color.green;
+        HumanTeam = new CreatureStats[] { friendly };
+        CreatureStats enemy = Instantiate(_prebuiltCreatures[0]);
+        enemy.CreatureName = "Enemy " + enemy.CreatureName;
+        enemy.PrimarySpriteColor = Color.red;
+        ComputerTeam = new CreatureStats[] { enemy };
     }
 
     public static CreatureStats[] GetPrebuiltCreatures()
@@ -45,18 +55,16 @@ public class Menagerie : MonoBehaviour
         return creatureStats.ToArray();
     }
 
-    public static GameObject CreateUnit(CreatureStats creatureStats, Battle battle, Transform parent = null)
+    public static GameObject CreateUnit(CreatureStats creatureStats, Battle battle, Team team, Transform parent = null)
     {
-        GameObject unit = new GameObject
-        {
-            name = $"Unit: {creatureStats.CreatureName}"
-        };
+        GameObject unit = new GameObject();
         if (parent != null)
         {
             unit.transform.parent = parent;
         }
         UnitController uc = unit.AddComponent<UnitController>();
-        uc.Initialize(creatureStats, battle);
+        uc.Initialize(creatureStats, battle, team);
+        unit.name = $"{team} Team -- Unit {uc.UnitID} -- {creatureStats.CreatureName}";
         return unit;
     }
 }

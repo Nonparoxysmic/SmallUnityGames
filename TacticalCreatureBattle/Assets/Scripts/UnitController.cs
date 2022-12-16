@@ -2,18 +2,32 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
-    public CreatureStats CreatureStats { get; private set; }
-    public Battle Battle { get; private set; }
+    CreatureStats CreatureStats { get; set; }
+    Battle Battle { get; set; }
 
-    int _currentHP;
+    public Team Team { get; private set; }
+    public int UnitID { get; private set; }
+    public int CurrentHP { get; private set; }
 
-    public void Initialize(CreatureStats creatureStats, Battle battle)
+    public void Initialize(CreatureStats creatureStats, Battle battle, Team team)
     {
         // Save references.
         CreatureStats = creatureStats;
         Battle = battle;
+        // Add unit to battle.
+        Team = team;
+        UnitID = Battle.Units.Count;
+        Battle.Units.Add(this);
+        if (Team == Team.Computer)
+        {
+            Battle.ComputerTeam.Add(this);
+        }
+        else
+        {
+            Battle.HumanTeam.Add(this);
+        }
         // Set battle-specific stats.
-        _currentHP = CreatureStats.MaximumHP;
+        CurrentHP = CreatureStats.MaximumHP;
         // Create sprites.
         SpriteRenderer sr = gameObject.AddComponent<SpriteRenderer>();
         sr.sprite = AssetLibrary.GetSprite(CreatureStats.PrimarySpriteIndex);

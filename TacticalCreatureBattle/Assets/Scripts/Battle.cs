@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Battle
 {
-    // TODO: This class holds references necessary for battle states.
+    public List<UnitController> Units = new List<UnitController>();
+    public List<UnitController> ComputerTeam = new List<UnitController>();
+    public List<UnitController> HumanTeam = new List<UnitController>();
 }
