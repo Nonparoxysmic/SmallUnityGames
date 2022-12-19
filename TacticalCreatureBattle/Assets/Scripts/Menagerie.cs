@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,15 +35,23 @@ public class Menagerie : MonoBehaviour
 
         // TODO: Load any saved creatures from Application.persistentDataPath folder.
 
-        // TODO: Initialize the team arrays.
-        // Temporary initialization for testing purposes:
-        CreatureStats friendly = Instantiate(_prebuiltCreatures[0]);
-        friendly.PrimarySpriteColor = Color.green;
-        HumanTeam = new CreatureStats[] { friendly };
-        CreatureStats enemy = Instantiate(_prebuiltCreatures[0]);
-        enemy.CreatureName = "Enemy " + enemy.CreatureName;
-        enemy.PrimarySpriteColor = Color.red;
-        ComputerTeam = new CreatureStats[] { enemy };
+        // Initialize the team arrays.
+        InitializeTeamArrays();
+    }
+
+    void InitializeTeamArrays()
+    {
+        CreatureStats[] creatures = new CreatureStats[4];
+        for (int i = 0; i < Math.Min(_prebuiltCreatures.Length, 4); i++)
+        {
+            creatures[i] = Instantiate(_prebuiltCreatures[i]);
+        }
+        for (int i = _prebuiltCreatures.Length; i < 4; i++)
+        {
+            creatures[i] = CreatureStats.Random();
+        }
+        HumanTeam = new CreatureStats[] { creatures[0], creatures[2] };
+        ComputerTeam = new CreatureStats[] { creatures[1], creatures[3] };
     }
 
     public static CreatureStats[] GetPrebuiltCreatures()
