@@ -4,6 +4,7 @@ using UnityEngine;
 public class CreatureStats : ScriptableObject
 {
     public string CreatureName;
+    public Size CreatureSize;
     public int MaximumHP;
     public uint PrimarySpriteIndex;
     public Color PrimarySpriteColor;
@@ -12,8 +13,9 @@ public class CreatureStats : ScriptableObject
     {
         CreatureStats creatureStats = CreateInstance<CreatureStats>();
         creatureStats.CreatureName = RandomCreatureName();
+        creatureStats.CreatureSize = (Size)UnityEngine.Random.Range(0, 3);
         creatureStats.MaximumHP = UnityEngine.Random.Range(1, 10);
-        creatureStats.PrimarySpriteIndex = (uint)UnityEngine.Random.Range(0, 12);
+        creatureStats.PrimarySpriteIndex = (uint)UnityEngine.Random.Range(0, 4);
         creatureStats.PrimarySpriteColor = UnityEngine.Random.ColorHSV();
         creatureStats.PrimarySpriteColor.a = 1;
         return creatureStats;

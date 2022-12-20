@@ -7,6 +7,7 @@ public class UnitController : MonoBehaviour
 
     public Team Team { get; private set; }
     public int UnitID { get; private set; }
+    public Size UnitSize { get => CreatureStats.CreatureSize; }
     public int CurrentHP { get; private set; }
 
     public void Initialize(CreatureStats creatureStats, Battle battle, Team team)
@@ -30,7 +31,7 @@ public class UnitController : MonoBehaviour
         CurrentHP = CreatureStats.MaximumHP;
         // Create sprites.
         SpriteRenderer sr = gameObject.AddComponent<SpriteRenderer>();
-        sr.sprite = AssetLibrary.GetSprite(CreatureStats.PrimarySpriteIndex);
+        sr.sprite = AssetLibrary.GetSprite(UnitSize, CreatureStats.PrimarySpriteIndex);
         sr.color = CreatureStats.PrimarySpriteColor;
     }
 }

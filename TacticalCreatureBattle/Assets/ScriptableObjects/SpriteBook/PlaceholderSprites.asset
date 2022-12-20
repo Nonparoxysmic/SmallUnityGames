@@ -12,15 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 075bd4ebc585f594e8e096974c2bd590, type: 3}
   m_Name: PlaceholderSprites
   m_EditorClassIdentifier: 
-  Sprites:
+  CreatureSpritesSmall:
   - {fileID: 21300000, guid: 81963068f22706742a8f840e84c80dad, type: 3}
   - {fileID: 21300000, guid: 9bc62e8d4aeb9e84d9927dc15c718ef9, type: 3}
   - {fileID: 21300000, guid: a8d638d0448eebf41a369a812f76e37b, type: 3}
   - {fileID: 21300000, guid: b7e41a4270cb90348bfe42d1b6de982f, type: 3}
+  CreatureSpritesMedium:
   - {fileID: 21300000, guid: 2dd1dd44d365c754abb70a5cc51f009a, type: 3}
   - {fileID: 21300000, guid: d679956bbfd2d9241ac03d6b8958b246, type: 3}
   - {fileID: 21300000, guid: 6a89b552cc7a5a24387139df8f4a37a2, type: 3}
   - {fileID: 21300000, guid: 2f0615ad2245eca40ab8737b3cef03de, type: 3}
+  CreatureSpritesLarge:
   - {fileID: 21300000, guid: 4160bba4813459b41a8e38e73c3752e0, type: 3}
   - {fileID: 21300000, guid: 475a8d70811210e46b8317895094668b, type: 3}
   - {fileID: 21300000, guid: b79af55bb5e4f9e4cb8a9e0066944f9f, type: 3}

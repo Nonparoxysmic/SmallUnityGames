@@ -19,10 +19,18 @@ public class BattleStart : BattleState
             Menagerie.CreateUnit(enemy, Battle, Team.Computer, unitParent);
         }
         // Initialize position of units.
+        float unitX = 0.5f;
         foreach (UnitController unit in Battle.Units)
         {
-            float unitX = 0.5f + 2 * unit.UnitID;
             unit.gameObject.transform.position = new Vector3(unitX, 0.5f);
+            if (unit.UnitSize == Size.Large)
+            {
+                unitX += 2;
+            }
+            else
+            {
+                unitX++;
+            }
         }
 
         // TODO: Change to next state.
