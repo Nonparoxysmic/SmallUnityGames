@@ -30,7 +30,20 @@ public class UnitController : MonoBehaviour
         // Set battle-specific stats.
         CurrentHP = CreatureStats.MaximumHP;
         // Create sprites.
-        SpriteRenderer sr = gameObject.AddComponent<SpriteRenderer>();
+        GameObject spriteGameObject = new GameObject
+        {
+            name = "Sprite"
+        };
+        spriteGameObject.transform.parent = transform;
+        if (UnitSize == Size.Small)
+        {
+            spriteGameObject.transform.position += new Vector3(0, -0.25f);
+        }
+        else if (UnitSize == Size.Large)
+        {
+            spriteGameObject.transform.position += new Vector3(0.5f, 0.5f);
+        }
+        SpriteRenderer sr = spriteGameObject.AddComponent<SpriteRenderer>();
         sr.sprite = AssetLibrary.GetSprite(UnitSize, CreatureStats.PrimarySpriteIndex);
         sr.color = CreatureStats.PrimarySpriteColor;
     }
