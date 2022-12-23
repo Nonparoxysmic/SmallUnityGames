@@ -31,7 +31,7 @@ public class GridWalls : MonoBehaviour
 
     }
 
-    public void Click(Vector3 worldPosition)
+    public void Click(Vector2 worldPosition)
     {
 
     }
