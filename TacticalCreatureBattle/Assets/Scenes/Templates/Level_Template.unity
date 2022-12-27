@@ -329,6 +329,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 135266020279f8942832e1dd81d71add, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WallColor: {r: 0, g: 1, b: 0, a: 1}
+  WallThickness: 8
 --- !u!1 &1178960311
 GameObject:
   m_ObjectHideFlags: 0

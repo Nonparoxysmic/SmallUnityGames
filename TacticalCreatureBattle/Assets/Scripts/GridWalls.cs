@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEditor;
 
 public class GridWalls : MonoBehaviour
 {
-    public Color WallColor { get; set; }
+    [HideInInspector] public Color WallColor;
+    [HideInInspector] public float WallThickness;
 
     Grid _grid;
 
@@ -26,7 +28,7 @@ public class GridWalls : MonoBehaviour
         }
     }
 
-    public void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
     {
 
     }

@@ -4,7 +4,7 @@ using UnityEditor;
 [CustomEditor(typeof(GridWalls))]
 public class GridWallsEditor : Editor
 {
-    private void OnSceneGUI()
+    void OnSceneGUI()
     {
         GridWalls gridWalls = target as GridWalls;
         if (gridWalls == null)
