@@ -61,12 +61,23 @@ public class GridWallsWindow : EditorWindow
 
     void OnSelectionChange()
     {
+        UpdateCurrentSelection();
+        Repaint();
+    }
+
+    void OnFocus()
+    {
+        UpdateCurrentSelection();
+        Repaint();
+    }
+
+    void UpdateCurrentSelection()
+    {
         GameObject selected = Selection.activeObject as GameObject;
         if (selected == null)
         {
             _gridWallsSelected = false;
             _selected = null;
-            Repaint();
             return;
         }
         GridWalls gridWalls = selected.GetComponent<GridWalls>();
@@ -74,22 +85,18 @@ public class GridWallsWindow : EditorWindow
         {
             _gridWallsSelected = false;
             _selected = null;
-            Repaint();
             return;
         }
         _selected = gridWalls;
         _gridWallsSelected = true;
-        Repaint();
     }
 
     void OnPlayModeStateChanged(PlayModeStateChange stateChange)
     {
-        if (_gridWallsSelected && 
-            (stateChange == PlayModeStateChange.ExitingEditMode ||
-            stateChange == PlayModeStateChange.ExitingPlayMode))
+        if (_gridWallsSelected)
         {
-            _gridWallsSelected = false;
             Selection.activeObject = null;
+            _gridWallsSelected = false;
             _selected = null;
         }
     }
