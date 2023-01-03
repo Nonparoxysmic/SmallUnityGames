@@ -66,4 +66,39 @@ public class GridWalls : MonoBehaviour
                 new Vector3(Mathf.Floor(cellPosition.x) + 1, roundedY, 0)
             );
     }
+
+    ulong EncodeVectors(Vector3 start, Vector3 end)
+    {
+        float[] input = new float[] { start.x, start.y, end.x, end.y };
+        ulong[] components = new ulong[4];
+        for (int i = 0; i < 4; i++)
+        {
+            if (input[i] < 0)
+            {
+                components[i] = ((ulong)Mathf.Abs(input[i])) & 0b0111_1111_1111_1111;
+                components[i] |= 0b1000_0000_0000_0000;
+            }
+            else
+            {
+                components[i] = ((ulong)input[i]) & 0b0111_1111_1111_1111;
+            }
+        }
+        return (components[0] << 48) | (components[1] << 32) | (components[2] << 16) | components[3];
+    }
+
+    (Vector3, Vector3) DecodeVectors(ulong input)
+    {
+        int[] shift = new int[] { 48, 32, 16, 0 };
+        float[] output = new float[4];
+        for (int i = 0; i < 4; i++)
+        {
+            output[i] = (input >> shift[i]) & 0b0111_1111_1111_1111;
+            bool isNegative = ((input >> shift[i]) & 0b1000_0000_0000_0000) > 0;
+            if (isNegative)
+            {
+                output[i] *= -1;
+            }
+        }
+        return (new Vector3(output[0], output[1]), new Vector3(output[2], output[3]));
+    }
 }
