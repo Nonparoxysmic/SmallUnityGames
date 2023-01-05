@@ -1,14 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+[ExecuteAlways]
 public class GridWalls : MonoBehaviour
 {
     [HideInInspector] public Color WallColor;
     [HideInInspector] public float WallThickness;
 
+    [SerializeField] List<ulong> segmentList;
+    HashSet<ulong> _segmentHashSet;
+
     Grid _grid;
 
-    void Awake()
+    void OnEnable()
     {
         if (transform.parent == null)
         {
@@ -26,16 +31,40 @@ public class GridWalls : MonoBehaviour
             this.Error($"{typeof(GridWalls)} only supports Rectangle grids.");
             return;
         }
+        _segmentHashSet = new HashSet<ulong>();
+        foreach (ulong u in segmentList)
+        {
+            _segmentHashSet.Add(u);
+        }
     }
 
     void OnDrawGizmosSelected()
     {
+        Handles.color = WallColor;
+        foreach (ulong segment in _segmentHashSet)
+        {
+            (Vector3 start, Vector3 end) = DecodeVectors(segment);
 
+            // TODO: convert cell positons to world positions
+
+            Handles.DrawLine(start, end, WallThickness);
+        }
     }
 
     public void Click(Vector2 worldPosition)
     {
-
+        Vector3 localPosition = _grid.WorldToLocal(worldPosition);
+        Vector3 cellPosition = _grid.LocalToCellInterpolated(localPosition);
+        ulong lineSegment = EncodeVectors(NearestGridLineSegment(cellPosition));
+        if (_segmentHashSet.Add(lineSegment))
+        {
+            segmentList.Add(lineSegment);
+        }
+        else if (_segmentHashSet.Remove(lineSegment))
+        {
+            segmentList.Remove(lineSegment);
+        }
+        EditorUtility.SetDirty(this);
     }
 
     /// <summary>
@@ -67,9 +96,9 @@ public class GridWalls : MonoBehaviour
             );
     }
 
-    ulong EncodeVectors(Vector3 start, Vector3 end)
+    ulong EncodeVectors((Vector3 start, Vector3 end) vectors)
     {
-        float[] input = new float[] { start.x, start.y, end.x, end.y };
+        float[] input = new float[] { vectors.start.x, vectors.start.y, vectors.end.x, vectors.end.y };
         ulong[] components = new ulong[4];
         for (int i = 0; i < 4; i++)
         {
