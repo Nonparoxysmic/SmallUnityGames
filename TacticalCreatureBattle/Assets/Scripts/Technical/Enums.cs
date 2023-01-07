@@ -1,7 +1,10 @@
-public enum Team
+public enum GridWallsTool
 {
-    Computer,
-    Human
+    None,
+    Toggle,
+    Erase,
+    Wall,
+    FallStop
 }
 
 public enum Size
@@ -9,4 +12,10 @@ public enum Size
     Small,
     Medium,
     Large
+}
+
+public enum Team
+{
+    Computer,
+    Human
 }

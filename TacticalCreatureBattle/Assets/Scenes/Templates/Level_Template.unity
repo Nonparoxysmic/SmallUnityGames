@@ -330,6 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WallColor: {r: 0, g: 1, b: 0, a: 1}
+  FallStopColor: {r: 0, g: 0, b: 1, a: 1}
   WallThickness: 8
 --- !u!1 &1178960311
 GameObject:

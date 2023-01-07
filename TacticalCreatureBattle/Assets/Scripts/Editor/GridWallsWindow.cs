@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEditor;
 
@@ -9,6 +10,11 @@ public class GridWallsWindow : EditorWindow
     GridWallsWindow()
     {
         EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
     }
 
     [MenuItem("Window/TacticalCreatureBattle/Grid Walls Tool")]
@@ -26,10 +32,29 @@ public class GridWallsWindow : EditorWindow
         {
             // Draw GUI for editing tools.
             bool doRedraw = false;
+            Enum newTool = EditorGUILayout.EnumPopup
+                (
+                    "Wall Drawing Tool",
+                    _selected.CurrentTool,
+                    null as GUILayoutOption[]
+                );
+            if ((GridWallsTool)newTool != _selected.CurrentTool)
+            {
+                _selected.CurrentTool = (GridWallsTool)newTool;
+                doRedraw = true;
+            }
+            EditorGUILayout.Space();
             Color newWallColor = EditorGUILayout.ColorField("Wall Color", _selected.WallColor, null);
             if (newWallColor != _selected.WallColor)
             {
                 _selected.WallColor = newWallColor;
+                doRedraw = true;
+            }
+            EditorGUILayout.Space();
+            Color newFallStopColor = EditorGUILayout.ColorField("Fall Stop Color", _selected.FallStopColor, null);
+            if (newFallStopColor != _selected.FallStopColor)
+            {
+                _selected.FallStopColor = newFallStopColor;
                 doRedraw = true;
             }
             EditorGUILayout.Space();
