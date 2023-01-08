@@ -8,7 +8,7 @@ public class GridWalls : MonoBehaviour
     [HideInInspector] public Color WallColor;
     [HideInInspector] public Color FallStopColor;
     [HideInInspector] public float WallThickness;
-    [HideInInspector] public GridWallsTool CurrentTool;
+    [HideInInspector] public GridWallsTool CurrentTool { get; set; }
 
     [SerializeField] List<ulong> segmentList;
     HashSet<ulong> _segmentHashSet;
@@ -124,16 +124,32 @@ public class GridWalls : MonoBehaviour
 
     void DrawWallLineSegment(ulong lineSegment)
     {
-        // TODO: Implement this.
-
-        Debug.LogError("NotImplemented");
+        ulong fallStop = lineSegment | (1UL << 60);
+        if (_segmentHashSet.Remove(fallStop))
+        {
+            segmentList.Remove(fallStop);
+            EditorUtility.SetDirty(this);
+        }
+        if (_segmentHashSet.Add(lineSegment))
+        {
+            segmentList.Add(lineSegment);
+            EditorUtility.SetDirty(this);
+        }
     }
 
     void DrawFallStopLineSegment(ulong lineSegment)
     {
-        // TODO: Implement this.
-
-        Debug.LogError("NotImplemented");
+        ulong fallStop = lineSegment | (1UL << 60);
+        if (_segmentHashSet.Remove(lineSegment))
+        {
+            segmentList.Remove(lineSegment);
+            EditorUtility.SetDirty(this);
+        }
+        if (_segmentHashSet.Add(fallStop))
+        {
+            segmentList.Add(fallStop);
+            EditorUtility.SetDirty(this);
+        }
     }
 
     /// <summary>
