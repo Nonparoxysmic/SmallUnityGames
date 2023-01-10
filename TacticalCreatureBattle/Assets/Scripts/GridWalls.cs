@@ -153,15 +153,14 @@ public class GridWalls : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets the coordinates of the grid line segment closest to the cell position.
+    /// Gets the coordinates of the grid line segment closest to the interpolated cell position.
     /// </summary>
     /// <returns>
     /// A tuple of two <seealso cref="Vector3"/>, representing the cell position 
     /// of the start of the line segment, and the cell position of the end 
     /// of the line segment, in that order.
     /// </returns>
-    /// <param name="cellPosition">A cell position.</param>
-    /// <returns></returns>
+    /// <param name="cellPosition">An interpolated cell position.</param>
     (Vector3, Vector3) NearestGridLineSegment(Vector3 cellPosition)
     {
         float roundedX = Mathf.Round(cellPosition.x);
@@ -181,6 +180,22 @@ public class GridWalls : MonoBehaviour
             );
     }
 
+    /// <summary>
+    /// Encodes a tuple of 2D vectors into a <seealso cref="ulong"/> for serialization.
+    /// </summary>
+    /// <remarks>
+    /// This method encodes the X and Y components of the pair of input vectors
+    /// into a <seealso cref="ulong"/> for the purposes of serializing a collection
+    /// of grid line segments. The X and Y components should have integer values, 
+    /// as this method is intended to encode the cell position vectors produced by the 
+    /// <seealso cref="NearestGridLineSegment(Vector3)"/> method.
+    /// Each component of the vectors is encoded as a 14 bit integer, plus a bit flag
+    /// indicating a negative value.
+    /// </remarks>
+    /// <returns>
+    /// The pair of vectors encoded as a <seealso cref="ulong"/>.
+    /// </returns>
+    /// <param name="vectors">A pair of vectors with integer-value X and Y components.</param>
     ulong EncodeVectors((Vector3 start, Vector3 end) vectors)
     {
         float[] input = new float[] { vectors.start.x, vectors.start.y, vectors.end.x, vectors.end.y };
@@ -200,6 +215,19 @@ public class GridWalls : MonoBehaviour
         return (components[0] << 45) | (components[1] << 30) | (components[2] << 15) | components[3];
     }
 
+    /// <summary>
+    /// Gets the position of the 2D grid line segment represented by the input.
+    /// </summary>
+    /// <remarks>
+    /// This method extracts the X and Y components of the two vectors encoded in the input.
+    /// Each component of the vectors is encoded as a 14 bit integer, plus a bit flag
+    /// indicating a negative value.
+    /// </remarks>
+    /// <returns>
+    /// A tuple of 2 <seealso cref="Vector3"/>, representing the start and end
+    /// cell positions of the line segment encoded in the input.
+    /// </returns>
+    /// <param name="input">A 2D grid line segment represented as a <seealso cref="ulong"/></param>
     (Vector3, Vector3) DecodeVectors(ulong input)
     {
         int[] shift = new int[] { 45, 30, 15, 0 };
