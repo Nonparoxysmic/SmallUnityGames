@@ -53,10 +53,9 @@ public class GridWalls : MonoBehaviour
                 Handles.color = WallColor;
             }
             (Vector3 cellStart, Vector3 cellEnd) = DecodeVectors(segment);
-
-            // TODO: convert cell positions to world positions
-
-            Handles.DrawLine(cellStart, cellEnd, WallThickness);
+            Vector3 localStart = _grid.CellToLocalInterpolated(cellStart);
+            Vector3 localEnd = _grid.CellToLocalInterpolated(cellEnd);
+            Handles.DrawLine(_grid.LocalToWorld(localStart), _grid.LocalToWorld(localEnd), WallThickness);
         }
     }
 
