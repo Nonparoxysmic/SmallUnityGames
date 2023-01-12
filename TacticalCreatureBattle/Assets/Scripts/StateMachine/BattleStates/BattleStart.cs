@@ -1,12 +1,24 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleStart : BattleState
 {
     public override void Enter()
     {
-        Battle = new Battle();
+        StartCoroutine(InitializeBattle());
+    }
 
-        // TODO: Load level scene.
+    IEnumerator InitializeBattle()
+    {
+        // TODO: Load the correct level scene.
+        //SceneManager.LoadScene("LevelName", LoadSceneMode.Additive);
+
+        // Wait until the next frame so the level will be loaded.
+        yield return null;
+
+        // Create Battle.
+        Battle = new Battle();
 
         // Create creature units.
         Transform unitParent = new GameObject { name = "Units" }.transform;
