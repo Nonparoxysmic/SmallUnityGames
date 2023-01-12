@@ -1,3 +1,11 @@
+public enum Direction
+{
+    Left,
+    Down,
+    Right,
+    Up
+}
+
 public enum GridWallsTool
 {
     None,

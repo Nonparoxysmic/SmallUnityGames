@@ -10,7 +10,7 @@ public class GridWalls : MonoBehaviour
     [HideInInspector] public float WallThickness;
     [HideInInspector] public GridWallsTool CurrentTool { get; set; }
 
-    [SerializeField] List<ulong> segmentList;
+    [HideInInspector] [SerializeField] List<ulong> segmentList;
     HashSet<ulong> _segmentHashSet;
 
     Grid _grid;
@@ -246,5 +246,35 @@ public class GridWalls : MonoBehaviour
     bool IsFallStop(ulong input)
     {
         return (input & (1UL << 60)) > 0;
+    }
+
+    public bool CanMove(Vector3Int cell, Direction direction)
+    {
+        return !_segmentHashSet.Contains(LineSegment(cell, direction));
+    }
+
+    public bool CanFall(Vector3Int cell, Direction direction)
+    {
+        ulong wall = LineSegment(cell, direction);
+        ulong fallStop = wall | (1UL << 60);
+        return !_segmentHashSet.Contains(wall) && !_segmentHashSet.Contains(fallStop);
+    }
+
+    ulong LineSegment(Vector3Int cell, Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Left:
+                return EncodeVectors((cell, cell + Vector3Int.up));
+            case Direction.Down:
+                return EncodeVectors((cell, cell + Vector3Int.right));
+            case Direction.Right:
+                return EncodeVectors((cell + Vector3Int.right, cell + Vector3Int.right + Vector3Int.up));
+            case Direction.Up:
+                return EncodeVectors((cell + Vector3Int.up, cell + Vector3Int.up + Vector3Int.right));
+            default:
+                this.Error("Invalid Direction parameter.");
+                return 0;
+        }
     }
 }
