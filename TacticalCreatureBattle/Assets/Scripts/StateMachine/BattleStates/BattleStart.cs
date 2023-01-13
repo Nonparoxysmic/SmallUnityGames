@@ -17,8 +17,16 @@ public class BattleStart : BattleState
         // Wait until the next frame so the level will be loaded.
         yield return null;
 
-        // Create Battle.
-        Battle = new Battle();
+        // Get the level collision reference.
+        GridWalls gridWalls = FindObjectOfType<GridWalls>();
+        if (gridWalls == null)
+        {
+            this.Error("Unable to find level's collision information.");
+            yield break;
+        }
+
+        // Create Battle with level collision.
+        Battle = new Battle(gridWalls);
 
         // Create creature units.
         Transform unitParent = new GameObject { name = "Units" }.transform;
