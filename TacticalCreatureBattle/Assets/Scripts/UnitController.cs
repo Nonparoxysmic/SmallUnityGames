@@ -35,13 +35,17 @@ public class UnitController : MonoBehaviour
             name = "Sprite"
         };
         spriteGameObject.transform.parent = transform;
-        if (UnitSize == Size.Small)
+        switch (UnitSize)
         {
-            spriteGameObject.transform.position += new Vector3(0, -0.25f);
-        }
-        else if (UnitSize == Size.Large)
-        {
-            spriteGameObject.transform.position += new Vector3(0.5f, 0.5f);
+            case Size.Small:
+                spriteGameObject.transform.position += new Vector3(0.5f, 0.25f);
+                break;
+            case Size.Medium:
+                spriteGameObject.transform.position += new Vector3(0.5f, 0.5f);
+                break;
+            case Size.Large:
+                spriteGameObject.transform.position += new Vector3(1, 1);
+                break;
         }
         SpriteRenderer sr = spriteGameObject.AddComponent<SpriteRenderer>();
         sr.sprite = AssetLibrary.GetSprite(UnitSize, CreatureStats.PrimarySpriteIndex);
