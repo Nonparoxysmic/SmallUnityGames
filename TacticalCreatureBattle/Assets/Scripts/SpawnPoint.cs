@@ -3,6 +3,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class SpawnPoint : MonoBehaviour
 {
+    public Team Team;
     public uint Size;
     [HideInInspector] public Vector3Int Cell;
 
@@ -64,7 +65,7 @@ public class SpawnPoint : MonoBehaviour
             Gizmos.DrawSphere(transform.position, 0.25f);
             return;
         }
-        Gizmos.color = Color.green;
+        Gizmos.color = Team == Team.Human ? Color.green : Color.blue;
         if (Size > 1)
         {
             Gizmos.DrawLine(transform.position, transform.position + new Vector3(Size - 1, 0));
