@@ -10,6 +10,8 @@ public class UnitController : MonoBehaviour
     public Size UnitSize { get => CreatureStats.CreatureSize; }
     public int CurrentHP { get; private set; }
 
+    SpriteRenderer _spriteRenderer;
+
     public void Initialize(CreatureStats creatureStats, Battle battle, Team team)
     {
         // Save references.
@@ -47,8 +49,13 @@ public class UnitController : MonoBehaviour
                 spriteGameObject.transform.position += new Vector3(1, 1);
                 break;
         }
-        SpriteRenderer sr = spriteGameObject.AddComponent<SpriteRenderer>();
-        sr.sprite = AssetLibrary.GetSprite(UnitSize, CreatureStats.PrimarySpriteIndex);
-        sr.color = CreatureStats.PrimarySpriteColor;
+        _spriteRenderer = spriteGameObject.AddComponent<SpriteRenderer>();
+        _spriteRenderer.sprite = AssetLibrary.GetSprite(UnitSize, CreatureStats.PrimarySpriteIndex);
+        _spriteRenderer.color = CreatureStats.PrimarySpriteColor;
+    }
+
+    public void SetVisible(bool isVisible)
+    {
+        _spriteRenderer.enabled = isVisible;
     }
 }
