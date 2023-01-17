@@ -53,8 +53,8 @@ public class BattleStart : BattleState
             }
         }
 
-        // TODO: Change to next state.
-        //StateMachine.ChangeState<>();
+        // Change to the state for unit staging.
+        StateMachine.ChangeState<Staging>();
     }
 
     public override void Exit()
