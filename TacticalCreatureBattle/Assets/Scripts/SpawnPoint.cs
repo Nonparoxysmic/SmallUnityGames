@@ -68,11 +68,13 @@ public class SpawnPoint : MonoBehaviour
         Gizmos.color = Team == Team.Human ? Color.green : Color.blue;
         if (Size > 1)
         {
-            Gizmos.DrawLine(transform.position, transform.position + new Vector3(Size - 1, 0));
+            Vector3 end = _grid.GetCellCenterWorld(Cell + new Vector3Int((int)Size - 1, 0, 0));
+            Gizmos.DrawLine(transform.position, end);
         }
         for (int i = 0; i < Size; i++)
         {
-            Gizmos.DrawSphere(transform.position + new Vector3(i, 0), 0.25f);
+            Vector3 pos = _grid.GetCellCenterWorld(Cell + new Vector3Int(i, 0, 0));
+            Gizmos.DrawSphere(pos, 0.25f);
         }
     }
 }
