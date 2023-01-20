@@ -8,6 +8,7 @@ public class UnitController : MonoBehaviour
     public Team Team { get; private set; }
     public int UnitID { get; private set; }
     public Size UnitSize { get => CreatureStats.CreatureSize; }
+    public bool InBattle { get; set; }
     public int CurrentHP { get; private set; }
 
     SpriteRenderer _spriteRenderer;
@@ -30,6 +31,7 @@ public class UnitController : MonoBehaviour
             Battle.HumanTeam.Add(this);
         }
         // Set battle-specific stats.
+        InBattle = true;
         CurrentHP = CreatureStats.MaximumHP;
         // Create sprites.
         GameObject spriteGameObject = new GameObject
