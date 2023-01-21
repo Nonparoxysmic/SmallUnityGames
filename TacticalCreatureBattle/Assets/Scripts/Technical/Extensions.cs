@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class Extensions
@@ -54,5 +55,25 @@ public static class Extensions
             }
         }
         return new string(charArray, 0, outputLength);
+    }
+
+    /// <summary>
+    /// Randomly sorts the elements of a list.
+    /// </summary>
+    /// <remarks>
+    /// This method implements a Fisher-Yates shuffle, using 
+    /// <seealso cref="Random.Range(int, int)"/> to generate the randomization.
+    /// </remarks>
+    /// <typeparam name="T">The type of the elements in the list.</typeparam>
+    /// <param name="list">The list to be shuffled.</param>
+    public static void Shuffle<T>(this IList<T> list)
+    {
+        for (int i = 0; i < list.Count - 1; i++)
+        {
+            int j = Random.Range(i, list.Count);
+            T temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+        }
     }
 }
