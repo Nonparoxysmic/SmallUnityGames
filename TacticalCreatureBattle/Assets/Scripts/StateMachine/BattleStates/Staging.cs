@@ -45,17 +45,10 @@ public class Staging : BattleState
 
         PlaceUnits(Team.Computer);
 
-        KeyboardInput.DirectionalInput += OnDirectionalInput;
-    }
+        PlaceUnits(Team.Human);
 
-    void OnDirectionalInput(object sender, DirectionEventArgs e)
-    {
-
-    }
-
-    public override void Exit()
-    {
-        KeyboardInput.DirectionalInput -= OnDirectionalInput;
+        // TODO: Change to the next state.
+        //StateMachine.ChangeState<>();
     }
 
     void PlaceUnits(Team team)
