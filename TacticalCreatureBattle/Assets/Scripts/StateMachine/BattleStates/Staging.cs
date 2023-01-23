@@ -73,6 +73,8 @@ public class Staging : BattleState
             unitControllers = Battle.HumanTeam;
         }
 
+        // Remove from battle the units that don't fit on the available spawn points.
+        // Units are removed from the end of the list first.
         int removeIndex = unitControllers.Count - 1;
         while (!CanSpawnAll(unitControllers, spawnPoints) && removeIndex > 0)
         {
@@ -81,7 +83,59 @@ public class Staging : BattleState
             removeIndex--;
         }
 
-        // TODO: Move the units into the spawn positions.
+        // Sort the units into the spawn points.
+        List<UnitController>[] sortedUnits = new List<UnitController>[spawnPoints.Count];
+        for (int i = 0; i < sortedUnits.Length; i++)
+        {
+            sortedUnits[i] = new List<UnitController>();
+        }
+        int[] capacities = new int[spawnPoints.Count];
+        List<int> spawnPairIndices = new List<int>();
+        for (int i = 0; i < spawnPoints.Count; i++)
+        {
+            capacities[i] = (int)spawnPoints[i].Size;
+            for (int j = 0; j < capacities[i] / 2; j++)
+            {
+                spawnPairIndices.Add(i);
+            }
+        }
+        spawnPairIndices.Shuffle();
+        int pos = 0;
+        foreach (UnitController unit in unitControllers)
+        {
+            if (!unit.InBattle || unit.UnitSize != Size.Large)
+            {
+                continue;
+            }
+            int spawnPointIndex = spawnPairIndices[pos++];
+            sortedUnits[spawnPointIndex].Add(unit);
+            capacities[spawnPointIndex] -= 2;
+        }
+        List<int> spawnSingleIndices = new List<int>();
+        for (int i = 0; i < spawnPoints.Count; i++)
+        {
+            for (int j = 0; j < capacities[i]; j++)
+            {
+                spawnSingleIndices.Add(i);
+            }
+        }
+        spawnSingleIndices.Shuffle();
+        pos = 0;
+        foreach (UnitController unit in unitControllers)
+        {
+            if (!unit.InBattle || unit.UnitSize == Size.Large)
+            {
+                continue;
+            }
+            int spawnPointIndex = spawnSingleIndices[pos++];
+            sortedUnits[spawnPointIndex].Add(unit);
+        }
+
+        // Move the units into the spawn positions.
+        for (int i = 0; i < sortedUnits.Length; i++)
+        {
+            PositionUnits(sortedUnits[i], spawnPoints[i]);
+        }
     }
 
     bool CanSpawnAll(List<UnitController> unitControllers, List<SpawnPoint> spawnPoints)
@@ -122,5 +176,10 @@ public class Staging : BattleState
             return false;
         }
         return true;
+    }
+
+    void PositionUnits(List<UnitController> unitControllers, SpawnPoint spawnPoint)
+    {
+        // TODO: Position the collection of units in the spawn point.
     }
 }
