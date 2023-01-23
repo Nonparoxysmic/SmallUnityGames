@@ -129,12 +129,13 @@ public class Staging : BattleState
             }
             int spawnPointIndex = spawnSingleIndices[pos++];
             sortedUnits[spawnPointIndex].Add(unit);
+            capacities[spawnPointIndex]--;
         }
 
         // Move the units into the spawn positions.
         for (int i = 0; i < sortedUnits.Length; i++)
         {
-            PositionUnits(sortedUnits[i], spawnPoints[i]);
+            PositionUnits(sortedUnits[i], spawnPoints[i], capacities[i]);
         }
     }
 
@@ -178,8 +179,36 @@ public class Staging : BattleState
         return true;
     }
 
-    void PositionUnits(List<UnitController> unitControllers, SpawnPoint spawnPoint)
+    void PositionUnits(List<UnitController> unitControllers, SpawnPoint spawnPoint, int empty)
     {
-        // TODO: Position the collection of units in the spawn point.
+        unitControllers.Shuffle();
+
+        List<bool> isUnit = new List<bool>();
+        for (int i = 0; i < unitControllers.Count; i++)
+        {
+            isUnit.Add(true);
+        }
+        if (empty > 0)
+        {
+            for (int i = 0; i < empty; i++)
+            {
+                isUnit.Add(false);
+            }
+            isUnit.Shuffle();
+        }
+
+        int xOffset = 0, unitIndex = 0;
+        for (int i = 0; i < isUnit.Count; i++)
+        {
+            if (isUnit[i])
+            {
+                unitControllers[unitIndex].transform.position = spawnPoint.Position + new Vector3(xOffset, 0);
+                xOffset += unitControllers[unitIndex++].UnitSize == Size.Large ? 2 : 1;
+            }
+            else
+            {
+                xOffset++;
+            }
+        }
     }
 }

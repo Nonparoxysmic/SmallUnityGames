@@ -3,6 +3,22 @@ using UnityEngine;
 [ExecuteAlways]
 public class SpawnPoint : MonoBehaviour
 {
+    public Vector3 Position
+    {
+        get
+        {
+            if (_grid == null)
+            {
+                ValidateGrid();
+            }
+            if (_grid == null)
+            {
+                return Vector3.zero;
+            }
+            return _grid.CellToWorld(Cell);
+        }
+    }
+
     public Team Team;
     public uint Size;
     [HideInInspector] public Vector3Int Cell;
@@ -28,11 +44,13 @@ public class SpawnPoint : MonoBehaviour
     {
         if (transform.parent == null || transform.parent.name != "Spawn Points")
         {
+            _grid = null;
             this.Error($"{typeof(SpawnPoint)} must be child of \"Spawn Points\" GameObject.");
             return;
         }
         if (transform.parent.parent == null)
         {
+            _grid = null;
             this.Error($"\"Spawn Points\" GameObject requires parent Grid.");
             return;
         }
@@ -47,6 +65,7 @@ public class SpawnPoint : MonoBehaviour
             this.Error($"{typeof(SpawnPoint)} only supports Rectangle grids.");
             return;
         }
+        Cell = _grid.WorldToCell(transform.position);
     }
 
     void OnDrawGizmos()
