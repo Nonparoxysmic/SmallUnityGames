@@ -42,22 +42,10 @@ public class SpawnPoint : MonoBehaviour
 
     void ValidateGrid()
     {
-        if (transform.parent == null || transform.parent.name != "Spawn Points")
-        {
-            _grid = null;
-            this.Error($"{typeof(SpawnPoint)} must be child of \"Spawn Points\" GameObject.");
-            return;
-        }
-        if (transform.parent.parent == null)
-        {
-            _grid = null;
-            this.Error($"\"Spawn Points\" GameObject requires parent Grid.");
-            return;
-        }
-        _grid = transform.parent.parent.GetComponent<Grid>();
+        _grid = FindParentGrid(transform);
         if (_grid == null)
         {
-            this.Error($"\"Spawn Points\" GameObject requires parent Grid.");
+            this.Error($"{typeof(SpawnPoint)} requires a parent Grid.");
             return;
         }
         if (_grid.cellLayout != GridLayout.CellLayout.Rectangle)
@@ -66,6 +54,20 @@ public class SpawnPoint : MonoBehaviour
             return;
         }
         Cell = _grid.WorldToCell(transform.position);
+    }
+
+    Grid FindParentGrid(Transform transform)
+    {
+        if (transform.parent == null)
+        {
+            return null;
+        }
+        _grid = transform.parent.GetComponent<Grid>();
+        if (_grid == null)
+        {
+            return FindParentGrid(transform.parent);
+        }
+        return _grid;
     }
 
     void OnDrawGizmos()
