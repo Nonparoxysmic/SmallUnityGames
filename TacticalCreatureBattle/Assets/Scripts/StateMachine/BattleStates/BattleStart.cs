@@ -11,8 +11,8 @@ public class BattleStart : BattleState
 
     IEnumerator InitializeBattle()
     {
-        // TODO: Load the correct level scene.
-        //SceneManager.LoadScene("LevelName", LoadSceneMode.Additive);
+        // Load the level scene.
+        SceneManager.LoadScene("ExampleLevel", LoadSceneMode.Additive);
 
         // Wait until the next frame so the level will be loaded.
         yield return null;
