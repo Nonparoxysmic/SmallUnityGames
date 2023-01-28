@@ -20,3 +20,13 @@ public class DirectionEventArgs : BaseEventArgs<Vector2Int>
         _data = new Vector2Int(x, y);
     }
 }
+
+public class KeyEventArgs : BaseEventArgs<KeyCode>
+{
+    public KeyCode KeyCode { get => _data; }
+
+    public KeyEventArgs(KeyCode keyCode)
+    {
+        _data = keyCode;
+    }
+}

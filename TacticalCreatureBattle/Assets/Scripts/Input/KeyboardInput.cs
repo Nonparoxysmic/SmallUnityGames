@@ -5,8 +5,11 @@ public class KeyboardInput : MonoBehaviour
 {
     public static event EventHandler AnyKeyDown;
     public static event EventHandler<DirectionEventArgs> DirectionalInput;
+    public static event EventHandler<KeyEventArgs> KeyDown;
 
     public static Vector2 SmoothedDirection { get; private set; }
+
+    public KeyCode[] PolledKeys;
 
     [SerializeField] float repeatStartDelay;
     [SerializeField] float repeatTime;
@@ -17,6 +20,14 @@ public class KeyboardInput : MonoBehaviour
     float _nextVertRepeatTime;
     int _lastFrameHorz;
     int _lastFrameVert;
+
+    void Start()
+    {
+        if (PolledKeys == null)
+        {
+            PolledKeys = Array.Empty<KeyCode>();
+        }
+    }
 
     void Update()
     {
@@ -71,5 +82,13 @@ public class KeyboardInput : MonoBehaviour
         }
         _lastFrameHorz = rawHorz;
         _lastFrameVert = rawVert;
+
+        foreach (KeyCode keyCode in PolledKeys)
+        {
+            if (Input.GetKeyDown(keyCode))
+            {
+                KeyDown.Invoke(this, new KeyEventArgs(keyCode));
+            }
+        }
     }
 }
