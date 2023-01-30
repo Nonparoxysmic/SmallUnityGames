@@ -8,10 +8,12 @@ public class UnitController : MonoBehaviour
     public Team Team { get; private set; }
     public int UnitID { get; private set; }
     public Size UnitSize { get => CreatureStats.CreatureSize; }
+    public Vector3 ViewCenter { get => transform.position + _spriteOffset; }
     public bool InBattle { get; set; }
     public int CurrentHP { get; private set; }
 
     SpriteRenderer _spriteRenderer;
+    Vector3 _spriteOffset;
 
     public void Initialize(CreatureStats creatureStats, Battle battle, Team team)
     {
@@ -39,18 +41,20 @@ public class UnitController : MonoBehaviour
             name = "Sprite"
         };
         spriteGameObject.transform.parent = transform;
+        _spriteOffset = Vector3.zero;
         switch (UnitSize)
         {
             case Size.Small:
-                spriteGameObject.transform.position += new Vector3(0.5f, 0.25f);
+                _spriteOffset = new Vector3(0.5f, 0.25f);
                 break;
             case Size.Medium:
-                spriteGameObject.transform.position += new Vector3(0.5f, 0.5f);
+                _spriteOffset = new Vector3(0.5f, 0.5f);
                 break;
             case Size.Large:
-                spriteGameObject.transform.position += new Vector3(1, 1);
+                _spriteOffset = new Vector3(1, 1);
                 break;
         }
+        spriteGameObject.transform.position += _spriteOffset;
         _spriteRenderer = spriteGameObject.AddComponent<SpriteRenderer>();
         _spriteRenderer.sprite = AssetLibrary.GetSprite(UnitSize, CreatureStats.PrimarySpriteIndex);
         _spriteRenderer.color = CreatureStats.PrimarySpriteColor;

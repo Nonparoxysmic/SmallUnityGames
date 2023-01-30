@@ -1,10 +1,11 @@
-using System;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     public float Speed;
     public float MaxSize;
+
+    static CameraController _instance;
 
     Camera _mainCamera;
 
@@ -16,6 +17,7 @@ public class CameraController : MonoBehaviour
             this.Error("Missing or unavailable Camera.");
             return;
         }
+        _instance = this;
         KeyboardInput.KeyDown += OnKeyDown;
     }
 
@@ -47,5 +49,15 @@ public class CameraController : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public static void LookAtUnit(UnitController unit)
+    {
+        _instance.transform.position = new Vector3
+            (
+                unit.ViewCenter.x,
+                unit.ViewCenter.y,
+                _instance.transform.position.z
+            );
     }
 }
