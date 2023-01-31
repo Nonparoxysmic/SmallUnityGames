@@ -25,8 +25,16 @@ public class BattleStart : BattleState
             yield break;
         }
 
-        // Create Battle with level collision.
-        Battle = new Battle(gridWalls);
+        // Get the battle UI controller.
+        BattleUI battleUI = FindObjectOfType<BattleUI>();
+        if (battleUI == null)
+        {
+            this.Error("Unable to find battle UI.");
+            yield break;
+        }
+
+        // Create Battle with level collision and UI.
+        Battle = new Battle(gridWalls, battleUI);
 
         // Create creature units.
         Transform unitParent = new GameObject { name = "Units" }.transform;

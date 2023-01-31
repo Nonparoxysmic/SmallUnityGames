@@ -87,7 +87,7 @@ public class KeyboardInput : MonoBehaviour
         {
             if (Input.GetKeyDown(keyCode))
             {
-                KeyDown.Invoke(this, new KeyEventArgs(keyCode));
+                KeyDown?.Invoke(this, new KeyEventArgs(keyCode));
             }
         }
     }

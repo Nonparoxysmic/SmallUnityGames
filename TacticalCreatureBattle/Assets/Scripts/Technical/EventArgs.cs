@@ -21,6 +21,16 @@ public class DirectionEventArgs : BaseEventArgs<Vector2Int>
     }
 }
 
+public class IntegerEventArgs : BaseEventArgs<int>
+{
+    public int Data { get => _data; }
+
+    public IntegerEventArgs(int integer)
+    {
+        _data = integer;
+    }
+}
+
 public class KeyEventArgs : BaseEventArgs<KeyCode>
 {
     public KeyCode KeyCode { get => _data; }
