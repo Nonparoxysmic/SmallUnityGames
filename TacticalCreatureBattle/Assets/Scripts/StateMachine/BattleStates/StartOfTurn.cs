@@ -11,7 +11,7 @@ public class StartOfTurn : BattleState
         // Move the camera to the active unit.
         CameraController.LookAtUnit(Battle.ActiveUnit);
 
-        // TODO: Change to the next state.
-        //StateMachine.ChangeState<>();
+        // Change to the next state.
+        StateMachine.ChangeState<ActionSelection>();
     }
 }
