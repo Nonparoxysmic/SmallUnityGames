@@ -7,6 +7,7 @@ public class Battle
     public List<UnitController> ComputerTeam = new List<UnitController>();
     public List<UnitController> HumanTeam = new List<UnitController>();
 
+    public UnitController ActiveUnit { get; set; }
     public TurnOrder TurnOrder { get; }
 
     readonly GridWalls _gridWalls;

@@ -104,4 +104,9 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
     {
         CurrentInitiative += TurnOrder.INITIATIVE_INCREMENT;
     }
+
+    public void ConsumeInitiative()
+    {
+        CurrentInitiative -= TurnOrder.INITIATIVE_THRESHOLD;
+    }
 }

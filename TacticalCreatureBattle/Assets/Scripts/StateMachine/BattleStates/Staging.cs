@@ -47,8 +47,12 @@ public class Staging : BattleState
 
         PlaceUnits(Team.Human);
 
-        // TODO: Change to the next state.
-        //StateMachine.ChangeState<>();
+        StateMachine.ChangeState<StartOfTurn>();
+    }
+
+    public override void Exit()
+    {
+        Destroy(this);
     }
 
     void PlaceUnits(Team team)
