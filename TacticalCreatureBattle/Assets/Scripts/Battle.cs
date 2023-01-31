@@ -7,11 +7,14 @@ public class Battle
     public List<UnitController> ComputerTeam = new List<UnitController>();
     public List<UnitController> HumanTeam = new List<UnitController>();
 
+    public TurnOrder TurnOrder { get; }
+
     readonly GridWalls _gridWalls;
 
     public Battle(GridWalls gridWalls)
     {
         _gridWalls = gridWalls;
+        TurnOrder = new TurnOrder(ref Units);
     }
 
     public bool CanMove(Vector3Int cell, Direction direction)

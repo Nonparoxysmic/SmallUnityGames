@@ -1,6 +1,8 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitController : MonoBehaviour
+public class UnitController : MonoBehaviour, IComparable<UnitController>
 {
     CreatureStats CreatureStats { get; set; }
     Battle Battle { get; set; }
@@ -11,6 +13,7 @@ public class UnitController : MonoBehaviour
     public Vector3 ViewCenter { get => transform.position + _spriteOffset; }
     public bool InBattle { get; set; }
     public int CurrentHP { get; private set; }
+    public int CurrentInitiative { get; private set; }
 
     SpriteRenderer _spriteRenderer;
     Vector3 _spriteOffset;
@@ -63,5 +66,42 @@ public class UnitController : MonoBehaviour
     public void SetVisible(bool isVisible)
     {
         _spriteRenderer.enabled = isVisible;
+    }
+
+    /// <summary>
+    /// Implements the <seealso cref="IComparable"/> interface.
+    /// </summary>
+    /// <remarks>
+    /// This method sorts elements of the type <seealso cref="UnitController"/> by initiative in 
+    /// descending order so that <seealso cref="List{T}.Sort"/> sorts the units into turn order.
+    /// </remarks>
+    public int CompareTo(UnitController other)
+    {
+        if (other == null)
+        {
+            return 1;
+        }
+        if (CurrentInitiative > other.CurrentInitiative)
+        {
+            return -1;
+        }
+        else if (CurrentInitiative == other.CurrentInitiative)
+        {
+            // TODO: Sort by initiative stat before UnitID.
+            if (UnitID < other.UnitID)
+            {
+                return -1;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        return 1;
+    }
+
+    public void IncrementInitiative()
+    {
+        CurrentInitiative += TurnOrder.INITIATIVE_INCREMENT;
     }
 }
