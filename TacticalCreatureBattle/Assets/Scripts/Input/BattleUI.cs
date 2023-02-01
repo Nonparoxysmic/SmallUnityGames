@@ -19,6 +19,36 @@ public class BattleUI : MonoBehaviour
     public Text Button4Text;
     public Text ButtonBackText;
 
+    void OnEnable()
+    {
+        KeyboardInput.KeyDown += OnKeyDown;
+    }
+
+    void OnDisable()
+    {
+        KeyboardInput.KeyDown -= OnKeyDown;
+    }
+
+    private void OnKeyDown(object sender, KeyEventArgs e)
+    {
+        switch (e.KeyCode)
+        {
+            case KeyCode.Return:
+                TurnEnded?.Invoke(this, EventArgs.Empty);
+                break;
+            case KeyCode.Alpha1:
+            case KeyCode.Alpha2:
+            case KeyCode.Alpha3:
+            case KeyCode.Alpha4:
+                int buttonNumber = (int)e.KeyCode - 48;
+                ButtonClick?.Invoke(this, new IntegerEventArgs(buttonNumber));
+                break;
+            case KeyCode.Backspace:
+                BackButtonClick?.Invoke(this, EventArgs.Empty);
+                break;
+        }
+    }
+
     public void OnEndTurnButton()
     {
         TurnEnded?.Invoke(this, EventArgs.Empty);
