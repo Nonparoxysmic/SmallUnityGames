@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public static bool AllowFreeMovement { get; set; }
+
     public float Speed;
     public float MaxSize;
 
@@ -28,8 +30,11 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        transform.position += Time.unscaledDeltaTime * _mainCamera.orthographicSize * Speed / 50
-            * (Vector3)KeyboardInput.SmoothedDirection;
+        if (AllowFreeMovement)
+        {
+            transform.position += Time.unscaledDeltaTime * _mainCamera.orthographicSize * Speed / 50
+                * (Vector3)KeyboardInput.SmoothedDirection;
+        }
     }
 
     void OnKeyDown(object sender, KeyEventArgs e)

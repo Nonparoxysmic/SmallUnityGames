@@ -10,12 +10,14 @@ public class ActionSelection : BattleState
 
         Battle.UI.ButtonClick += OnActionSelected;
         Battle.UI.TurnEnded += OnTurnEnded;
+        CameraController.AllowFreeMovement = true;
     }
 
     public override void Exit()
     {
         Battle.UI.ButtonClick -= OnActionSelected;
         Battle.UI.TurnEnded -= OnTurnEnded;
+        CameraController.AllowFreeMovement = false;
     }
 
     void OnActionSelected(object sender, IntegerEventArgs e)
