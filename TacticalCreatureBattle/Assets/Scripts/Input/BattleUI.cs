@@ -51,4 +51,23 @@ public class BattleUI : MonoBehaviour
         Button4.interactable = text4 != "";
         Button4Text.text = text4;
     }
+
+    public void SetButtonInteractable(int buttonNumber, bool interactable)
+    {
+        switch (buttonNumber)
+        {
+            case 1:
+                Button1.interactable = interactable;
+                break;
+            case 2:
+                Button2.interactable = interactable;
+                break;
+            case 3:
+                Button3.interactable = interactable;
+                break;
+            case 4:
+                Button4.interactable = interactable;
+                break;
+        }
+    }
 }
