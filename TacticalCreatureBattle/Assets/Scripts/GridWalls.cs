@@ -40,6 +40,7 @@ public class GridWalls : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
         foreach (ulong segment in _segmentHashSet)
@@ -150,6 +151,7 @@ public class GridWalls : MonoBehaviour
             EditorUtility.SetDirty(this);
         }
     }
+#endif
 
     /// <summary>
     /// Gets the coordinates of the grid line segment closest to the interpolated cell position.
