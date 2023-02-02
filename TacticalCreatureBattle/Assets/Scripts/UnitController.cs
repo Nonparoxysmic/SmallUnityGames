@@ -9,7 +9,7 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
 
     public Team Team { get; private set; }
     public int UnitID { get; private set; }
-    public Size UnitSize { get => CreatureStats.CreatureSize; }
+    public Size UnitSize { get => CreatureStats.Species.Size; }
     public Vector3 ViewCenter { get => transform.position + _spriteOffset; }
     public bool InBattle { get; set; }
     public int CurrentHP { get; private set; }
@@ -59,8 +59,8 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         }
         spriteGameObject.transform.position += _spriteOffset;
         _spriteRenderer = spriteGameObject.AddComponent<SpriteRenderer>();
-        _spriteRenderer.sprite = AssetLibrary.GetSprite(UnitSize, CreatureStats.PrimarySpriteIndex);
-        _spriteRenderer.color = CreatureStats.PrimarySpriteColor;
+        _spriteRenderer.sprite = CreatureStats.Species.BaseSprite;
+        _spriteRenderer.color = CreatureStats.Species.BaseColor;
     }
 
     public void SetVisible(bool isVisible)

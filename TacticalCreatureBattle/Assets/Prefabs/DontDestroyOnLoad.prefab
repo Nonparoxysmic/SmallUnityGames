@@ -53,7 +53,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3021175258527668052}
   - component: {fileID: 8375241840186476497}
-  - component: {fileID: 7946439936782207734}
   - component: {fileID: -2088777201136628144}
   m_Layer: 0
   m_Name: DontDestroyOnLoad
@@ -92,19 +91,6 @@ MonoBehaviour:
   PolledKeys: 2d0000003d00000031000000320000003300000034000000080000000d000000
   repeatStartDelay: 0.5
   repeatTime: 0.1
---- !u!114 &7946439936782207734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4279011041759925168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd8a0f8156494554b9b49fbe76b03d47, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpriteBook: {fileID: 11400000, guid: 1eb864919d75ae249bd6b761e2d33be5, type: 2}
 --- !u!114 &-2088777201136628144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,5 +103,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1d69e4ca46005a49b2896e5b0edca0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prebuiltCreatures:
-  - {fileID: 11400000, guid: 6c7958fdc038e59458cc08c4baba3c87, type: 2}

@@ -1,36 +1,44 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Menagerie : MonoBehaviour
 {
-    [SerializeField] CreatureStats[] _prebuiltCreatures;
-
     public static CreatureStats[] ComputerTeam { get; private set; }
     public static CreatureStats[] HumanTeam { get; private set; }
 
-    static Menagerie _instance;
+    static CreatureStats[] _prebuiltCreatures;
+    static Dictionary<string, Species> _species;
 
     void Awake()
     {
-        _instance = this;
-        if (_prebuiltCreatures == null)
+        Species[] allSpecies = Resources.LoadAll<Species>("");
+        _species = new Dictionary<string, Species>();
+        foreach (Species species in allSpecies)
         {
-            this.Error("Serialized field is null.");
-            return;
-        }
-        if (_prebuiltCreatures.Length == 0)
-        {
-            this.Error($"No prebuilt creatures in {typeof(Menagerie)} array.");
-            return;
-        }
-        for (int i = 0; i < _prebuiltCreatures.Length; i++)
-        {
-            if (_prebuiltCreatures[i] == null)
+            if (_species.ContainsKey(species.name))
             {
-                this.Error($"Missing reference in inspector: \"{nameof(_prebuiltCreatures)}\" array.");
+                this.Error($"Multiple {nameof(Species)} Resources with the same name: \"{species.name}\"");
                 return;
             }
+            _species.Add(species.name, species);
+        }
+        if (_species.Count == 0)
+        {
+            this.Error($"No {nameof(Species)} found.");
+            return;
+        }
+
+        _prebuiltCreatures = Resources.LoadAll<CreatureStats>("");
+        foreach (CreatureStats creature in _prebuiltCreatures)
+        {
+            if (!_species.ContainsKey(creature.SpeciesName))
+            {
+                this.Error($"{nameof(CreatureStats)} Resource with unknown Species: \"{creature.SpeciesName}\"");
+                return;
+            }
+            creature.Species = _species[creature.SpeciesName];
         }
 
         // TODO: Load any saved creatures from Application.persistentDataPath folder.
@@ -45,6 +53,7 @@ public class Menagerie : MonoBehaviour
         for (int i = 0; i < Math.Min(_prebuiltCreatures.Length, 4); i++)
         {
             creatures[i] = Instantiate(_prebuiltCreatures[i]);
+            creatures[i].Species = _prebuiltCreatures[i].Species;
         }
         for (int i = _prebuiltCreatures.Length; i < 4; i++)
         {
@@ -54,14 +63,9 @@ public class Menagerie : MonoBehaviour
         ComputerTeam = new CreatureStats[] { creatures[1], creatures[3] };
     }
 
-    public static CreatureStats[] GetPrebuiltCreatures()
+    public static Species RandomSpecies()
     {
-        List<CreatureStats> creatureStats = new List<CreatureStats>();
-        foreach (CreatureStats cs in _instance._prebuiltCreatures)
-        {
-            creatureStats.Add(Instantiate(cs));
-        }
-        return creatureStats.ToArray();
+        return _species.ElementAt(UnityEngine.Random.Range(0, _species.Count)).Value;
     }
 
     public static GameObject CreateUnit(CreatureStats creatureStats, Battle battle, Team team, Transform parent = null)
@@ -73,7 +77,7 @@ public class Menagerie : MonoBehaviour
         }
         UnitController uc = unit.AddComponent<UnitController>();
         uc.Initialize(creatureStats, battle, team);
-        unit.name = $"{team} Team -- Unit {uc.UnitID} -- {creatureStats.CreatureName}";
+        unit.name = $"{team} Team -- Unit {uc.UnitID} -- {creatureStats.IndividualName}";
         return unit;
     }
 }
