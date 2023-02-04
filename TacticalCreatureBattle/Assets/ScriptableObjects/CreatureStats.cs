@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName ="New CreatureStats", menuName = "TacticalCreatureBattle/CreatureStats")]
@@ -6,6 +7,10 @@ public class CreatureStats : ScriptableObject
     public string IndividualName;
     public string SpeciesName;
     public int MaximumHP;
+
+    public string[] MovementActionNames;
+    public string[] BasicActionNames;
+    public string[] SpecialActionNames;
 
     public Species Species { get; set; }
 
@@ -16,6 +21,9 @@ public class CreatureStats : ScriptableObject
         creatureStats.Species = Menagerie.RandomSpecies();
         creatureStats.SpeciesName = creatureStats.Species.name;
         creatureStats.MaximumHP = UnityEngine.Random.Range(1, 10);
+        creatureStats.MovementActionNames = Array.Empty<string>();
+        creatureStats.BasicActionNames = Array.Empty<string>();
+        creatureStats.SpecialActionNames = Array.Empty<string>();
         return creatureStats;
     }
 

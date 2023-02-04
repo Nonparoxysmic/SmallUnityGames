@@ -15,3 +15,6 @@ MonoBehaviour:
   IndividualName: Ejemplo
   SpeciesName: ExampleSpecies1
   MaximumHP: 9
+  MovementActionNames: []
+  BasicActionNames: []
+  SpecialActionNames: []

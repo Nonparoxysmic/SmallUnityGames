@@ -1,11 +1,10 @@
 using System;
-using UnityEngine;
 
 public class ActionSelection : BattleState
 {
     public override void Enter()
     {
-        Battle.UI.SetButtons("Example Action 1", "Example Action 2");
+        Battle.UI.SetButtons("Move", "Basic Attack", "Special Attack");
         // TODO: If an action is unavailable, use Battle.UI.SetButtonInteractable({buttonNumber}, false).
         Battle.UI.SetBackButtonInteractable(false);
 
@@ -26,12 +25,13 @@ public class ActionSelection : BattleState
         switch (e.Data)
         {
             case 1:
-                Debug.Log("Example Action 1 selected.");
-                //StateMachine.ChangeState<>();
+                StateMachine.ChangeState<MovementSelection>();
                 break;
             case 2:
-                Debug.Log("Example Action 2 selected.");
-                //StateMachine.ChangeState<>();
+                StateMachine.ChangeState<BasicAttackSelection>();
+                break;
+            case 3:
+                StateMachine.ChangeState<SpecialAttackSelection>();
                 break;
         }
     }

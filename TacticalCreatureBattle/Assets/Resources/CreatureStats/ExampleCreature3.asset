@@ -15,3 +15,6 @@ MonoBehaviour:
   IndividualName: Muestra
   SpeciesName: ExampleSpecies3
   MaximumHP: 9
+  MovementActionNames: []
+  BasicActionNames: []
+  SpecialActionNames: []

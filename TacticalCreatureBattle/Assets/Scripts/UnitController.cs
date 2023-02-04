@@ -10,6 +10,9 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
     public Team Team { get; private set; }
     public int UnitID { get; private set; }
     public Size UnitSize { get => CreatureStats.Species.Size; }
+    public string[] MovementActionNames { get => CreatureStats.MovementActionNames; }
+    public string[] BasicActionNames { get => CreatureStats.BasicActionNames; }
+    public string[] SpecialActionNames { get => CreatureStats.SpecialActionNames; }
     public Vector3 ViewCenter { get => transform.position + _spriteOffset; }
     public bool InBattle { get; set; }
     public int CurrentHP { get; private set; }

@@ -10,6 +10,7 @@ public class Menagerie : MonoBehaviour
 
     static CreatureStats[] _prebuiltCreatures;
     static Dictionary<string, Species> _species;
+    static Dictionary<string, CreatureAction> _actions;
 
     void Awake()
     {
@@ -30,6 +31,18 @@ public class Menagerie : MonoBehaviour
             return;
         }
 
+        CreatureAction[] allActions = Resources.LoadAll<CreatureAction>("");
+        _actions = new Dictionary<string, CreatureAction>();
+        foreach (CreatureAction action in allActions)
+        {
+            if (_actions.ContainsKey(action.name))
+            {
+                this.Error($"Multiple {nameof(CreatureAction)} Resources with the same name: \"{action.name}\"");
+                return;
+            }
+            _actions.Add(action.name, action);
+        }
+
         _prebuiltCreatures = Resources.LoadAll<CreatureStats>("");
         foreach (CreatureStats creature in _prebuiltCreatures)
         {
@@ -39,6 +52,30 @@ public class Menagerie : MonoBehaviour
                 return;
             }
             creature.Species = _species[creature.SpeciesName];
+            foreach (string name in creature.MovementActionNames)
+            {
+                if (!_actions.ContainsKey(name))
+                {
+                    this.Error($"{nameof(CreatureStats)} Resource with unknown CreatureAction: \"{name}\"");
+                    return;
+                }
+            }
+            foreach (string name in creature.BasicActionNames)
+            {
+                if (!_actions.ContainsKey(name))
+                {
+                    this.Error($"{nameof(CreatureStats)} Resource with unknown CreatureAction: \"{name}\"");
+                    return;
+                }
+            }
+            foreach (string name in creature.SpecialActionNames)
+            {
+                if (!_actions.ContainsKey(name))
+                {
+                    this.Error($"{nameof(CreatureStats)} Resource with unknown CreatureAction: \"{name}\"");
+                    return;
+                }
+            }
         }
 
         // TODO: Load any saved creatures from Application.persistentDataPath folder.
@@ -79,5 +116,35 @@ public class Menagerie : MonoBehaviour
         uc.Initialize(creatureStats, battle, team);
         unit.name = $"{team} Team -- Unit {uc.UnitID} -- {creatureStats.IndividualName}";
         return unit;
+    }
+
+    public static bool TryGetAction(string actionName, out CreatureAction action)
+    {
+        if (_actions.ContainsKey(actionName))
+        {
+            action = _actions[actionName];
+            return true;
+        }
+        action = null;
+        return false;
+    }
+
+    public static string GetActionDisplayName(string actionName)
+    {
+        if (_actions.ContainsKey(actionName))
+        {
+            return _actions[actionName].DisplayName;
+        }
+        return "";
+    }
+
+    public static string[] GetActionDisplayNames(string[] actionNames)
+    {
+        string[] output = new string[actionNames.Length];
+        for (int i = 0; i < actionNames.Length; i++)
+        {
+            output[i] = GetActionDisplayName(actionNames[i]);
+        }
+        return output;
     }
 }

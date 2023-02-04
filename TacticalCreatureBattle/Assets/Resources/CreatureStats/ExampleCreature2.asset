@@ -15,3 +15,6 @@ MonoBehaviour:
   IndividualName: Pieza
   SpeciesName: ExampleSpecies2
   MaximumHP: 9
+  MovementActionNames: []
+  BasicActionNames: []
+  SpecialActionNames: []
