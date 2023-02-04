@@ -35,11 +35,11 @@ public static class Extensions
     /// Returns a new string in which all white space characters from the current string are deleted.
     /// </summary>
     /// <remarks>
-    /// White space characters are those identified by
+    /// White space characters are those identified by 
     /// the method <seealso cref="char.IsWhiteSpace(char)"/>.
     /// </remarks>
     /// <returns>
-    /// A new string that is equivalent to the current instance
+    /// A new string that is equivalent to the current instance 
     /// except for the removed characters.
     /// </returns>
     /// <param name="current">The string from which to remove white space characters.</param>
@@ -58,22 +58,29 @@ public static class Extensions
     }
 
     /// <summary>
-    /// Randomly sorts the elements of a list.
+    /// Randomly sorts the elements of an <seealso cref="IList{T}"/>.
     /// </summary>
     /// <remarks>
-    /// This method implements a Fisher-Yates shuffle, using 
-    /// <seealso cref="Random.Range(int, int)"/> to generate the randomization.
+    /// <para>
+    /// This method shuffles into a random order the elements of a list, array, 
+    /// or other collection that implements <seealso cref="IList{T}"/>.
+    /// </para>
+    /// <para>
+    /// The elements are shuffled with a Fisher-Yates algorithm, using 
+    /// <seealso cref="UnityEngine"/>.<seealso cref="Random.Range(int, int)"/> 
+    /// to generate the randomization.
+    /// </para>
     /// </remarks>
-    /// <typeparam name="T">The type of the elements in the list.</typeparam>
-    /// <param name="list">The list to be shuffled.</param>
-    public static void Shuffle<T>(this IList<T> list)
+    /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+    /// <param name="iList">The collection to be shuffled.</param>
+    public static void Shuffle<T>(this IList<T> iList)
     {
-        for (int i = 0; i < list.Count - 1; i++)
+        for (int i = 0; i < iList.Count - 1; i++)
         {
-            int j = Random.Range(i, list.Count);
-            T temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
+            int j = Random.Range(i, iList.Count);
+            T temp = iList[i];
+            iList[i] = iList[j];
+            iList[j] = temp;
         }
     }
 }
