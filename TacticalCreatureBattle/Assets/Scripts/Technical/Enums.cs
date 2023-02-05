@@ -27,3 +27,12 @@ public enum Team
     Computer,
     Human
 }
+
+public enum Element //Change and expand as needed
+{
+    Element1,
+    Element2,
+    Element3,
+    Element4,
+    NoElement
+}

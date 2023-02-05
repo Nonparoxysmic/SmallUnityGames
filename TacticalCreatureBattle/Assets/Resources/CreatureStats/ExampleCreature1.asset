@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: ExampleCreature1
   m_EditorClassIdentifier: 
   IndividualName: Ejemplo
-  SpeciesName: ExampleSpecies1
-  MaximumHP: 9
-  MovementActionNames: []
-  BasicActionNames: []
-  SpecialActionNames: []
+  Species: {fileID: 11400000, guid: c497e7730717c9c4bbd01e967d080c1b, type: 2}
+  _MaximumHP: 0
+  _Strength: 0
+  _Magic: 0
+  _Defense: 0
+  _Speed: 0
