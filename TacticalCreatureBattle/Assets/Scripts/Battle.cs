@@ -7,20 +7,7 @@ public class Battle
     public List<UnitController> ComputerTeam = new List<UnitController>();
     public List<UnitController> HumanTeam = new List<UnitController>();
 
-    CreatureAction _currentAction;
-    public CreatureAction CurrentAction
-    {
-        get
-        {
-            return _currentAction;
-        }
-        set
-        {
-            ActionInstruction.Battle = this;
-            _currentAction = value;
-        }
-    }
-
+    public CreatureAction CurrentAction { get; set; }
     public UnitController ActiveUnit { get; set; }
     public TurnOrder TurnOrder { get; }
     public BattleUI UI { get; }
