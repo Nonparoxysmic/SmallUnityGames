@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Species", menuName = "TacticalCreatureBattle/Species")]
 public class Species : ScriptableObject
 {
-    public string MenagerieName;
     public string DisplayName;
 
     public Size Size;

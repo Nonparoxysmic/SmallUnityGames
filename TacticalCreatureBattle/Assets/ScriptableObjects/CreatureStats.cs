@@ -94,7 +94,7 @@ public class CreatureStats : ScriptableObject
         CreatureStats creatureStats = CreateInstance<CreatureStats>();
         creatureStats.IndividualName = RandomName();
         creatureStats.Species = Menagerie.RandomSpecies();
-        creatureStats.SpeciesName = creatureStats.Species.MenagerieName;
+        creatureStats.SpeciesName = creatureStats.Species.name;
         creatureStats.MaximumHP = UnityEngine.Random.Range(0, 5);
         creatureStats.Strength = UnityEngine.Random.Range(0, 5);
         creatureStats.Magic = UnityEngine.Random.Range(0, 5);
