@@ -5,10 +5,9 @@ using UnityEngine;
 public class CreatureStats : ScriptableObject
 {
     public string IndividualName;
-    public string SpeciesName { get => Species.SpeciesName; }
+    public string SpeciesName;
 
-    [SerializeField]
-    public Species Species;
+    public Species Species { get; set; }
 
     [SerializeField]
     private int _MaximumHP;
@@ -25,9 +24,9 @@ public class CreatureStats : ScriptableObject
     [SerializeField]
     private int _Speed;
 
-    public string[] MovementActionNames { get => Species.MovementActionNames; }
-    public string[] BasicActionNames { get => Species.BasicActionNames; }
-    public string[] SpecialActionNames { get => Species.SpecialActionNames; }
+    public string[] MovementActionNames; // Should we limit the number of actions of each type?
+    public string[] BasicActionNames; 
+    public string[] SpecialActionNames;
 
     //Getters for each stat automatically load in the species stat as well. Expanding the getters could also allow for reading stats from passive effects, buffs, or debuffs.
     public int MaximumHP
@@ -71,11 +70,31 @@ public class CreatureStats : ScriptableObject
         }
     }
 
+    public int GetStat(Stat StatIndex)
+    {
+        switch (StatIndex)
+        {
+            case Stat.Health:
+                return MaximumHP;
+            case Stat.Strength:
+                return Strength;
+            case Stat.Magic:
+                return Magic;
+            case Stat.Defense:
+                return Defense;
+            case Stat.Speed:
+                return Speed;
+            default:
+                return -1;
+        }
+    }
+
     public static CreatureStats Random()
     {
         CreatureStats creatureStats = CreateInstance<CreatureStats>();
         creatureStats.IndividualName = RandomName();
         creatureStats.Species = Menagerie.RandomSpecies();
+        creatureStats.SpeciesName = creatureStats.Species.MenagerieName;
         creatureStats.MaximumHP = UnityEngine.Random.Range(0, 5);
         creatureStats.Strength = UnityEngine.Random.Range(0, 5);
         creatureStats.Magic = UnityEngine.Random.Range(0, 5);

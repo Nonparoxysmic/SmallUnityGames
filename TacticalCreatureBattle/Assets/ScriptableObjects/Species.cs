@@ -3,7 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Species", menuName = "TacticalCreatureBattle/Species")]
 public class Species : ScriptableObject
 {
-    public string SpeciesName;
+    public string MenagerieName;
+    public string DisplayName;
 
     public Size Size;
     public Sprite BaseSprite;
@@ -18,7 +19,5 @@ public class Species : ScriptableObject
     public Element PrimaryElement = Element.Element1;
     public Element SecondaryElement = Element.Element2;
 
-    public string[] MovementActionNames;
-    public string[] BasicActionNames;
-    public string[] SpecialActionNames;
+    public LearnableAction[] LearnableActions;
 }

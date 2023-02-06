@@ -36,3 +36,20 @@ public enum Element //Change and expand as needed
     Element4,
     NoElement
 }
+
+public enum Stat //For use in situations where an effect might test multiple stats.
+{
+    Health,
+    Strength,
+    Magic,
+    Defense,
+    Speed
+}
+
+public enum Comparison
+{
+    GreaterThan,
+    LessThan,
+    EqualTo,
+    DivisibleBy
+}
