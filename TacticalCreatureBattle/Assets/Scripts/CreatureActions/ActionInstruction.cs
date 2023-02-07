@@ -35,4 +35,31 @@ public abstract class ActionInstruction : MonoBehaviour
         C,
         D
     }
+
+    protected enum ValueSource
+    {
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        G,
+        H,
+        Value
+    }
+
+    protected enum MathOperation
+    {
+        Add,
+        Subtract,
+        Multiply,
+        Divide,
+        Modulo,
+        Power,
+        Maximum,
+        Minimum,
+        AbsoluteValue,
+        Sign
+    }
 }
