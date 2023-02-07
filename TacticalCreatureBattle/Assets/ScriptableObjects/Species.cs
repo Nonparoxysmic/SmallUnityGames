@@ -9,7 +9,7 @@ public class Species : ScriptableObject
     public Sprite BaseSprite;
     public Color BaseColor;
 
-    public int MaximumHP = 5;
+    public int Health = 5; 
     public int Strength = 5;
     public int Magic = 5;
     public int Defense = 5;

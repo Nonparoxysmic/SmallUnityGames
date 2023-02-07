@@ -1,9 +1,26 @@
+public enum Comparison
+{
+    GreaterThan,
+    LessThan,
+    EqualTo,
+    DivisibleBy
+}
+
 public enum Direction
 {
     Left,
     Down,
     Right,
     Up
+}
+
+public enum Element //Change and expand as needed
+{
+    Element1,
+    Element2,
+    Element3,
+    Element4,
+    NoElement
 }
 
 public enum GridWallsTool
@@ -22,21 +39,6 @@ public enum Size
     Large
 }
 
-public enum Team
-{
-    Computer,
-    Human
-}
-
-public enum Element //Change and expand as needed
-{
-    Element1,
-    Element2,
-    Element3,
-    Element4,
-    NoElement
-}
-
 public enum Stat //For use in situations where an effect might test multiple stats.
 {
     Health,
@@ -46,10 +48,8 @@ public enum Stat //For use in situations where an effect might test multiple sta
     Speed
 }
 
-public enum Comparison
+public enum Team
 {
-    GreaterThan,
-    LessThan,
-    EqualTo,
-    DivisibleBy
+    Computer,
+    Human
 }

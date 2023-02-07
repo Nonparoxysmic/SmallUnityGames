@@ -3,39 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class LearnableAction
-{
-    public CreatureAction ActionToLearn;
-    public int RequiredConditionals = -1; //If negative or zero, require all conditionals on the list
-    public Conditional[] Conditionals;
-    
-    public bool CanLearnAction(CreatureStats creature)
-    {
-        if (Conditionals.Length <= 1)
-        {
-            return true;
-        }
-        int counted = 0;
-        for (int i = 0; i < Conditionals.Length; i++)
-        {
-            if (Conditionals[i].IsMet(creature))
-            {
-                counted += 1;
-            }
-        }
-        if (RequiredConditionals < 1 && counted >= Conditionals.Length)
-        {
-            return true;
-        }
-        else if (counted >= RequiredConditionals)
-        {
-            return true;
-        }
-        return false;
-    }
-}
-[System.Serializable]
-public class Conditional
+public class StatTotalConditional
 {
     public Stat StatToCompare;
     public Comparison ComparisonToUse;
@@ -43,7 +11,7 @@ public class Conditional
 
     public bool IsMet(CreatureStats creature)
     {
-        int creatureStat = creature.GetStat(StatToCompare);
+        int creatureStat = creature.GetStatTotal(StatToCompare);
         if (creatureStat == -1)
         {
             return false;

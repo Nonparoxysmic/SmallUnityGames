@@ -10,7 +10,7 @@ public class CreatureStats : ScriptableObject
     public Species Species { get; set; }
 
     [SerializeField]
-    private int _MaximumHP;
+    private int _Health;
 
     [SerializeField]
     private int _Strength;
@@ -24,66 +24,73 @@ public class CreatureStats : ScriptableObject
     [SerializeField]
     private int _Speed;
 
+    public int MaximumHP { get => GetStatTotal(Stat.Health);  }
+
     public string[] MovementActionNames; // Should we limit the number of actions of each type?
     public string[] BasicActionNames; 
     public string[] SpecialActionNames;
 
-    //Getters for each stat automatically load in the species stat as well. Expanding the getters could also allow for reading stats from passive effects, buffs, or debuffs.
-    public int MaximumHP
-    {
-        get => Species.MaximumHP + _MaximumHP;
-        set
-        {
-            _MaximumHP = value;
-        }
-    }
-    public int Strength
-    {
-        get => Species.Strength + _Strength;
-        set
-        {
-            _Strength = value;
-        }
-    }
-    public int Magic
-    {
-        get => Species.Magic + _Magic;
-        set
-        {
-            _Magic = value;
-        }
-    }
-    public int Defense
-    {
-        get => Species.Defense + _Defense;
-        set
-        {
-            _Defense = value;
-        }
-    }
-    public int Speed
-    {
-        get => Species.Speed + _Speed;
-        set
-        {
-            _Speed = value;
-        }
-    }
+    //Getter for personal stats
 
-    public int GetStat(Stat StatIndex)
+    public int GetStatIndividual(Stat StatIndex)
     {
         switch (StatIndex)
         {
             case Stat.Health:
-                return MaximumHP;
+                return _Health;
             case Stat.Strength:
-                return Strength;
+                return _Strength;
             case Stat.Magic:
-                return Magic;
+                return _Magic;
             case Stat.Defense:
-                return Defense;
+                return _Defense;
             case Stat.Speed:
-                return Speed;
+                return _Speed;
+            default:
+                return -1;
+        }
+    }
+
+    //Setter for personal stats; it enforces a minimum of zero to prevent unexpected behavior until we decide what the stats actually do.
+
+    public void SetStatIndividual(Stat StatIndex, int newValue)
+    {
+        switch (StatIndex)
+        {
+            case Stat.Health:
+                _Health = (newValue >= 0) ? newValue: 0;
+                return;
+            case Stat.Strength:
+                _Strength = (newValue >= 0) ? newValue : 0;
+                return;
+            case Stat.Magic:
+                _Magic = (newValue >= 0) ? newValue : 0;
+                return;
+            case Stat.Defense:
+                _Defense = (newValue >= 0) ? newValue : 0;
+                return;
+            case Stat.Speed:
+                _Speed = (newValue >= 0) ? newValue : 0;
+                return;
+            default:
+                return;
+        }
+    }
+
+    public int GetStatTotal(Stat StatIndex)
+    {
+        switch (StatIndex)
+        {
+            case Stat.Health:
+                return _Health + Species.Health;
+            case Stat.Strength:
+                return _Strength + Species.Strength;
+            case Stat.Magic:
+                return _Magic + Species.Magic;
+            case Stat.Defense:
+                return _Defense + Species.Defense;
+            case Stat.Speed:
+                return _Speed + Species.Defense;
             default:
                 return -1;
         }
@@ -95,11 +102,14 @@ public class CreatureStats : ScriptableObject
         creatureStats.IndividualName = RandomName();
         creatureStats.Species = Menagerie.RandomSpecies();
         creatureStats.SpeciesName = creatureStats.Species.name;
-        creatureStats.MaximumHP = UnityEngine.Random.Range(0, 5);
-        creatureStats.Strength = UnityEngine.Random.Range(0, 5);
-        creatureStats.Magic = UnityEngine.Random.Range(0, 5);
-        creatureStats.Defense = UnityEngine.Random.Range(0, 5);
-        creatureStats.Speed = UnityEngine.Random.Range(0, 5);
+        creatureStats._Health = UnityEngine.Random.Range(0, 5);
+        creatureStats._Strength = UnityEngine.Random.Range(0, 5);
+        creatureStats._Magic = UnityEngine.Random.Range(0, 5);
+        creatureStats._Defense = UnityEngine.Random.Range(0, 5);
+        creatureStats._Speed = UnityEngine.Random.Range(0, 5);
+        creatureStats.MovementActionNames = Array.Empty<string>();
+        creatureStats.BasicActionNames = Array.Empty<string>();
+        creatureStats.SpecialActionNames = Array.Empty<string>();
         return creatureStats;
     }
 
