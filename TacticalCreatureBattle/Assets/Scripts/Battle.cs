@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Battle
 {
@@ -9,25 +8,14 @@ public class Battle
 
     public CreatureAction CurrentAction { get; set; }
     public UnitController ActiveUnit { get; set; }
+    public Pathfinder Pathfinder { get; }
     public TurnOrder TurnOrder { get; }
     public BattleUI UI { get; }
 
-    readonly GridWalls _gridWalls;
-
     public Battle(GridWalls gridWalls, BattleUI ui)
     {
-        _gridWalls = gridWalls;
+        Pathfinder = new Pathfinder(gridWalls);
         TurnOrder = new TurnOrder(ref Units);
         UI = ui;
-    }
-
-    public bool CanMove(Vector3Int cell, Direction direction)
-    {
-        return _gridWalls.CanMove(cell, direction);
-    }
-
-    public bool CanFall(Vector3Int cell, Direction direction)
-    {
-        return _gridWalls.CanFall(cell, direction);
     }
 }
