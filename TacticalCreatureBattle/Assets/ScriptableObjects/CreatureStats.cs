@@ -34,21 +34,15 @@ public class CreatureStats : ScriptableObject
 
     public int GetStatIndividual(Stat StatIndex)
     {
-        switch (StatIndex)
+        return StatIndex switch
         {
-            case Stat.Health:
-                return _Health;
-            case Stat.Strength:
-                return _Strength;
-            case Stat.Magic:
-                return _Magic;
-            case Stat.Defense:
-                return _Defense;
-            case Stat.Speed:
-                return _Speed;
-            default:
-                return -1;
-        }
+            Stat.Health   => _Health,
+            Stat.Strength => _Strength,
+            Stat.Magic    => _Magic,
+            Stat.Defense  => _Defense,
+            Stat.Speed    => _Speed,
+            _ => -1,
+        };
     }
 
     //Setter for personal stats; it enforces a minimum of zero to prevent unexpected behavior until we decide what the stats actually do.
@@ -79,21 +73,15 @@ public class CreatureStats : ScriptableObject
 
     public int GetStatTotal(Stat StatIndex)
     {
-        switch (StatIndex)
+        return StatIndex switch
         {
-            case Stat.Health:
-                return _Health + Species.Health;
-            case Stat.Strength:
-                return _Strength + Species.Strength;
-            case Stat.Magic:
-                return _Magic + Species.Magic;
-            case Stat.Defense:
-                return _Defense + Species.Defense;
-            case Stat.Speed:
-                return _Speed + Species.Defense;
-            default:
-                return -1;
-        }
+            Stat.Health   => _Health + Species.Health,
+            Stat.Strength => _Strength + Species.Strength,
+            Stat.Magic    => _Magic + Species.Magic,
+            Stat.Defense  => _Defense + Species.Defense,
+            Stat.Speed    => _Speed + Species.Defense,
+            _ => -1,
+        };
     }
 
     public static CreatureStats Random()
