@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IndividualName: Ejemplo
   SpeciesName: ExampleSpecies1
-  MaximumHP: 9
+  _MaximumHP: 0
+  _Strength: 0
+  _Magic: 0
+  _Defense: 0
+  _Speed: 0
   MovementActionNames: []
   BasicActionNames: []
   SpecialActionNames: []
