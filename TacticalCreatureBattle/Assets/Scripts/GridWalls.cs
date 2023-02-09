@@ -279,4 +279,27 @@ public class GridWalls : MonoBehaviour
                 return 0;
         }
     }
+
+    public Rect GetBoundaries(int buffer)
+    {
+        if (buffer < 1)
+        {
+            buffer = 1;
+        }
+        int xMax = int.MinValue, yMax = int.MinValue;
+        int xMin = int.MaxValue, yMin = int.MaxValue;
+        foreach (ulong segment in _segmentHashSet)
+        {
+            (Vector3 start, Vector3 end) = DecodeVectors(segment);
+            xMin = (int)Mathf.Min(xMin, start.x);
+            yMin = (int)Mathf.Min(yMin, start.y);
+            xMax = (int)Mathf.Max(xMax, end.x);
+            yMax = (int)Mathf.Max(yMax, end.y);
+        }
+        if (xMax < xMin || yMax < yMin)
+        {
+            return Rect.zero;
+        }
+        return new Rect(xMin - buffer, yMin - buffer, xMax - xMin + 2 * buffer - 1, yMax - yMin + 2 * buffer - 1);
+    }
 }
