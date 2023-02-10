@@ -62,4 +62,14 @@ public abstract class ActionInstruction : MonoBehaviour
         AbsoluteValue,
         Sign
     }
+
+    protected enum ComparisonOperation
+    {
+        Equals,
+        NotEqual,
+        GreaterThanOrEqual,
+        GreaterThan,
+        LessThan,
+        LessThanOrEqual
+    }
 }
