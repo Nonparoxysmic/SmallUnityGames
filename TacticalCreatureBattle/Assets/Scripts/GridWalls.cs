@@ -280,7 +280,7 @@ public class GridWalls : MonoBehaviour
         }
     }
 
-    public Rect GetBoundaries(int buffer)
+    public RectInt GetBoundaries(int buffer)
     {
         if (buffer < 1)
         {
@@ -298,8 +298,8 @@ public class GridWalls : MonoBehaviour
         }
         if (xMax < xMin || yMax < yMin)
         {
-            return Rect.zero;
+            return new RectInt(0, 0, 0, 0);
         }
-        return new Rect(xMin - buffer, yMin - buffer, xMax - xMin + 2 * buffer - 1, yMax - yMin + 2 * buffer - 1);
+        return new RectInt(xMin - buffer, yMin - buffer, xMax - xMin + 2 * buffer - 1, yMax - yMin + 2 * buffer - 1);
     }
 }
