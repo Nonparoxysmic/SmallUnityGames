@@ -32,6 +32,23 @@ public static class Extensions
     }
 
     /// <summary>
+    /// Assigns the given value of type T to each element of the specified two-dimensional array.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements in the array.</typeparam>
+    /// <param name="array">The array to be filled.</param>
+    /// <param name="value">The value to assign to each array element.</param>
+    public static void Fill<T>(this T[,] array, T value)
+    {
+        for (int i = 0; i < array.GetLength(0); i++)
+        {
+            for (int j = 0; j < array.GetLength(1); j++)
+            {
+                array[i, j] = value;
+            }
+        }
+    }
+
+    /// <summary>
     /// Returns a new string in which all white space characters from the current string are deleted.
     /// </summary>
     /// <remarks>
