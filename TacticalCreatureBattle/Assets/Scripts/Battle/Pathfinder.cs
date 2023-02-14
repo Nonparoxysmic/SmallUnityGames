@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Pathfinder
@@ -23,5 +24,26 @@ public class Pathfinder
     public bool CanFall(Vector3Int cell, Direction direction)
     {
         return _gridWalls.CanFall(cell, direction);
+    }
+
+    public Vector2Int[] GetCellsWithinRange(UnitController unit, int range, bool includeUnitSpace)
+    {
+        int x = (int)unit.transform.position.x;
+        int y = (int)unit.transform.position.y;
+        return GetCellsWithinRange(x, y, unit.UnitSize, range, includeUnitSpace);
+    }
+
+    public Vector2Int[] GetCellsWithinRange(int x, int y, Size size, int range, bool includeUnitSpace)
+    {
+        if (range < 0 || (range == 0 && !includeUnitSpace))
+        {
+            return Array.Empty<Vector2Int>();
+        }
+
+        int[,] distances = new int[_levelBoundary.width, _levelBoundary.height];
+        distances.Fill(int.MaxValue);
+
+        // TODO: Finish this.
+        throw new NotImplementedException();
     }
 }
