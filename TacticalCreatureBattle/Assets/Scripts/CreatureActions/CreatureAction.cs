@@ -41,6 +41,8 @@ public class CreatureAction : MonoBehaviour
 
     void Initialize()
     {
+        _executionCount = 0;
+        CurrentInstruction = 0;
         for (int i = 0; i < 4; i++)
         {
             TargetUnits[i] = new List<UnitController>();
