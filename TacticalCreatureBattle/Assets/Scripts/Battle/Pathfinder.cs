@@ -72,8 +72,90 @@ public class Pathfinder
     {
         int[,] distances = new int[_levelBoundary.width, _levelBoundary.height];
         distances.Fill(int.MaxValue);
+        SearchNode[,] nodes = SearchNode.CreateNodeArray(_levelBoundary.width, _levelBoundary.height);
+        List<SearchNode> unvisited = SearchNode.ListNodes(nodes);
+        // Initialize the source cells.
+        int length = size == Size.Large ? 2 : 1;
+        for (int i = 0; i < length; i++)
+        {
+            for (int j = 0; j < length; j++)
+            {
+                int sourceX = x - _levelBoundary.xMin + i;
+                int sourceY = y - _levelBoundary.yMin + j;
+                nodes[sourceX, sourceY].BestDistanceFromSource = 0;
+                distances[sourceX, sourceY] = 0;
+            }
+        }
+        // Dijkstra's algorithm
+        while (unvisited.Count > 0)
+        {
+            unvisited.Sort();
+            SearchNode currentNode = unvisited[0];
+            if (currentNode.BestDistanceFromSource >= maxRange)
+            {
+                break;
+            }
 
-        // TODO: Finish this.
-        throw new NotImplementedException();
+            // TODO: Consider all of currentNode's unvisited neighbors and update their tentative distances.
+
+            unvisited.Remove(currentNode);
+        }
+        return distances;
+    }
+
+    class SearchNode : IComparable<SearchNode>
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int BestDistanceFromSource { get; set; }
+
+        public SearchNode(int x, int y)
+        {
+            X = x;
+            Y = y;
+            BestDistanceFromSource = int.MaxValue;
+        }
+
+        public static SearchNode[,] CreateNodeArray(int width, int height)
+        {
+            SearchNode[,] nodes = new SearchNode[width, height];
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    nodes[x, y] = new SearchNode(x, y);
+                }
+            }
+            return nodes;
+        }
+
+        public static List<SearchNode> ListNodes(SearchNode[,] nodes)
+        {
+            List<SearchNode> nodeList = new List<SearchNode>();
+            for (int x = 0; x < nodes.GetLength(0); x++)
+            {
+                for (int y = 0; y < nodes.GetLength(1); y++)
+                {
+                    nodeList.Add(nodes[x, y]);
+                }
+            }
+            return nodeList;
+        }
+
+        public int CompareTo(SearchNode other)
+        {
+            if (BestDistanceFromSource < other.BestDistanceFromSource)
+            {
+                return -1;
+            }
+            else if (BestDistanceFromSource == other.BestDistanceFromSource)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
     }
 }
