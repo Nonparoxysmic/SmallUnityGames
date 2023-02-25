@@ -199,7 +199,14 @@ public class Staging : BattleState
         {
             if (isUnit[i])
             {
-                unitControllers[unitIndex].transform.position = spawnPoint.Position + new Vector3(xOffset, 0);
+                Vector3Int spawnPosition = new Vector3Int
+                    (
+                        (int)spawnPoint.Position.x + xOffset,
+                        (int)spawnPoint.Position.y,
+                        (int)spawnPoint.Position.z
+                    );
+                unitControllers[unitIndex].transform.position = spawnPosition;
+                unitControllers[unitIndex].Position = spawnPosition;
                 xOffset += unitControllers[unitIndex++].UnitSize == Size.Large ? 2 : 1;
             }
             else

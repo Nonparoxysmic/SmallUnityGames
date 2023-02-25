@@ -29,9 +29,7 @@ public class Pathfinder
 
     public Vector2Int[] GetCellsWithinRange(UnitController unit, int range, bool includeUnitSpace)
     {
-        int x = (int)unit.transform.position.x;
-        int y = (int)unit.transform.position.y;
-        return GetCellsWithinRange(x, y, unit.UnitSize, range, includeUnitSpace);
+        return GetCellsWithinRange(unit.Position.x, unit.Position.y, unit.UnitSize, range, includeUnitSpace);
     }
 
     public Vector2Int[] GetCellsWithinRange(int x, int y, Size size, int range, bool includeUnitSpace)

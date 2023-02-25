@@ -15,6 +15,7 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
     public string[] SpecialActionNames { get => CreatureStats.SpecialActionNames; }
     public Vector3 ViewCenter { get => transform.position + _spriteOffset; }
     public bool InBattle { get; set; }
+    public Vector3Int Position { get; set; }
     public int CurrentHP { get; private set; }
     public int CurrentInitiative { get; private set; }
 
@@ -40,7 +41,9 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         }
         // Set battle-specific stats.
         InBattle = true;
+        Position = new Vector3Int((int)transform.position.x, (int)transform.position.y, 0);
         CurrentHP = CreatureStats.MaximumHP;
+        CurrentInitiative = 0;
         // Create sprites.
         GameObject spriteGameObject = new GameObject
         {
