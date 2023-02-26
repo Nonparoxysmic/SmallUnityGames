@@ -27,6 +27,62 @@ public class Pathfinder
         return _gridWalls.CanFall(cell, direction);
     }
 
+    public bool UnitCanMove(UnitController unit, Direction direction)
+    {
+        if (unit.UnitSize == Size.Small || unit.UnitSize == Size.Medium)
+        {
+            return CanMove(unit.Position, direction);
+        }
+        Vector3Int cell1 = unit.Position;
+        Vector3Int cell2 = unit.Position;
+        switch (direction)
+        {
+            case Direction.Left:
+                cell2 += Vector3Int.up;
+                break;
+            case Direction.Down:
+                cell2 += Vector3Int.right;
+                break;
+            case Direction.Right:
+                cell1 += Vector3Int.right;
+                cell2 += Vector3Int.up + Vector3Int.right;
+                break;
+            case Direction.Up:
+                cell1 += Vector3Int.up;
+                cell2 += Vector3Int.up + Vector3Int.right;
+                break;
+        }
+        return CanMove(cell1, direction) && CanMove(cell2, direction);
+    }
+
+    public bool UnitCanFall(UnitController unit, Direction direction)
+    {
+        if (unit.UnitSize == Size.Small || unit.UnitSize == Size.Medium)
+        {
+            return CanFall(unit.Position, direction);
+        }
+        Vector3Int cell1 = unit.Position;
+        Vector3Int cell2 = unit.Position;
+        switch (direction)
+        {
+            case Direction.Left:
+                cell2 += Vector3Int.up;
+                break;
+            case Direction.Down:
+                cell2 += Vector3Int.right;
+                break;
+            case Direction.Right:
+                cell1 += Vector3Int.right;
+                cell2 += Vector3Int.up + Vector3Int.right;
+                break;
+            case Direction.Up:
+                cell1 += Vector3Int.up;
+                cell2 += Vector3Int.up + Vector3Int.right;
+                break;
+        }
+        return CanFall(cell1, direction) && CanFall(cell2, direction);
+    }
+
     public Vector2Int[] GetCellsWithinRange(UnitController unit, int range, bool includeUnitSpace)
     {
         return GetCellsWithinRange(unit.Position.x, unit.Position.y, unit.UnitSize, range, includeUnitSpace);
