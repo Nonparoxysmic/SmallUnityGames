@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Pathfinder
 {
+    readonly Vector2Int[] _unitDirections = new Vector2Int[]
+        { Vector2Int.left, Vector2Int.down, Vector2Int.right, Vector2Int.up };
+    
     readonly GridWalls _gridWalls;
     readonly RectInt _levelBoundary;
 
@@ -150,8 +153,27 @@ public class Pathfinder
                 break;
             }
 
-            // TODO: Consider all of currentNode's unvisited neighbors and update their tentative distances.
+            // Consider all of currentNode's unvisited neighbors and update their tentative distances.
+            int currentCellX = currentNode.X + _levelBoundary.xMin;
+            int currentCellY = currentNode.Y + _levelBoundary.yMin;
+            for (int i = 0; i < 4; i++)
+            {
+                if (CanMove(new Vector3Int(currentCellX, currentCellY, 0), (Direction)i))
+                {
+                    int neighborNodeX = currentNode.X + _unitDirections[i].x;
+                    int neighborNodeY = currentNode.Y + _unitDirections[i].y;
+                    SearchNode neighbor = nodes[neighborNodeX, neighborNodeY];
+                    if (!neighbor.Flag)
+                    {
+                        neighbor.BestDistanceFromSource = Math.Min
+                            (neighbor.BestDistanceFromSource, currentNode.BestDistanceFromSource + 1);
+                        distances[neighborNodeX, neighborNodeY] = neighbor.BestDistanceFromSource;
+                    }
+                }
+            }
 
+            // Mark the current node as visited.
+            currentNode.Flag = true;
             unvisited.Remove(currentNode);
         }
         return distances;
@@ -162,6 +184,7 @@ public class Pathfinder
         public int X { get; set; }
         public int Y { get; set; }
         public int BestDistanceFromSource { get; set; }
+        public bool Flag { get; set; }
 
         public SearchNode(int x, int y)
         {
