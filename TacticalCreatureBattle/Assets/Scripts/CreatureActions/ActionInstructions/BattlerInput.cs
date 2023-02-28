@@ -4,12 +4,11 @@ using UnityEngine;
 public class BattlerInput : ActionInstruction
 {
     protected bool _inputSubmitted;
-    protected GameObject _cursor;
+    protected Transform _cursor;
 
     public override IEnumerator Execute()
     {
-        _cursor = new GameObject { name = "Cursor" };
-        // TODO: Add sprite to cursor GameObject.
+        _cursor = CreateCursor(0);
         Initialize();
         KeyboardInput.DirectionalInput += OnDirectionalInput;
         KeyboardInput.KeyDown += OnKeyDown;
@@ -19,6 +18,18 @@ public class BattlerInput : ActionInstruction
         KeyboardInput.KeyDown -= OnKeyDown;
         Resolve();
         Destroy(_cursor);
+    }
+
+    Transform CreateCursor(int index)
+    {
+        GameObject cursor = new GameObject { name = "Cursor" };
+        GameObject sprite = new GameObject { name = "Sprite" };
+        sprite.transform.parent = cursor.transform;
+        SpriteRenderer sr = sprite.AddComponent<SpriteRenderer>();
+        sr.sprite = AssetLibrary.GetCursorSprite(index);
+        sprite.transform.position += (Vector3)sr.sprite.rect.size / (2 * sr.sprite.pixelsPerUnit);
+        cursor.transform.position += 9 * Vector3.back; // Camera is at -10
+        return cursor.transform;
     }
 
     protected virtual void Initialize() { }

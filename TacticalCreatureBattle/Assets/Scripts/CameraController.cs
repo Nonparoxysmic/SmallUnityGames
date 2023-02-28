@@ -56,6 +56,16 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    public static void LookAtCell(int x, int y)
+    {
+        _instance.transform.position = new Vector3
+            (
+                x + 0.5f,
+                y + 0.5f,
+                _instance.transform.position.z
+            );
+    }
+
     public static void LookAtUnit(UnitController unit)
     {
         _instance.transform.position = new Vector3

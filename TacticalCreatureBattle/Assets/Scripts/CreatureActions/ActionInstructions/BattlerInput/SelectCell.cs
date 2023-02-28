@@ -11,13 +11,15 @@ public class SelectCell : BattlerInput
     protected override void Initialize()
     {
         _output = (Vector2Int)Battle.ActiveUnit.Position;
-        _cursor.transform.position = new Vector3(_output.x + 0.5f, _output.y + 0.5f);
+        _cursor.position = new Vector3(_output.x, _output.y, _cursor.position.z);
+        CameraController.LookAtCell(_output.x, _output.y);
     }
 
     protected override void OnDirectionalInput(object sender, DirectionEventArgs e)
     {
         _output += e.Direction;
-        _cursor.transform.position = new Vector3(_output.x + 0.5f, _output.y + 0.5f);
+        _cursor.position = new Vector3(_output.x, _output.y, _cursor.position.z);
+        CameraController.LookAtCell(_output.x, _output.y);
     }
 
     protected override void Resolve()
