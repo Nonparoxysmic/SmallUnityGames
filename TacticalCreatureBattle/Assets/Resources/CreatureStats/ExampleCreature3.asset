@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IndividualName: Muestra
   SpeciesName: ExampleSpecies3
-  MaximumHP: 9
-  MovementActionNames: []
+  _Health: 0
+  _Strength: 0
+  _Magic: 0
+  _Defense: 0
+  _Speed: 0
+  MovementActionNames:
+  - Move_Teleport
   BasicActionNames: []
   SpecialActionNames: []
