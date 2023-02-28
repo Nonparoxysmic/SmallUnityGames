@@ -17,6 +17,24 @@ public class SelectCell : BattlerInput
 
     protected override void OnDirectionalInput(object sender, DirectionEventArgs e)
     {
+        // Only allow valid movement.
+        Direction direction = Direction.Left;
+        if (e.Direction.y < 0)
+        {
+            direction = Direction.Down;
+        }
+        else if (e.Direction.x > 0)
+        {
+            direction = Direction.Right;
+        }
+        else if (e.Direction.y > 0)
+        {
+            direction = Direction.Up;
+        }
+        if (!Battle.Pathfinder.CanMove((Vector3Int)_output, direction))
+        {
+            return;
+        }
         _output += e.Direction;
         _cursor.position = new Vector3(_output.x, _output.y, _cursor.position.z);
         CameraController.LookAtCell(_output.x, _output.y);

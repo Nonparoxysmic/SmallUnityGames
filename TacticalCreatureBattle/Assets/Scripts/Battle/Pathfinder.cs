@@ -22,6 +22,34 @@ public class Pathfinder
 
     public bool CanMove(Vector3Int cell, Direction direction)
     {
+        // Don't allow movement outside the level boundary.
+        switch (direction)
+        {
+            case Direction.Left:
+                if (cell.x < _levelBoundary.xMin)
+                {
+                    return false;
+                }
+                break;
+            case Direction.Down:
+                if (cell.y < _levelBoundary.yMin)
+                {
+                    return false;
+                }
+                break;
+            case Direction.Right:
+                if (cell.x >= _levelBoundary.xMax)
+                {
+                    return false;
+                }
+                break;
+            case Direction.Up:
+                if (cell.y >= _levelBoundary.yMax)
+                {
+                    return false;
+                }
+                break;
+        }
         return _gridWalls.CanMove(cell, direction);
     }
 
