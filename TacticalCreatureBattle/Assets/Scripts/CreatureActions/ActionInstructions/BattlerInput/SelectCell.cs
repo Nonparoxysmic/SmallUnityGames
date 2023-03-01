@@ -3,14 +3,26 @@ using UnityEngine;
 
 public class SelectCell : BattlerInput
 {
-    // TODO: Add option to limit selection to list of cells.
+    public bool SelectFromList;
+    [SerializeField] ListLabel SelectFrom;
     [SerializeField] ListLabel StoreResult;
 
     Vector2Int _output;
 
     protected override void Initialize()
     {
-        _output = (Vector2Int)Battle.ActiveUnit.Position;
+        if (Action.TargetCells[(int)SelectFrom].Count == 0)
+        {
+            SelectFromList = false;
+        }
+        if (SelectFromList && !Action.TargetCells[(int)SelectFrom].Contains((Vector2Int)Battle.ActiveUnit.Position))
+        {
+            _output = Action.TargetCells[(int)SelectFrom][0];
+        }
+        else
+        {
+            _output = (Vector2Int)Battle.ActiveUnit.Position;
+        }
         _cursor.position = new Vector3(_output.x, _output.y, _cursor.position.z);
         CameraController.LookAtCell(_output.x, _output.y);
     }
@@ -35,7 +47,25 @@ public class SelectCell : BattlerInput
         {
             return;
         }
-        _output += e.Direction;
+        // Update the selection.
+        if (SelectFromList)
+        {
+            Vector2Int neighbor = _output += e.Direction;
+            if (Action.TargetCells[(int)SelectFrom].Contains(neighbor))
+            {
+                _output = neighbor;
+            }
+            else
+            {
+                int index = Action.TargetCells[(int)SelectFrom].IndexOf(_output);
+                index = index < 0 ? 0 : index + 1;
+                _output = Action.TargetCells[(int)SelectFrom][index % Action.TargetCells.Length];
+            }
+        }
+        else
+        {
+            _output += e.Direction;
+        }
         _cursor.position = new Vector3(_output.x, _output.y, _cursor.position.z);
         CameraController.LookAtCell(_output.x, _output.y);
     }
