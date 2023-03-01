@@ -14,6 +14,6 @@ public class PerformAction : BattleState
     {
         yield return new WaitUntil(() => Battle.CurrentAction.ActionCompleted);
         Destroy(Battle.CurrentAction.gameObject);
-        StateMachine.ChangeState<ActionSelection>();
+        StateMachine.ChangeState<ActionCleanup>();
     }
 }
