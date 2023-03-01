@@ -115,4 +115,10 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
     {
         CurrentInitiative -= TurnOrder.INITIATIVE_THRESHOLD;
     }
+
+    public void MoveTo(int x, int y)
+    {
+        transform.position = new Vector3(x, y, transform.position.z);
+        Position = new Vector3Int(x, y, 0);
+    }
 }

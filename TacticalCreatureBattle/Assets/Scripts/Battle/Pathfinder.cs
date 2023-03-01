@@ -114,6 +114,14 @@ public class Pathfinder
         return CanFall(cell1, direction) && CanFall(cell2, direction);
     }
 
+    public bool ValidSpaceForLargeUnit(int x, int y)
+    {
+        Vector3Int cell = new Vector3Int(x, y, 0);
+        return CanMove(cell, Direction.Right) && CanMove(cell, Direction.Up)
+            && CanMove(cell + Vector3Int.right, Direction.Up)
+            && CanMove(cell + Vector3Int.up, Direction.Right);
+    }
+
     public Vector2Int[] GetCellsWithinRange(UnitController unit, int range, bool includeUnitSpace)
     {
         return GetCellsWithinRange(unit.Position.x, unit.Position.y, unit.UnitSize, range, includeUnitSpace);

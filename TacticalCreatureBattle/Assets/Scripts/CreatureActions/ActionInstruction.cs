@@ -79,4 +79,10 @@ public abstract class ActionInstruction : MonoBehaviour
         TargetUnit,
         TargetCell
     }
+
+    protected enum UnitSource
+    {
+        ActiveUnit,
+        TargetUnit
+    }
 }

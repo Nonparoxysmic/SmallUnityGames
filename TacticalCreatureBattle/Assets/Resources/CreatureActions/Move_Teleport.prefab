@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8895866024199254078}
   - component: {fileID: 6124477832305324223}
   - component: {fileID: -6037339062154131597}
-  - component: {fileID: -8101928121220014253}
-  - component: {fileID: -5590487786841274242}
+  - component: {fileID: -9098812061228493426}
+  - component: {fileID: 409473575993649351}
   m_Layer: 0
   m_Name: Move_Teleport
   m_TagString: Untagged
@@ -50,8 +50,8 @@ MonoBehaviour:
   ExecutionLimit: 100
   Instructions:
   - {fileID: -6037339062154131597}
-  - {fileID: -8101928121220014253}
-  - {fileID: -5590487786841274242}
+  - {fileID: -9098812061228493426}
+  - {fileID: 409473575993649351}
 --- !u!114 &-6037339062154131597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,7 +67,23 @@ MonoBehaviour:
   SelectFromList: 0
   SelectFrom: 0
   StoreResult: 0
---- !u!114 &-8101928121220014253
+--- !u!114 &-9098812061228493426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5974101025897627958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c941e10903e60144182adac1e5ff4b91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveUnit: 0
+  UnitList: 0
+  CellList: 0
+  StoreResult: 0
+--- !u!114 &409473575993649351
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -79,20 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42178c3f3635d364cb3867ddecff5b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AppendRegisterValue: 0
-  Message: 'TODO: Unit attempts teleport to cell in Target Cells List A'
+  AppendRegisterValue: 1
+  Message: 'Move Success:'
   Register: 0
---- !u!114 &-5590487786841274242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5974101025897627958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfff92070e7d31f4fa286655209154f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 2
-  ListID: 0
