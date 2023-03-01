@@ -17,7 +17,7 @@ public class BattlerInput : ActionInstruction
         KeyboardInput.DirectionalInput -= OnDirectionalInput;
         KeyboardInput.KeyDown -= OnKeyDown;
         Resolve();
-        Destroy(_cursor);
+        Destroy(_cursor.gameObject);
     }
 
     Transform CreateCursor(int index)

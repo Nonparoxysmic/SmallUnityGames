@@ -100,4 +100,16 @@ public class BattleUI : MonoBehaviour
                 break;
         }
     }
+
+    public void ClearButtons()
+    {
+        Button1.interactable = false;
+        Button1Text.text = "";
+        Button2.interactable = false;
+        Button2Text.text = "";
+        Button3.interactable = false;
+        Button3Text.text = "";
+        Button4.interactable = false;
+        Button4Text.text = "";
+    }
 }

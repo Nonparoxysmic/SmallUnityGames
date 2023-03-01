@@ -47,11 +47,4 @@ public class GetCellsWithinRange : ActionInstruction
         Action.TargetCells[(int)StoreResult] = coords.ToList();
         yield break;
     }
-
-    enum SourceType
-    {
-        ActiveUnit,
-        TargetUnit,
-        TargetCell
-    }
 }

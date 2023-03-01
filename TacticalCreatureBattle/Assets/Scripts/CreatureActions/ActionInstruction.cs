@@ -72,4 +72,11 @@ public abstract class ActionInstruction : MonoBehaviour
         LessThan,
         LessThanOrEqual
     }
+
+    protected enum SourceType
+    {
+        ActiveUnit,
+        TargetUnit,
+        TargetCell
+    }
 }

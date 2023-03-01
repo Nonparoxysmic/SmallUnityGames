@@ -5,6 +5,8 @@ public class PerformAction : BattleState
 {
     public override void Enter()
     {
+        Battle.UI.ClearButtons();
+        Battle.UI.SetBackButtonInteractable(false);
         ActionInstruction.Battle = Battle;
         StartCoroutine(Battle.CurrentAction.PerformAction());
         StartCoroutine(WaitForActionComplete());
