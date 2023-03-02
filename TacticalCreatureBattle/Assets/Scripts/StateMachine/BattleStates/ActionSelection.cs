@@ -5,7 +5,15 @@ public class ActionSelection : BattleState
     public override void Enter()
     {
         Battle.UI.SetButtons("Move", "Basic Attack", "Special Attack");
-        // TODO: If an action is unavailable, use Battle.UI.SetButtonInteractable({buttonNumber}, false).
+        if (Battle.ActiveUnit.HasMoved)
+        {
+            Battle.UI.SetButtonInteractable(1, false);
+        }
+        if (Battle.ActiveUnit.HasBasicAttacked)
+        {
+            Battle.UI.SetButtonInteractable(2, false);
+        }
+        Battle.UI.SetButtonInteractable(3, false); // Special Attacks not implemented.
         Battle.UI.SetBackButtonInteractable(false);
 
         Battle.UI.ButtonClick += OnActionSelected;

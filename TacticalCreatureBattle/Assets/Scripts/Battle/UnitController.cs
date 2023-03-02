@@ -18,6 +18,8 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
     public Vector3Int Position { get; set; }
     public int CurrentHP { get; private set; }
     public int CurrentInitiative { get; private set; }
+    public bool HasMoved { get; set; }
+    public bool HasBasicAttacked { get; set; }
 
     SpriteRenderer _spriteRenderer;
     Vector3 _spriteOffset;

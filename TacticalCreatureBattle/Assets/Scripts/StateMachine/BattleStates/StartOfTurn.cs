@@ -8,6 +8,10 @@ public class StartOfTurn : BattleState
         // The active unit uses its initiative for the turn.
         Battle.ActiveUnit.ConsumeInitiative();
 
+        // Reset the action flags.
+        Battle.ActiveUnit.HasMoved = false;
+        Battle.ActiveUnit.HasBasicAttacked = false;
+
         // Move the camera to the active unit.
         CameraController.LookAtUnit(Battle.ActiveUnit);
 
