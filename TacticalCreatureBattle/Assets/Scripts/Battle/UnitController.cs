@@ -74,6 +74,13 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         _spriteRenderer.enabled = isVisible;
     }
 
+    public void RemoveFromBattle()
+    {
+        InBattle = false;
+        SetVisible(false);
+        CurrentInitiative = int.MinValue;
+    }
+
     /// <summary>
     /// Implements the <seealso cref="IComparable"/> interface.
     /// </summary>
@@ -93,14 +100,24 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         }
         else if (CurrentInitiative == other.CurrentInitiative)
         {
-            // TODO: Sort by initiative stat before UnitID.
-            if (UnitID < other.UnitID)
+            int thisSpeed = CreatureStats.GetStatTotal(Stat.Speed);
+            int otherSpeed = other.CreatureStats.GetStatTotal(Stat.Speed);
+            if (thisSpeed > otherSpeed)
             {
                 return -1;
             }
-            else
+            else if (thisSpeed == otherSpeed)
             {
-                return 1;
+                int thisSpeedMod = CreatureStats.GetStatIndividual(Stat.Speed);
+                int otherSpeedMod = other.CreatureStats.GetStatIndividual(Stat.Speed);
+                if (thisSpeedMod > otherSpeedMod)
+                {
+                    return -1;
+                }
+                else if (thisSpeedMod == otherSpeedMod)
+                {
+                    return UnitID < other.UnitID ? -1 : 1;
+                }
             }
         }
         return 1;
@@ -108,7 +125,10 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
 
     public void IncrementInitiative()
     {
-        CurrentInitiative += TurnOrder.INITIATIVE_INCREMENT;
+        if (InBattle)
+        {
+            CurrentInitiative += TurnOrder.INITIATIVE_INCREMENT + CreatureStats.GetStatTotal(Stat.Speed);
+        }
     }
 
     public void ConsumeInitiative()

@@ -75,9 +75,7 @@ public class Staging : BattleState
         int removeIndex = unitControllers.Count - 1;
         while (!CanSpawnAll(unitControllers, spawnPoints) && removeIndex > 0)
         {
-            unitControllers[removeIndex].SetVisible(false);
-            unitControllers[removeIndex].InBattle = false;
-            removeIndex--;
+            unitControllers[removeIndex--].RemoveFromBattle();
         }
 
         // Sort the units into the spawn points.
