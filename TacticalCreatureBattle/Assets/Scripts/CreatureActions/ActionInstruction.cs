@@ -85,4 +85,10 @@ public abstract class ActionInstruction : MonoBehaviour
         ActiveUnit,
         TargetUnit
     }
+
+    protected enum ActiveUnitFlag
+    {
+        HasMoved,
+        HasBasicAttacked
+    }
 }

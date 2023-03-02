@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 6124477832305324223}
   - component: {fileID: -6037339062154131597}
   - component: {fileID: -9098812061228493426}
-  - component: {fileID: 409473575993649351}
+  - component: {fileID: 2241323821773067129}
+  - component: {fileID: 3659150304591537476}
   m_Layer: 0
   m_Name: Move_Teleport
   m_TagString: Untagged
@@ -51,7 +52,8 @@ MonoBehaviour:
   Instructions:
   - {fileID: -6037339062154131597}
   - {fileID: -9098812061228493426}
-  - {fileID: 409473575993649351}
+  - {fileID: 2241323821773067129}
+  - {fileID: 3659150304591537476}
 --- !u!114 &-6037339062154131597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,7 +85,7 @@ MonoBehaviour:
   UnitList: 0
   CellList: 0
   StoreResult: 0
---- !u!114 &409473575993649351
+--- !u!114 &2241323821773067129
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,9 +94,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 5974101025897627958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42178c3f3635d364cb3867ddecff5b73, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d5c5253ce8e1c749b8dc1a2f81e8439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AppendRegisterValue: 1
-  Message: 'Move Success:'
-  Register: 0
+  JumpValue: -1
+  ValueIsAbsolute: 1
+  ConditionalJump: 1
+  Value1Source: 0
+  Value1: 0
+  Comparison: 0
+  Value2Source: 8
+  Value2: 0
+--- !u!114 &3659150304591537476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5974101025897627958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8c1c9dd35826c4aa02323df0aeabf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Flag: 0
+  SetTo: 1
