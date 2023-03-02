@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1da5cf89c4c54c4cb0140006709bb67, type: 3}
   m_Name: ExampleSpecies2
   m_EditorClassIdentifier: 
+  DisplayName: Ex. Spec. 2
   Size: 1
   BaseSprite: {fileID: 21300000, guid: d679956bbfd2d9241ac03d6b8958b246, type: 3}
   BaseColor: {r: 1, g: 0, b: 0, a: 1}
+  Health: 5
+  Strength: 5
+  Magic: 5
+  Defense: 5
+  Speed: 5
+  PrimaryElement: 0
+  SecondaryElement: 1
+  LearnableActions: []
