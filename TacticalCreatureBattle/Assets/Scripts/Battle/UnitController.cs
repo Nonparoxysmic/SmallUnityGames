@@ -14,6 +14,8 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
     public string[] BasicActionNames { get => CreatureStats.BasicActionNames; }
     public string[] SpecialActionNames { get => CreatureStats.SpecialActionNames; }
     public Vector3 ViewCenter { get => transform.position + _spriteOffset; }
+    public Element PrimaryElement { get => CreatureStats.Species.PrimaryElement; }
+    public Element SecondaryElement { get => CreatureStats.Species.SecondaryElement; }
     public bool InBattle { get; set; }
     public Vector3Int Position { get; set; }
     public int CurrentHP { get; private set; }
@@ -142,5 +144,55 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
     {
         transform.position = new Vector3(x, y, transform.position.z);
         Position = new Vector3Int(x, y, 0);
+    }
+
+    public void TakeDamage(Element element, int amount, bool isPercentage)
+    {
+        // Ignore negative or zero damage.
+        if (amount <= 0)
+        {
+            return;
+        }
+        // Convert percentage to amount of damage.
+        if (isPercentage)
+        {
+            amount = (int)Math.Round(CreatureStats.MaximumHP * amount / 100f);
+        }
+        // Elemental Resistances
+        if (element == PrimaryElement)
+        {
+            amount = (int)Math.Round(amount * 0.5f);
+        }
+        else if (element == SecondaryElement)
+        {
+            amount = (int)Math.Round(amount * 0.75f);
+        }
+        // Reduce the unit's hit points.
+        CurrentHP -= amount;
+    }
+
+    public void Heal(Element element, int amount, bool isPercentage)
+    {
+        // Ignore negative or zero healing.
+        if (amount <= 0)
+        {
+            return;
+        }
+        // Convert percentage to amount of damage.
+        if (isPercentage)
+        {
+            amount = (int)Math.Round(CreatureStats.MaximumHP * amount / 100f);
+        }
+        // Elemental Affinities
+        if (element == PrimaryElement)
+        {
+            amount = (int)Math.Round(amount * 1.5f);
+        }
+        else if (element == SecondaryElement)
+        {
+            amount = (int)Math.Round(amount * 1.25f);
+        }
+        // Increase the unit's hit points.
+        CurrentHP += amount;
     }
 }

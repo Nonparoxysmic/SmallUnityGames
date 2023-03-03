@@ -91,4 +91,11 @@ public abstract class ActionInstruction : MonoBehaviour
         HasMoved,
         HasBasicAttacked
     }
+
+    protected enum ElementSource
+    {
+        Fixed,
+        ActiveUnitPrimary,
+        ActiveUnitSecondary
+    }
 }

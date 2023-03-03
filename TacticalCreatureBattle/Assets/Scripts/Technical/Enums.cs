@@ -14,13 +14,13 @@ public enum Direction
     Up
 }
 
-public enum Element //Change and expand as needed
+public enum Element
 {
+    NoElement,
     Element1,
     Element2,
     Element3,
-    Element4,
-    NoElement
+    Element4
 }
 
 public enum GridWallsTool
