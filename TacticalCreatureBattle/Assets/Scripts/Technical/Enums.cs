@@ -53,3 +53,10 @@ public enum Team
     Computer,
     Human
 }
+
+public enum TeamAlignment
+{
+    SameTeam,
+    OpposingTeam,
+    Both
+}
