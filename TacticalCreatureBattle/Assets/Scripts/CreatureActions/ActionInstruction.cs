@@ -98,4 +98,19 @@ public abstract class ActionInstruction : MonoBehaviour
         ActiveUnitPrimary,
         ActiveUnitSecondary
     }
+
+    protected enum StatsAndValues
+    {
+        Health,
+        Strength,
+        Magic,
+        Defense,
+        Speed,
+        CurrentHP,
+        CurrentInitiative,
+        HasMoved,
+        HasBasicAttacked,
+        MaximumHP,
+        Size
+    }
 }

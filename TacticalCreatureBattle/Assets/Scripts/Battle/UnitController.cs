@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour, IComparable<UnitController>
 {
-    CreatureStats CreatureStats { get; set; }
+    public CreatureStats CreatureStats { get; private set; }
     Battle Battle { get; set; }
 
     public Team Team { get; private set; }
