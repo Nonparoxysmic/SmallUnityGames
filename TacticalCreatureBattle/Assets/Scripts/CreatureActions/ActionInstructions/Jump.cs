@@ -84,6 +84,7 @@ public class Jump : ActionInstruction
                 return;
             }
             Action.CurrentInstruction = JumpValue - 1;
+            return;
         }
         if (JumpValue == 0)
         {
