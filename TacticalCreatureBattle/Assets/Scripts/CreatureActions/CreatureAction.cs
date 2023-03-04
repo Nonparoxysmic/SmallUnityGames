@@ -13,6 +13,21 @@ public class CreatureAction : MonoBehaviour
 
     public int CurrentInstruction { get; set; }
 
+    bool _instructionSuccess;
+    bool _setFalse;
+    public bool InstructionSuccess
+    {
+        get => _instructionSuccess;
+        set
+        {
+            _instructionSuccess = value;
+            if (!_instructionSuccess)
+            {
+                _setFalse = true;
+            }
+        }
+    }
+
     public readonly int[] Registers = new int[8];
     public readonly List<UnitController>[] TargetUnits = new List<UnitController>[4];
     public readonly List<Vector2Int>[] TargetCells = new List<Vector2Int>[4];
@@ -29,9 +44,14 @@ public class CreatureAction : MonoBehaviour
             {
                 break;
             }
+            _setFalse = false;
             if (Instructions[CurrentInstruction] != null)
             {
                 yield return Instructions[CurrentInstruction].Execute();
+            }
+            if (!_setFalse)
+            {
+                _instructionSuccess = true;
             }
             CurrentInstruction++;
             _executionCount++;
@@ -43,6 +63,7 @@ public class CreatureAction : MonoBehaviour
     {
         _executionCount = 0;
         CurrentInstruction = 0;
+        InstructionSuccess = true;
         for (int i = 0; i < 4; i++)
         {
             TargetUnits[i] = new List<UnitController>();

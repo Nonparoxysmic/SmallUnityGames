@@ -4,19 +4,28 @@ using UnityEngine;
 public class BattlerInput : ActionInstruction
 {
     protected bool _inputSubmitted;
+    protected bool _invalidInput;
     protected Transform _cursor;
 
     public override IEnumerator Execute()
     {
         _cursor = CreateCursor(0);
+        _invalidInput = false;
         Initialize();
-        KeyboardInput.DirectionalInput += OnDirectionalInput;
-        KeyboardInput.KeyDown += OnKeyDown;
-        _inputSubmitted = false;
-        yield return new WaitUntil(() => _inputSubmitted);
-        KeyboardInput.DirectionalInput -= OnDirectionalInput;
-        KeyboardInput.KeyDown -= OnKeyDown;
-        Resolve();
+        if (_invalidInput)
+        {
+            Action.InstructionSuccess = false;
+        }
+        else
+        {
+            KeyboardInput.DirectionalInput += OnDirectionalInput;
+            KeyboardInput.KeyDown += OnKeyDown;
+            _inputSubmitted = false;
+            yield return new WaitUntil(() => _inputSubmitted);
+            KeyboardInput.DirectionalInput -= OnDirectionalInput;
+            KeyboardInput.KeyDown -= OnKeyDown;
+            Resolve();
+        }
         Destroy(_cursor.gameObject);
     }
 

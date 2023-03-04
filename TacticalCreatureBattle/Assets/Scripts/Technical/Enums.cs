@@ -56,7 +56,7 @@ public enum Team
 
 public enum TeamAlignment
 {
-    SameTeam,
     OpposingTeam,
+    SameTeam,
     Both
 }
