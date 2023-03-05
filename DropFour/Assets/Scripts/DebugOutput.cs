@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DebugOutput : MonoBehaviour
 {
-    public TMP_Text debugOutputText;
+    public Text debugOutputText;
     public Image debugBackgroundImage;
 
     Queue<string> lines;

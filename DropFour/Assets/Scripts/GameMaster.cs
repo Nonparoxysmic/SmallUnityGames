@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameMaster : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public class GameMaster : MonoBehaviour
     public UnityEvent_Int playerColorChanged;
 
     [SerializeField] GameObject gameOverPopup;
-    [SerializeField] TMP_Text gameOverText;
+    [SerializeField] Text gameOverText;
     [SerializeField] GameObject restartButton;
     [SerializeField] SpriteRenderer alternateBackgroundSR;
 

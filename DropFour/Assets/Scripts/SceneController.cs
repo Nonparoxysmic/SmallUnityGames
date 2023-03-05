@@ -1,6 +1,6 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneController : MonoBehaviour
 {
@@ -9,11 +9,11 @@ public class SceneController : MonoBehaviour
     [SerializeField] GameObject exitButtonTextObject;
 
     GameMaster gm;
-    TMP_Text exitButtonText;
+    Text exitButtonText;
 
     void Start()
     {
-        exitButtonText = exitButtonTextObject.GetComponent<TMP_Text>();
+        exitButtonText = exitButtonTextObject.GetComponent<Text>();
         gm = GameObject.Find("Main Game").GetComponent<GameMaster>();
     }
 

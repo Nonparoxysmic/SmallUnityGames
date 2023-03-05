@@ -1,17 +1,17 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] string gameSceneName;
     [SerializeField] int settingsSceneNumber;
 
-    TMP_Dropdown dropdown;
+    Dropdown dropdown;
 
     void Awake()
     {
-        dropdown = GameObject.Find("First Player Dropdown").GetComponent<TMP_Dropdown>();
+        dropdown = GameObject.Find("First Player Dropdown").GetComponent<Dropdown>();
         PlayerPrefs.SetInt("GameType", (int)GameType.RandomFirst);
         if (!PlayerPrefs.HasKey("EngineOneStrength"))
         {
