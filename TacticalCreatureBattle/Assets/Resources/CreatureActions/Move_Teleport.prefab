@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6124477832305324223}
   - component: {fileID: -6037339062154131597}
   - component: {fileID: -9098812061228493426}
-  - component: {fileID: 2241323821773067129}
+  - component: {fileID: 6528455885940164000}
   - component: {fileID: 3659150304591537476}
   m_Layer: 0
   m_Name: Move_Teleport
@@ -52,7 +52,7 @@ MonoBehaviour:
   Instructions:
   - {fileID: -6037339062154131597}
   - {fileID: -9098812061228493426}
-  - {fileID: 2241323821773067129}
+  - {fileID: 6528455885940164000}
   - {fileID: 3659150304591537476}
 --- !u!114 &-6037339062154131597
 MonoBehaviour:
@@ -84,8 +84,7 @@ MonoBehaviour:
   MoveUnit: 0
   UnitList: 0
   CellList: 0
-  StoreResult: 0
---- !u!114 &2241323821773067129
+--- !u!114 &6528455885940164000
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,17 +93,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5974101025897627958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d5c5253ce8e1c749b8dc1a2f81e8439, type: 3}
+  m_Script: {fileID: 11500000, guid: 2942ee5148a20f047be0e576865c8945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   JumpValue: -1
   ValueIsAbsolute: 1
-  ConditionalJump: 1
-  Value1Source: 0
-  Value1: 0
-  Comparison: 0
-  Value2Source: 8
-  Value2: 0
 --- !u!114 &3659150304591537476
 MonoBehaviour:
   m_ObjectHideFlags: 0

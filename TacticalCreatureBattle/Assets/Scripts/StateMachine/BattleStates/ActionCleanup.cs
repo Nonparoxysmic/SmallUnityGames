@@ -20,6 +20,9 @@ public class ActionCleanup : BattleState
             StateMachine.ChangeState<EndOfTurn>();
         }
         // Otherwise, return to action selection.
-        StateMachine.ChangeState<ActionSelection>();
+        else
+        {
+            StateMachine.ChangeState<ActionSelection>();
+        }
     }
 }

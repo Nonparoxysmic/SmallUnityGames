@@ -4,6 +4,8 @@ using UnityEngine;
 public class SelectUnit : BattlerInput
 {
     [SerializeField] TeamAlignment TeamToSelect;
+    public bool SelectFromList;
+    [SerializeField] ListLabel SelectionList;
     public bool IncludeActiveUnit;
     public bool ExcludeUnitList;
     [SerializeField] ListLabel ListToExclude;
@@ -23,6 +25,10 @@ public class SelectUnit : BattlerInput
             case TeamAlignment.OpposingTeam:
                 unitPool = Battle.ActiveUnit.Team == Team.Human ? Battle.ComputerTeam : Battle.HumanTeam;
                 break;
+        }
+        if (SelectFromList)
+        {
+            unitPool = Action.TargetUnits[(int)SelectionList];
         }
         _units = new List<UnitController>();
         foreach (UnitController unit in unitPool)

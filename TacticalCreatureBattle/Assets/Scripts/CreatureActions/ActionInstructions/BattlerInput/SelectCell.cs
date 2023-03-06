@@ -11,9 +11,10 @@ public class SelectCell : BattlerInput
 
     protected override void Initialize()
     {
-        if (Action.TargetCells[(int)SelectFrom].Count == 0)
+        if (SelectFromList && Action.TargetCells[(int)SelectFrom].Count == 0)
         {
-            SelectFromList = false;
+            _invalidInput = true;
+            return;
         }
         if (SelectFromList && !Action.TargetCells[(int)SelectFrom].Contains((Vector2Int)Battle.ActiveUnit.Position))
         {

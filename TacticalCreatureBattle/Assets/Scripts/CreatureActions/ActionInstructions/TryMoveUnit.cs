@@ -6,7 +6,6 @@ public class TryMoveUnit : ActionInstruction
     [SerializeField] UnitSource MoveUnit;
     [SerializeField] ListLabel UnitList;
     [SerializeField] ListLabel CellList;
-    [SerializeField] RegisterLabel StoreResult;
 
     public override IEnumerator Execute()
     {
@@ -37,6 +36,6 @@ public class TryMoveUnit : ActionInstruction
 
     void MoveSuccess(bool success)
     {
-        Action.Registers[(int)StoreResult] = success ? 1 : 0;
+        Action.InstructionSuccess = success;
     }
 }
