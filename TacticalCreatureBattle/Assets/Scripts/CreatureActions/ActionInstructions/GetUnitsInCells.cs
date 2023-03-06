@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectUnitsInCells : ActionInstruction
+public class GetUnitsInCells : ActionInstruction
 {
     [SerializeField] ListLabel CellList;
     [SerializeField] TeamAlignment TeamToSelect = TeamAlignment.Both;

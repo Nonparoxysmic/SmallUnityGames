@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class GetUnitStat : ActionInstruction
+public class TryGetUnitStat : ActionInstruction
 {
     [SerializeField] UnitSource Target;
     [SerializeField] ListLabel UnitList;
@@ -13,6 +13,7 @@ public class GetUnitStat : ActionInstruction
         if (Target == UnitSource.TargetUnit && Action.TargetUnits[(int)UnitList].Count == 0)
         {
             Action.Registers[(int)StoreResult] = 0;
+            Action.InstructionSuccess = false;
             yield break;
         }
         UnitController unit = Target == UnitSource.ActiveUnit ? Battle.ActiveUnit : Action.TargetUnits[(int)UnitList][0];
