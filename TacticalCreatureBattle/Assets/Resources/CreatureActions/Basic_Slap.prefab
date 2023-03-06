@@ -1,0 +1,159 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &261753347391928249
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4585382984244578026}
+  - component: {fileID: -3562256677527632246}
+  - component: {fileID: -7366514132210781957}
+  - component: {fileID: 8544695986045616616}
+  - component: {fileID: 1158531993626240750}
+  - component: {fileID: -5582202868963271732}
+  - component: {fileID: -353758611461228838}
+  - component: {fileID: 2178621611379852366}
+  m_Layer: 0
+  m_Name: Basic_Slap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4585382984244578026
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261753347391928249}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-3562256677527632246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261753347391928249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f362d47f9ab90514ea0731dec0fb03e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DisplayName: Slap
+  ExecutionLimit: 100
+  Instructions:
+  - {fileID: -7366514132210781957}
+  - {fileID: 8544695986045616616}
+  - {fileID: 1158531993626240750}
+  - {fileID: -5582202868963271732}
+  - {fileID: -353758611461228838}
+  - {fileID: 2178621611379852366}
+--- !u!114 &-7366514132210781957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261753347391928249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26154fa757c248f4f883f3945d5f81cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Source: 0
+  SourceList: 0
+  RangeSource: 8
+  Range: 1
+  IncludeSource: 0
+  StoreResult: 0
+--- !u!114 &8544695986045616616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261753347391928249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 801410a85f885254e96be7f879b0d8ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CellList: 0
+  TeamToSelect: 0
+  StoreUnits: 0
+--- !u!114 &1158531993626240750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261753347391928249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88dd4d110312684f9872a4886922054, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TeamToSelect: 0
+  SelectFromList: 1
+  SelectionList: 0
+  IncludeActiveUnit: 0
+  ExcludeUnitList: 0
+  ListToExclude: 0
+  StoreResult: 1
+--- !u!114 &-5582202868963271732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261753347391928249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2942ee5148a20f047be0e576865c8945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JumpValue: -1
+  ValueIsAbsolute: 1
+--- !u!114 &-353758611461228838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261753347391928249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2daa3ddd57c1afc449a1e47fb1ce20fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: 1
+  UnitList: 1
+  DamageAmountSource: 8
+  DamageAmount: 2
+  IsPercentage: 0
+  Element: 0
+  FixedElement: 0
+--- !u!114 &2178621611379852366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261753347391928249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8c1c9dd35826c4aa02323df0aeabf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Flag: 1
+  SetTo: 1

@@ -21,5 +21,6 @@ MonoBehaviour:
   _Speed: 0
   MovementActionNames:
   - Move_Teleport
-  BasicActionNames: []
+  BasicActionNames:
+  - Basic_Slap
   SpecialActionNames: []
