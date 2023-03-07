@@ -113,4 +113,18 @@ public abstract class ActionInstruction : MonoBehaviour
         MaximumHP,
         Size
     }
+
+    protected enum ListType
+    {
+        Units,
+        Cells
+    }
+
+    protected enum SetOp
+    {
+        Union,
+        Intersection,
+        SetDifference,
+        SymmetricDifference
+    }
 }
