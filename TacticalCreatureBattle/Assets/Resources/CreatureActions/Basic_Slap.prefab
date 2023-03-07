@@ -138,8 +138,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: 1
   UnitList: 1
-  DamageAmountSource: 8
-  DamageAmount: 2
+  DamageMinAmountSource: 8
+  DamageMinAmount: 1
+  DamageMaxAmountSource: 8
+  DamageMaxAmount: 2
   IsPercentage: 0
   Element: 0
   FixedElement: 0

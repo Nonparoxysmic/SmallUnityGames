@@ -6,8 +6,10 @@ public class DamageUnits : ActionInstruction
 {
     [SerializeField] UnitSource Target;
     [SerializeField] ListLabel UnitList;
-    [SerializeField] ValueSource DamageAmountSource = ValueSource.Value;
-    public int DamageAmount;
+    [SerializeField] ValueSource DamageMinAmountSource = ValueSource.Value;
+    public int DamageMinAmount;
+    [SerializeField] ValueSource DamageMaxAmountSource = ValueSource.Value;
+    public int DamageMaxAmount;
     public bool IsPercentage;
     [SerializeField] ElementSource Element;
     [SerializeField] Element FixedElement;
@@ -26,14 +28,19 @@ public class DamageUnits : ActionInstruction
                 damageElement = Battle.ActiveUnit.SecondaryElement;
                 break;
         }
-        int damageAmount = DamageAmount;
-        if (DamageAmountSource != ValueSource.Value)
+        int damageMinAmount = DamageMinAmount;
+        if (DamageMinAmountSource != ValueSource.Value)
         {
-            damageAmount = Action.Registers[(int)DamageAmountSource];
+            damageMinAmount = Action.Registers[(int)DamageMinAmountSource];
+        }
+        int damageMaxAmount = DamageMaxAmount;
+        if (DamageMaxAmountSource != ValueSource.Value)
+        {
+            damageMaxAmount = Action.Registers[(int)DamageMaxAmountSource];
         }
         foreach (UnitController target in targets)
         {
-            target.TakeDamage(damageElement, damageAmount, IsPercentage);
+            target.TakeDamage(damageElement, Random.Range(damageMinAmount, damageMaxAmount + 1), IsPercentage);
         }
         yield break;
     }
