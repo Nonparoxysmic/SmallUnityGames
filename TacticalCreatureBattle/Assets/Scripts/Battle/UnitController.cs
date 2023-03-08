@@ -23,6 +23,8 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
     public bool HasMoved { get; set; }
     public bool HasBasicAttacked { get; set; }
 
+    GameObject _healthBarObject;
+    GameObject _healthBarBackgroundObject;
     SpriteRenderer _spriteRenderer;
     Vector3 _spriteOffset;
 
@@ -71,6 +73,44 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         _spriteRenderer = spriteGameObject.AddComponent<SpriteRenderer>();
         _spriteRenderer.sprite = CreatureStats.Species.BaseSprite;
         _spriteRenderer.color = CreatureStats.Species.BaseColor;
+        // Create health bar.
+        _healthBarObject = CreateHealthBarObject("Health Bar", Color.green, false);
+        _healthBarBackgroundObject = CreateHealthBarObject("Health Bar Background", Color.black, true);
+    }
+
+    GameObject CreateHealthBarObject(string name, Color color, bool isBackground)
+    {
+        GameObject go = new GameObject { name = name };
+        float z = isBackground ? -8 : -8.25f;
+        go.transform.position += new Vector3(_spriteOffset.x, 2 * _spriteOffset.y + 0.25f, z);
+        if (isBackground)
+        {
+            go.transform.localScale = new Vector3(1.125f, 0.25f, 1);
+        }
+        else
+        {
+            go.transform.localScale = new Vector3(1, 0.125f, 1);
+        }
+        go.transform.parent = transform;
+        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = AssetLibrary.CreateSquareSprite(4, color);
+        return go;
+    }
+
+    void UpdateHealthBar()
+    {
+        if (CurrentHP <= 0)
+        {
+            _healthBarObject.SetActive(false);
+            _healthBarBackgroundObject.SetActive(false);
+            return;
+        }
+        _healthBarObject.SetActive(true);
+        _healthBarBackgroundObject.SetActive(true);
+        float percent = Math.Min(1, (float)CurrentHP / CreatureStats.MaximumHP);
+        _healthBarObject.transform.localScale = new Vector3(percent, 0.125f, 1);
+        _healthBarObject.transform.position = _healthBarBackgroundObject.transform.position
+            + new Vector3((percent - 1) / 2, 0, -0.25f);
     }
 
     public void SetVisible(bool isVisible)
@@ -169,6 +209,7 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         }
         // Reduce the unit's hit points.
         CurrentHP -= amount;
+        UpdateHealthBar();
     }
 
     public void Heal(Element element, int amount, bool isPercentage)
@@ -194,5 +235,6 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         }
         // Increase the unit's hit points.
         CurrentHP += amount;
+        UpdateHealthBar();
     }
 }

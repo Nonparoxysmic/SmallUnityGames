@@ -32,4 +32,28 @@ public class AssetLibrary : MonoBehaviour
         }
         return _instance.CursorSprites[index % _instance.CursorSprites.Length];
     }
+
+    public static Sprite CreateSquareSprite(int size, Color color)
+    {
+        size = Mathf.Max(2, Mathf.Abs(size));
+
+        Texture2D texture = new Texture2D(size, size);
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                texture.SetPixel(x, y, color);
+            }
+        }
+        texture.Apply();
+
+        Sprite sprite = Sprite.Create
+            (
+                texture,
+                new Rect(0, 0, size, size),
+                new Vector2(0.5f, 0.5f),
+                size
+            );
+        return sprite;
+    }
 }
