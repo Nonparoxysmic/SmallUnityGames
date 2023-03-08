@@ -201,11 +201,17 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         // Elemental Resistances
         if (element == PrimaryElement)
         {
-            amount = (int)Math.Round(amount * 0.5f);
+            if (element != Element.NoElement)
+            {
+                amount = (int)Math.Round(amount * 0.5f);
+            }
         }
         else if (element == SecondaryElement)
         {
-            amount = (int)Math.Round(amount * 0.75f);
+            if (element != Element.NoElement)
+            {
+                amount = (int)Math.Round(amount * 0.75f);
+            }
         }
         // Reduce the unit's hit points.
         CurrentHP -= amount;
@@ -227,11 +233,17 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         // Elemental Affinities
         if (element == PrimaryElement)
         {
-            amount = (int)Math.Round(amount * 1.5f);
+            if (element != Element.NoElement)
+            {
+                amount = (int)Math.Round(amount * 1.5f);
+            }
         }
         else if (element == SecondaryElement)
         {
-            amount = (int)Math.Round(amount * 1.25f);
+            if (element != Element.NoElement)
+            {
+                amount = (int)Math.Round(amount * 1.25f);
+            }
         }
         // Increase the unit's hit points.
         CurrentHP += amount;
