@@ -13,7 +13,6 @@ public abstract class SubmenuSelection : BattleState
         actionNames = GetActionNames();
         displayNames = Menagerie.GetActionDisplayNames(actionNames);
         Battle.UI.SetButtons(displayNames[0], displayNames[1], displayNames[2], displayNames[3]);
-        // TODO: If an action is unavailable, use Battle.UI.SetButtonInteractable({buttonNumber}, false).
         Battle.UI.SetBackButtonInteractable(true);
 
         Battle.UI.BackButtonClick += OnBackButton;

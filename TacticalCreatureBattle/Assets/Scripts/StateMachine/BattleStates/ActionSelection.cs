@@ -5,11 +5,11 @@ public class ActionSelection : BattleState
     public override void Enter()
     {
         Battle.UI.SetButtons("Move", "Basic Attack", "Special Attack");
-        if (Battle.ActiveUnit.HasMoved)
+        if (Battle.ActiveUnit.HasMoved || Battle.ActiveUnit.MovementActionNames.Length == 0)
         {
             Battle.UI.SetButtonInteractable(1, false);
         }
-        if (Battle.ActiveUnit.HasBasicAttacked)
+        if (Battle.ActiveUnit.HasBasicAttacked || Battle.ActiveUnit.BasicActionNames.Length == 0)
         {
             Battle.UI.SetButtonInteractable(2, false);
         }
