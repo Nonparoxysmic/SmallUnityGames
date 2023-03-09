@@ -11,11 +11,13 @@ public class Battle
     public Pathfinder Pathfinder { get; }
     public TurnOrder TurnOrder { get; }
     public BattleUI UI { get; }
+    public BattleWinner Winner { get; set; }
 
     public Battle(GridWalls gridWalls, BattleUI ui)
     {
         Pathfinder = new Pathfinder(gridWalls);
         TurnOrder = new TurnOrder(ref Units);
         UI = ui;
+        Winner = BattleWinner.TBD;
     }
 }

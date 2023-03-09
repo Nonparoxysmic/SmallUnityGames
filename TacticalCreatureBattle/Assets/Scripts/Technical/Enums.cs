@@ -60,3 +60,11 @@ public enum TeamAlignment
     SameTeam,
     Both
 }
+
+public enum BattleWinner
+{
+    TBD,
+    Computer,
+    Human,
+    Tie
+}
