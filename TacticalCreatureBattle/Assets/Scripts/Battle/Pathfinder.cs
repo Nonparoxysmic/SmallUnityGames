@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Pathfinder
 {
+    public int MinimumY { get => _levelBoundary.yMin; }
+
     readonly Vector2Int[] _unitDirections = new Vector2Int[]
         { Vector2Int.left, Vector2Int.down, Vector2Int.right, Vector2Int.up };
     

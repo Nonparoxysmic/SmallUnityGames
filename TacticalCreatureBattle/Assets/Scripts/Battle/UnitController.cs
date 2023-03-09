@@ -123,6 +123,8 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         InBattle = false;
         SetVisible(false);
         CurrentInitiative = int.MinValue;
+        _healthBarObject.SetActive(false);
+        _healthBarBackgroundObject.SetActive(false);
     }
 
     /// <summary>
@@ -179,6 +181,8 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
     {
         CurrentInitiative -= TurnOrder.INITIATIVE_THRESHOLD;
     }
+
+    public void MoveTo(Vector3Int vector) => MoveTo(vector.x, vector.y);
 
     public void MoveTo(int x, int y)
     {

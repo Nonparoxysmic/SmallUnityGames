@@ -2,7 +2,23 @@ public class ActionCleanup : BattleState
 {
     public override void Enter()
     {
-        // TODO: All ungrounded, nonflying units fall.
+        // All ungrounded, nonflying units fall.
+        foreach (UnitController unit in Battle.Units)
+        {
+            if (!unit.InBattle || unit.CreatureStats.Species.CanFly)
+            {
+                continue;
+            }
+            while (Battle.Pathfinder.CanFall(unit.Position, Direction.Down))
+            {
+                unit.MoveTo(unit.Position + UnityEngine.Vector3Int.down);
+                if (unit.Position.y < Battle.Pathfinder.MinimumY)
+                {
+                    unit.RemoveFromBattle();
+                    break;
+                }
+            }
+        }
 
         // All knocked-out units are removed from the battle.
         foreach (UnitController unit in Battle.Units)

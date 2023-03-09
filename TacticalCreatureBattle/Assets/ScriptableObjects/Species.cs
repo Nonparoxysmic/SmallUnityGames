@@ -8,6 +8,7 @@ public class Species : ScriptableObject
     public Size Size;
     public Sprite BaseSprite;
     public Color BaseColor;
+    public bool CanFly;
 
     public int Health = 5; 
     public int Strength = 5;
