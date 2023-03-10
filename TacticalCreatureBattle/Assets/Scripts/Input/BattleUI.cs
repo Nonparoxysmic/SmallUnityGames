@@ -19,6 +19,10 @@ public class BattleUI : MonoBehaviour
     public Text Button4Text;
     public Text ButtonBackText;
 
+    public Image ActiveUnitImage;
+    public Text ActiveUnitName;
+    public Text ActiveUnitStats;
+
     void OnEnable()
     {
         KeyboardInput.KeyDown += OnKeyDown;
@@ -111,5 +115,13 @@ public class BattleUI : MonoBehaviour
         Button3Text.text = "";
         Button4.interactable = false;
         Button4Text.text = "";
+    }
+
+    public void SetActiveUnit(UnitController unit)
+    {
+        ActiveUnitImage.sprite = unit.CreatureStats.Species.BaseSprite;
+        ActiveUnitImage.color = unit.CreatureStats.Species.BaseColor;
+        ActiveUnitName.text = unit.CreatureStats.IndividualName;
+        ActiveUnitStats.text = $"{unit.CurrentHP} / {unit.CreatureStats.MaximumHP} HP";
     }
 }

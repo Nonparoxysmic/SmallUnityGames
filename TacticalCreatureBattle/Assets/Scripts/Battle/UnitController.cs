@@ -111,6 +111,10 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         _healthBarObject.transform.localScale = new Vector3(percent, 0.125f, 1);
         _healthBarObject.transform.position = _healthBarBackgroundObject.transform.position
             + new Vector3((percent - 1) / 2, 0, -0.25f);
+        if (UnitID == Battle.ActiveUnit.UnitID)
+        {
+            Battle.UI.SetActiveUnit(this);
+        }
     }
 
     public void SetVisible(bool isVisible)
