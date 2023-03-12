@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BattlerInput : ActionInstruction
 {
+    protected bool _inputCancelled;
     protected bool _inputSubmitted;
     protected bool _invalidInput;
     protected Transform _cursor;
@@ -18,13 +19,21 @@ public class BattlerInput : ActionInstruction
         }
         else
         {
+            _inputCancelled = false;
+            _inputSubmitted = false;
             KeyboardInput.DirectionalInput += OnDirectionalInput;
             KeyboardInput.KeyDown += OnKeyDown;
-            _inputSubmitted = false;
             yield return new WaitUntil(() => _inputSubmitted);
             KeyboardInput.DirectionalInput -= OnDirectionalInput;
             KeyboardInput.KeyDown -= OnKeyDown;
-            Resolve();
+            if (_inputCancelled)
+            {
+                Action.InstructionSuccess = false;
+            }
+            else
+            {
+                Resolve();
+            }
         }
         Destroy(_cursor.gameObject);
     }
@@ -51,6 +60,11 @@ public class BattlerInput : ActionInstruction
     {
         if (e.KeyCode == KeyCode.Return || e.KeyCode == KeyCode.Space)
         {
+            _inputSubmitted = true;
+        }
+        if (e.KeyCode == KeyCode.Backspace)
+        {
+            _inputCancelled = true;
             _inputSubmitted = true;
         }
     }
