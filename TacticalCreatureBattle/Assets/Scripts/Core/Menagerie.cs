@@ -1,12 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class Menagerie : MonoBehaviour
 {
-    public static CreatureStats[] ComputerTeam { get; private set; }
-    public static CreatureStats[] HumanTeam { get; private set; }
+    public static List<CreatureStats> AllCreatures { get; private set; }
+    public static List<CreatureStats> ComputerTeam { get; private set; }
+    public static List<CreatureStats> HumanTeam { get; private set; }
 
     static CreatureStats[] _prebuiltCreatures;
     static Dictionary<string, Species> _species;
@@ -14,6 +14,7 @@ public class Menagerie : MonoBehaviour
 
     void Awake()
     {
+        // Load and verify all species.
         Species[] allSpecies = Resources.LoadAll<Species>("");
         _species = new Dictionary<string, Species>();
         foreach (Species species in allSpecies)
@@ -31,6 +32,7 @@ public class Menagerie : MonoBehaviour
             return;
         }
 
+        // Load and verify all creature actions.
         CreatureAction[] allActions = Resources.LoadAll<CreatureAction>("");
         _actions = new Dictionary<string, CreatureAction>();
         foreach (CreatureAction action in allActions)
@@ -43,6 +45,7 @@ public class Menagerie : MonoBehaviour
             _actions.Add(action.name, action);
         }
 
+        // Load and verify all creatures.
         _prebuiltCreatures = Resources.LoadAll<CreatureStats>("");
         foreach (CreatureStats creature in _prebuiltCreatures)
         {
@@ -80,29 +83,28 @@ public class Menagerie : MonoBehaviour
 
         // TODO: Load any saved creatures from Application.persistentDataPath folder.
 
-        // Initialize the team arrays.
-        InitializeTeamArrays();
-    }
+        // Populate the list of all creatures.
+        AllCreatures = new List<CreatureStats>();
+        for (int i = 0; i < _prebuiltCreatures.Length; i++)
+        {
+            CreatureStats c = Instantiate(_prebuiltCreatures[i]);
+            c.Species = _prebuiltCreatures[i].Species;
+            AllCreatures.Add(c);
+        }
+        // Make sure there are at least 4 creatures.
+        while (AllCreatures.Count < 4)
+        {
+            AllCreatures.Add(CreatureStats.Random());
+        }
 
-    void InitializeTeamArrays()
-    {
-        CreatureStats[] creatures = new CreatureStats[4];
-        for (int i = 0; i < Math.Min(_prebuiltCreatures.Length, 4); i++)
-        {
-            creatures[i] = Instantiate(_prebuiltCreatures[i]);
-            creatures[i].Species = _prebuiltCreatures[i].Species;
-        }
-        for (int i = _prebuiltCreatures.Length; i < 4; i++)
-        {
-            creatures[i] = CreatureStats.Random();
-        }
-        HumanTeam = new CreatureStats[] { creatures[0], creatures[2] };
-        ComputerTeam = new CreatureStats[] { creatures[1], creatures[3] };
+        // Initialize the team lists.
+        HumanTeam = new List<CreatureStats> { AllCreatures[0], AllCreatures[2] };
+        ComputerTeam = new List<CreatureStats> { AllCreatures[1], AllCreatures[3] };
     }
 
     public static Species RandomSpecies()
     {
-        return _species.ElementAt(UnityEngine.Random.Range(0, _species.Count)).Value;
+        return _species.ElementAt(Random.Range(0, _species.Count)).Value;
     }
 
     public static GameObject CreateUnit(CreatureStats creatureStats, Battle battle, Team team, Transform parent = null)
