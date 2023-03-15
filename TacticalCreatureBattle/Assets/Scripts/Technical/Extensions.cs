@@ -49,6 +49,41 @@ public static class Extensions
     }
 
     /// <summary>
+    /// Finds a descendant GameObject by name and gets a Component from it.
+    /// </summary>
+    /// <remarks>
+    /// This method performs a recursive depth-first search through the children 
+    /// of the Component on which it is called, until it finds a GameObject with 
+    /// the specified name. 
+    /// It then returns <seealso cref="Component.GetComponent{T}"/> from that GameObject's Transform.
+    /// </remarks>
+    /// <returns>
+    /// The Component of type T from the named GameObject, 
+    /// or null if either the named GameObject or the Component are not found.
+    /// </returns>
+    /// <typeparam name="T">The type of Component to be found.</typeparam>
+    /// <param name="component">The Component whose children to search.</param>
+    /// <param name="name">The name of the GameObject to be found.</param>
+    public static T FindComponentInChildren<T>(this Component component, string name) where T : Component
+    {
+        Transform nameMatchChild = component.transform.Find(name);
+        if (nameMatchChild != null)
+        {
+            return nameMatchChild.GetComponent<T>();
+        }
+        for (int i = 0; i < component.transform.childCount; i++)
+        {
+            Transform childTransform = component.transform.GetChild(i);
+            T recursiveResult = childTransform.FindComponentInChildren<T>(name);
+            if (recursiveResult != null)
+            {
+                return recursiveResult;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
     /// Returns a new string in which all white space characters from the current string are deleted.
     /// </summary>
     /// <remarks>
