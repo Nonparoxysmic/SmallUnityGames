@@ -30,6 +30,10 @@ public class SelectCell : BattlerInput
 
     protected override void OnDirectionalInput(object sender, DirectionEventArgs e)
     {
+        if (Battle.UI.IsPaused)
+        {
+            return;
+        }
         // Only allow valid movement.
         Direction direction = Direction.Left;
         if (e.Direction.y < 0)

@@ -18,6 +18,7 @@ public class ActionSelection : BattleState
 
         Battle.UI.ButtonClick += OnActionSelected;
         Battle.UI.TurnEnded += OnTurnEnded;
+        Battle.UI.EndBattleButtonClick += OnEndBattleButtonClick;
         CameraController.AllowFreeMovement = true;
     }
 
@@ -25,6 +26,7 @@ public class ActionSelection : BattleState
     {
         Battle.UI.ButtonClick -= OnActionSelected;
         Battle.UI.TurnEnded -= OnTurnEnded;
+        Battle.UI.EndBattleButtonClick -= OnEndBattleButtonClick;
         CameraController.AllowFreeMovement = false;
     }
 
@@ -47,5 +49,10 @@ public class ActionSelection : BattleState
     void OnTurnEnded(object sender, EventArgs e)
     {
         StateMachine.ChangeState<EndOfTurn>();
+    }
+
+    private void OnEndBattleButtonClick(object sender, EventArgs e)
+    {
+        StateMachine.ChangeState<BattleEnd>();
     }
 }

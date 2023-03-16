@@ -18,6 +18,7 @@ public abstract class SubmenuSelection : BattleState
         Battle.UI.BackButtonClick += OnBackButton;
         Battle.UI.ButtonClick += OnActionSelected;
         Battle.UI.TurnEnded += OnTurnEnded;
+        Battle.UI.EndBattleButtonClick += OnEndBattleButtonClick;
         CameraController.AllowFreeMovement = true;
     }
 
@@ -41,6 +42,7 @@ public abstract class SubmenuSelection : BattleState
         Battle.UI.BackButtonClick -= OnBackButton;
         Battle.UI.ButtonClick -= OnActionSelected;
         Battle.UI.TurnEnded -= OnTurnEnded;
+        Battle.UI.EndBattleButtonClick -= OnEndBattleButtonClick;
         CameraController.AllowFreeMovement = false;
     }
 
@@ -68,6 +70,11 @@ public abstract class SubmenuSelection : BattleState
     private void OnBackButton(object sender, EventArgs e)
     {
         StateMachine.ChangeState<ActionSelection>();
+    }
+
+    private void OnEndBattleButtonClick(object sender, EventArgs e)
+    {
+        StateMachine.ChangeState<BattleEnd>();
     }
 }
 

@@ -10,6 +10,7 @@ public class CreatureAction : MonoBehaviour
     public ActionInstruction[] Instructions;
 
     public bool ActionCompleted { get; private set; }
+    public bool ActionCanceled { get; set; }
 
     public int CurrentInstruction { get; set; }
 
@@ -40,7 +41,7 @@ public class CreatureAction : MonoBehaviour
         while (true)
         {
             if (CurrentInstruction < 0 || CurrentInstruction >= Instructions.Length
-                || _executionCount >= ExecutionLimit)
+                || _executionCount >= ExecutionLimit || ActionCanceled)
             {
                 break;
             }

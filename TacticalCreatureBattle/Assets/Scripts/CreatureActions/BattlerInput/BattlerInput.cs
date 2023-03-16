@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -23,9 +24,11 @@ public class BattlerInput : ActionInstruction
             _inputSubmitted = false;
             KeyboardInput.DirectionalInput += OnDirectionalInput;
             KeyboardInput.KeyDown += OnKeyDown;
+            Battle.UI.EndBattleButtonClick += OnEndBattleButtonClick;
             yield return new WaitUntil(() => _inputSubmitted);
             KeyboardInput.DirectionalInput -= OnDirectionalInput;
             KeyboardInput.KeyDown -= OnKeyDown;
+            Battle.UI.EndBattleButtonClick -= OnEndBattleButtonClick;
             if (_inputCancelled)
             {
                 Action.InstructionSuccess = false;
@@ -58,6 +61,10 @@ public class BattlerInput : ActionInstruction
 
     protected virtual void OnKeyDown(object sender, KeyEventArgs e)
     {
+        if (Battle.UI.IsPaused)
+        {
+            return;
+        }
         if (e.KeyCode == KeyCode.Return || e.KeyCode == KeyCode.Space)
         {
             _inputSubmitted = true;
@@ -67,5 +74,12 @@ public class BattlerInput : ActionInstruction
             _inputCancelled = true;
             _inputSubmitted = true;
         }
+    }
+
+    protected virtual void OnEndBattleButtonClick(object sender, EventArgs e)
+    {
+        Action.ActionCanceled = true;
+        _inputCancelled = true;
+        _inputSubmitted = true;
     }
 }

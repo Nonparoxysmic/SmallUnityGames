@@ -6,6 +6,7 @@ public class BattleUI : MonoBehaviour
 {
     public event EventHandler TurnEnded;
     public event EventHandler BackButtonClick;
+    public event EventHandler EndBattleButtonClick;
     public event EventHandler<IntegerEventArgs> ButtonClick;
 
     public Button Button1;
@@ -23,8 +24,17 @@ public class BattleUI : MonoBehaviour
     public Text ActiveUnitName;
     public Text ActiveUnitStats;
 
+    public GameObject EscapeMenuPanel;
+    public bool IsPaused => EscapeMenuPanel.activeSelf;
+
     void OnEnable()
     {
+        if (EscapeMenuPanel == null)
+        {
+            this.Error($"{nameof(EscapeMenuPanel)} reference not set in the Inspector.");
+            return;
+        }
+        EscapeMenuPanel.SetActive(false);
         KeyboardInput.KeyDown += OnKeyDown;
     }
 
@@ -35,6 +45,10 @@ public class BattleUI : MonoBehaviour
 
     private void OnKeyDown(object sender, KeyEventArgs e)
     {
+        if (IsPaused && e.KeyCode != KeyCode.Escape)
+        {
+            return;
+        }
         switch (e.KeyCode)
         {
             case KeyCode.Return:
@@ -50,22 +64,39 @@ public class BattleUI : MonoBehaviour
             case KeyCode.Backspace:
                 BackButtonClick?.Invoke(this, EventArgs.Empty);
                 break;
+            case KeyCode.Escape:
+                ToggleEscapeMenu();
+                break;
         }
     }
 
     public void OnEndTurnButton()
     {
-        TurnEnded?.Invoke(this, EventArgs.Empty);
+        if (!IsPaused)
+        {
+            TurnEnded?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public void OnBackButtonClick()
     {
-        BackButtonClick?.Invoke(this, EventArgs.Empty);
+        if (!IsPaused)
+        {
+            BackButtonClick?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public void OnButtonClick(int buttonNumber)
     {
-        ButtonClick?.Invoke(this, new IntegerEventArgs(buttonNumber));
+        if (!IsPaused)
+        {
+            ButtonClick?.Invoke(this, new IntegerEventArgs(buttonNumber));
+        }
+    }
+
+    public void OnEndBattleButtonClick()
+    {
+        EndBattleButtonClick?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetBackButtonInteractable(bool interactable)
@@ -123,5 +154,10 @@ public class BattleUI : MonoBehaviour
         ActiveUnitImage.color = unit.CreatureStats.Species.BaseColor;
         ActiveUnitName.text = unit.CreatureStats.IndividualName;
         ActiveUnitStats.text = $"{unit.CurrentHP} / {unit.CreatureStats.MaximumHP} HP";
+    }
+
+    void ToggleEscapeMenu()
+    {
+        EscapeMenuPanel.SetActive(!EscapeMenuPanel.activeSelf);
     }
 }

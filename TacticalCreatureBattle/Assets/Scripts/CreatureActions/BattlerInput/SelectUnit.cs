@@ -62,6 +62,10 @@ public class SelectUnit : BattlerInput
 
     protected override void OnDirectionalInput(object sender, DirectionEventArgs e)
     {
+        if (Battle.UI.IsPaused)
+        {
+            return;
+        }
         if (e.Direction.x < 0 || e.Direction.y < 0)
         {
             _selectionIndex--;
