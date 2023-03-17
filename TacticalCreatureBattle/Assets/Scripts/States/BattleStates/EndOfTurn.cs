@@ -26,6 +26,9 @@ public class EndOfTurn : BattleState
             return;
         }
 
+        // Remove the active unit from the front of the rendering order.
+        Battle.ActiveUnit.MoveToFront(false);
+
         // Start the next turn.
         StateMachine.ChangeState<StartOfTurn>();
     }

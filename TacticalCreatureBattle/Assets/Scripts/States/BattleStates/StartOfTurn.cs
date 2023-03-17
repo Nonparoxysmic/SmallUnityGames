@@ -12,10 +12,9 @@ public class StartOfTurn : BattleState
         Battle.ActiveUnit.HasMoved = false;
         Battle.ActiveUnit.HasBasicAttacked = false;
 
-        // Set the active unit in the UI.
+        // Update the UI elements.
         Battle.UI.SetActiveUnit(Battle.ActiveUnit);
-
-        // Move the camera to the active unit.
+        Battle.ActiveUnit.MoveToFront(true);
         CameraController.LookAtUnit(Battle.ActiveUnit);
 
         // Change to the next state.

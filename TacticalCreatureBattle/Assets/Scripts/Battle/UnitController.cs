@@ -194,6 +194,12 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         Position = new Vector3Int(x, y, 0);
     }
 
+    public void MoveToFront(bool moveFront)
+    {
+        int z = moveFront ? -1 : 0;
+        transform.position = new Vector3(transform.position.x, transform.position.y, z);
+    }
+
     public void TakeDamage(Element element, int amount, bool isPercentage)
     {
         // Ignore negative or zero damage.
