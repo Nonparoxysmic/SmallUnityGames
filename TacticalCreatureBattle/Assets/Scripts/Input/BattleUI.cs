@@ -27,6 +27,8 @@ public class BattleUI : MonoBehaviour
     public GameObject EscapeMenuPanel;
     public bool IsPaused => EscapeMenuPanel.activeSelf;
 
+    UnitController _activeUnit;
+
     void OnEnable()
     {
         if (EscapeMenuPanel == null)
@@ -94,6 +96,14 @@ public class BattleUI : MonoBehaviour
         }
     }
 
+    public void OnFocusActiveUnitButton()
+    {
+        if (_activeUnit != null)
+        {
+            CameraController.LookAtUnit(_activeUnit);
+        }
+    }
+
     public void OnEndBattleButtonClick()
     {
         EndBattleButtonClick?.Invoke(this, EventArgs.Empty);
@@ -150,6 +160,7 @@ public class BattleUI : MonoBehaviour
 
     public void SetActiveUnit(UnitController unit)
     {
+        _activeUnit = unit;
         ActiveUnitImage.sprite = unit.CreatureStats.Species.BaseSprite;
         ActiveUnitImage.color = unit.CreatureStats.Species.BaseColor;
         ActiveUnitName.text = unit.CreatureStats.IndividualName;
