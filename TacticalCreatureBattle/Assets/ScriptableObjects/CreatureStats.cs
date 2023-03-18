@@ -95,8 +95,8 @@ public class CreatureStats : ScriptableObject
         creatureStats._Magic = UnityEngine.Random.Range(0, 5);
         creatureStats._Defense = UnityEngine.Random.Range(0, 5);
         creatureStats._Speed = UnityEngine.Random.Range(0, 5);
-        creatureStats.MovementActionNames = Array.Empty<string>();
-        creatureStats.BasicActionNames = Array.Empty<string>();
+        creatureStats.MovementActionNames = new string[] { "Move_Step" };
+        creatureStats.BasicActionNames = new string[] { "Basic_Slap" };
         creatureStats.SpecialActionNames = Array.Empty<string>();
         return creatureStats;
     }
