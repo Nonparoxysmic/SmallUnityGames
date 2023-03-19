@@ -3,6 +3,8 @@ using UnityEngine;
 public class AssetLibrary : MonoBehaviour
 {
     [SerializeField] Sprite[] CursorSprites;
+    [SerializeField] Sprite IconTeamC;
+    [SerializeField] Sprite IconTeamH;
 
     static AssetLibrary _instance;
 
@@ -22,6 +24,11 @@ public class AssetLibrary : MonoBehaviour
                 return;
             }
         }
+        if (IconTeamC == null || IconTeamH == null)
+        {
+            this.Error("Missing team icon reference in Inspector.");
+            return;
+        }
     }
 
     public static Sprite GetCursorSprite(int index)
@@ -31,6 +38,11 @@ public class AssetLibrary : MonoBehaviour
             return _instance.CursorSprites[0];
         }
         return _instance.CursorSprites[index % _instance.CursorSprites.Length];
+    }
+
+    public static Sprite GetTeamIcon(Team team)
+    {
+        return team == Team.Computer ? _instance.IconTeamC : _instance.IconTeamH;
     }
 
     public static Sprite CreateSquareSprite(int size, Color color)

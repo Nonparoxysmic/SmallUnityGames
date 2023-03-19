@@ -118,3 +118,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CursorSprites:
   - {fileID: 21300000, guid: 6a89b552cc7a5a24387139df8f4a37a2, type: 3}
+  IconTeamC: {fileID: 21300000, guid: 71fc543a5cfd27c4eb84a3f5f70ac13d, type: 3}
+  IconTeamH: {fileID: 21300000, guid: 874569986a0db4d469b500478b3bb807, type: 3}

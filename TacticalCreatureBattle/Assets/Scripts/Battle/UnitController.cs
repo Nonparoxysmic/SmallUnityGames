@@ -23,8 +23,12 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
     public bool HasMoved { get; set; }
     public bool HasBasicAttacked { get; set; }
 
+    readonly Color _borderColorTeamC = new Color(0, 0.25f, 0.5f);
+    readonly Color _borderColorTeamH = new Color(0.5f, 0.25f, 0);
+
     GameObject _healthBarObject;
     GameObject _healthBarBackgroundObject;
+    GameObject _teamIconGameObject;
     SpriteRenderer _spriteRenderer;
     Vector3 _spriteOffset;
 
@@ -75,14 +79,22 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         _spriteRenderer.color = CreatureStats.Species.BaseColor;
         // Create health bar.
         _healthBarObject = CreateHealthBarObject("Health Bar", Color.green, false);
-        _healthBarBackgroundObject = CreateHealthBarObject("Health Bar Background", Color.black, true);
+        Color borderColor = team == Team.Computer ? _borderColorTeamC : _borderColorTeamH;
+        _healthBarBackgroundObject = CreateHealthBarObject("Health Bar Background", borderColor, true);
+        // Add team icon to health bar.
+        _teamIconGameObject = new GameObject { name = "Team Icon" };
+        _teamIconGameObject.transform.position = _healthBarObject.transform.position + 0.75f * Vector3.left;
+        _teamIconGameObject.transform.localScale = new Vector3(0.5f, 0.5f, 1);
+        _teamIconGameObject.transform.parent = transform;
+        SpriteRenderer iconSR = _teamIconGameObject.AddComponent<SpriteRenderer>();
+        iconSR.sprite = AssetLibrary.GetTeamIcon(team);
     }
 
     GameObject CreateHealthBarObject(string name, Color color, bool isBackground)
     {
         GameObject go = new GameObject { name = name };
         float z = isBackground ? -8 : -8.25f;
-        go.transform.position += new Vector3(_spriteOffset.x, 2 * _spriteOffset.y + 0.25f, z);
+        go.transform.position += new Vector3(_spriteOffset.x + 0.25f, 2 * _spriteOffset.y + 0.25f, z);
         if (isBackground)
         {
             go.transform.localScale = new Vector3(1.125f, 0.25f, 1);
@@ -117,7 +129,7 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         }
     }
 
-    public void SetVisible(bool isVisible)
+    void SetVisible(bool isVisible)
     {
         _spriteRenderer.enabled = isVisible;
     }
@@ -129,6 +141,7 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         CurrentInitiative = int.MinValue;
         _healthBarObject.SetActive(false);
         _healthBarBackgroundObject.SetActive(false);
+        _teamIconGameObject.SetActive(false);
     }
 
     /// <summary>
