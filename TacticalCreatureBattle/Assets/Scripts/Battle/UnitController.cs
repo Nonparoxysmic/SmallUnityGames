@@ -225,24 +225,36 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         {
             amount = (int)Math.Round(CreatureStats.MaximumHP * amount / 100f);
         }
-        // Elemental Resistances
-        if (element == PrimaryElement)
+        // Apply elemental resistances and weaknesses.
+        if (element != Element.NoElement)
         {
-            if (element != Element.NoElement)
-            {
-                amount = (int)Math.Round(amount * 0.5f);
-            }
-        }
-        else if (element == SecondaryElement)
-        {
-            if (element != Element.NoElement)
-            {
-                amount = (int)Math.Round(amount * 0.75f);
-            }
+            amount = (int)Math.Round(amount * ElementalDamageFactor(element));
         }
         // Reduce the unit's hit points.
         CurrentHP -= amount;
         UpdateHealthBar();
+    }
+
+    float ElementalDamageFactor(Element element)
+    {
+        float factor = 1;
+        if (PrimaryElement.HasResistance(element))
+        {
+            factor *= 0.5f;
+        }
+        else if (SecondaryElement.HasResistance(element))
+        {
+            factor *= 0.75f;
+        }
+        if (PrimaryElement.HasWeakness(element))
+        {
+            factor *= 1.5f;
+        }
+        else if (SecondaryElement.HasWeakness(element))
+        {
+            factor *= 1.25f;
+        }
+        return factor;
     }
 
     public void Heal(Element element, int amount, bool isPercentage)
@@ -257,23 +269,26 @@ public class UnitController : MonoBehaviour, IComparable<UnitController>
         {
             amount = (int)Math.Round(CreatureStats.MaximumHP * amount / 100f);
         }
-        // Elemental Affinities
-        if (element == PrimaryElement)
+        // Apply elemental affinities.
+        if (element != Element.NoElement)
         {
-            if (element != Element.NoElement)
-            {
-                amount = (int)Math.Round(amount * 1.5f);
-            }
-        }
-        else if (element == SecondaryElement)
-        {
-            if (element != Element.NoElement)
-            {
-                amount = (int)Math.Round(amount * 1.25f);
-            }
+            amount = (int)Math.Round(amount * ElementalHealingFactor(element));
         }
         // Increase the unit's hit points.
         CurrentHP += amount;
         UpdateHealthBar();
+    }
+
+    float ElementalHealingFactor(Element element)
+    {
+        if (element == PrimaryElement)
+        {
+            return 1.5f;
+        }
+        else if (element == SecondaryElement)
+        {
+            return 1.25f;
+        }
+        return 1;
     }
 }

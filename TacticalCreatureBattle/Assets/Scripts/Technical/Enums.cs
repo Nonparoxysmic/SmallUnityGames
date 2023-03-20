@@ -17,10 +17,12 @@ public enum Direction
 public enum Element
 {
     NoElement,
-    Element1,
-    Element2,
-    Element3,
-    Element4
+    Aluminum,
+    Cardboard,
+    Glass,
+    Paper,
+    Plastic,
+    Steel
 }
 
 public enum GridWallsTool

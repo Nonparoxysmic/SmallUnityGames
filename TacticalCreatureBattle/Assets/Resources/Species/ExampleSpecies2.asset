@@ -16,11 +16,12 @@ MonoBehaviour:
   Size: 1
   BaseSprite: {fileID: 21300000, guid: d679956bbfd2d9241ac03d6b8958b246, type: 3}
   BaseColor: {r: 1, g: 0, b: 0, a: 1}
+  CanFly: 0
   Health: 5
   Strength: 5
   Magic: 5
   Defense: 5
   Speed: 5
   PrimaryElement: 0
-  SecondaryElement: 1
+  SecondaryElement: 0
   LearnableActions: []

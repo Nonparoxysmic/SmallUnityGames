@@ -16,8 +16,8 @@ public class Species : ScriptableObject
     public int Defense = 5;
     public int Speed = 5;
 
-    public Element PrimaryElement = Element.Element1;
-    public Element SecondaryElement = Element.Element2;
+    public Element PrimaryElement = Element.NoElement;
+    public Element SecondaryElement = Element.NoElement;
 
     public LearnableAction[] LearnableActions;
 }
