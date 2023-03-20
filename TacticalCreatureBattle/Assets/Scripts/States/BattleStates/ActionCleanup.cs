@@ -1,3 +1,5 @@
+using System.Linq;
+
 public class ActionCleanup : BattleState
 {
     public override void Enter()
@@ -9,7 +11,7 @@ public class ActionCleanup : BattleState
             {
                 continue;
             }
-            while (Battle.Pathfinder.CanFall(unit.Position, Direction.Down))
+            while (Battle.Pathfinder.UnitCanFall(unit, Direction.Down))
             {
                 unit.MoveTo(unit.Position + UnityEngine.Vector3Int.down);
                 if (unit.Position.y < Battle.Pathfinder.MinimumY)
@@ -29,9 +31,22 @@ public class ActionCleanup : BattleState
             }
         }
 
-        // If the active unit is knocked out or cannot do any more actions, end the turn.
+        // Determine how many opponents remain.
+        int enemyTeamRemaining;
+        if (Battle.ActiveUnit.Team == Team.Computer)
+        {
+            enemyTeamRemaining = Battle.HumanTeam.Count(u => u.InBattle);
+        }
+        else
+        {
+            enemyTeamRemaining = Battle.ComputerTeam.Count(u => u.InBattle);
+        }
+
+        // If the active unit is knocked out or cannot do any more actions, 
+        // or the opposing team has been elimnated, end the turn.
         if (!Battle.ActiveUnit.InBattle ||
-            (Battle.ActiveUnit.HasMoved && Battle.ActiveUnit.HasBasicAttacked))
+            (Battle.ActiveUnit.HasMoved && Battle.ActiveUnit.HasBasicAttacked)
+            || enemyTeamRemaining == 0)
         {
             StateMachine.ChangeState<EndOfTurn>();
         }

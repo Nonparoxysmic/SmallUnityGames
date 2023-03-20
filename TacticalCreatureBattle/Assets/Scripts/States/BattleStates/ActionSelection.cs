@@ -16,6 +16,14 @@ public class ActionSelection : BattleState
         Battle.UI.SetButtonInteractable(3, false); // Special Attacks not implemented.
         Battle.UI.SetBackButtonInteractable(false);
 
+        // Immediately end the turn if the unit has no actions available.
+        if (Battle.ActiveUnit.MovementActionNames.Length
+            + Battle.ActiveUnit.BasicActionNames.Length == 0)
+        {
+            StateMachine.ChangeState<EndOfTurn>();
+            return;
+        }
+
         Battle.UI.ButtonClick += OnActionSelected;
         Battle.UI.TurnEnded += OnTurnEnded;
         Battle.UI.EndBattleButtonClick += OnEndBattleButtonClick;
