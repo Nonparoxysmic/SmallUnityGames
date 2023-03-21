@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class BattleUI : MonoBehaviour
@@ -27,6 +29,9 @@ public class BattleUI : MonoBehaviour
     public GameObject EscapeMenuPanel;
     public bool IsPaused => EscapeMenuPanel.activeSelf;
 
+    public Tilemap HighlightTilemap { get; set; }
+
+    Tile _highlightTile;
     UnitController _activeUnit;
 
     void OnEnable()
@@ -37,6 +42,8 @@ public class BattleUI : MonoBehaviour
             return;
         }
         EscapeMenuPanel.SetActive(false);
+        _highlightTile = ScriptableObject.CreateInstance<Tile>();
+        _highlightTile.sprite = AssetLibrary.CreateSquareSprite(4, Color.white);
         KeyboardInput.KeyDown += OnKeyDown;
     }
 
@@ -170,5 +177,26 @@ public class BattleUI : MonoBehaviour
     void ToggleEscapeMenu()
     {
         EscapeMenuPanel.SetActive(!EscapeMenuPanel.activeSelf);
+    }
+
+    public void HighlightCells(List<Vector2Int> cellCoords, Color color)
+    {
+        if (HighlightTilemap == null)
+        {
+            return;
+        }
+        _highlightTile.color = color;
+        foreach (Vector2Int coord in cellCoords)
+        {
+            HighlightTilemap.SetTile((Vector3Int)coord, _highlightTile);
+        }
+    }
+
+    public void ClearCellHighlights()
+    {
+        if (HighlightTilemap != null)
+        {
+            HighlightTilemap.ClearAllTiles();
+        }
     }
 }

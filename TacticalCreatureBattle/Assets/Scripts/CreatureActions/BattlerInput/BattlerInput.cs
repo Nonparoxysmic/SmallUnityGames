@@ -39,6 +39,7 @@ public class BattlerInput : ActionInstruction
             }
         }
         Destroy(_cursor.gameObject);
+        Battle.UI.ClearCellHighlights();
     }
 
     Transform CreateCursor(int index)

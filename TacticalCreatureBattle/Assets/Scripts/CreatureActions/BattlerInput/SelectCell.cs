@@ -5,6 +5,7 @@ public class SelectCell : BattlerInput
 {
     public bool SelectFromList;
     [SerializeField] ListLabel SelectFrom;
+    public Color HighlightColor = new Color(0, 1, 0, 0.5f);
     [SerializeField] ListLabel StoreResult;
 
     Vector2Int _output;
@@ -23,6 +24,10 @@ public class SelectCell : BattlerInput
         else
         {
             _output = (Vector2Int)Battle.ActiveUnit.Position;
+        }
+        if (SelectFromList)
+        {
+            Battle.UI.HighlightCells(Action.TargetCells[(int)SelectFrom], HighlightColor);
         }
         _cursor.position = new Vector3(_output.x, _output.y, _cursor.position.z);
         CameraController.LookAtCell(_output.x, _output.y);

@@ -89,6 +89,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectFromList: 1
   SelectFrom: 0
+  HighlightColor: {r: 0, g: 1, b: 0, a: 0.5019608}
   StoreResult: 1
 --- !u!114 &5087275340813329711
 MonoBehaviour:

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public class BattleStart : BattleState
 {
@@ -31,6 +32,13 @@ public class BattleStart : BattleState
         {
             this.Error("Unable to find battle UI.");
             yield break;
+        }
+
+        // Get the highlight tilemap.
+        GameObject highlightGameObject = GameObject.Find("Highlight Tilemap");
+        if (highlightGameObject != null)
+        {
+            battleUI.HighlightTilemap = highlightGameObject.GetComponent<Tilemap>();
         }
 
         // Create Battle with level collision and UI.
