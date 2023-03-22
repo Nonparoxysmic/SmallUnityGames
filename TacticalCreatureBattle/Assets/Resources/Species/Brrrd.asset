@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1da5cf89c4c54c4cb0140006709bb67, type: 3}
-  m_Name: ExampleSpecies2
+  m_Name: Brrrd
   m_EditorClassIdentifier: 
-  DisplayName: Ex. Spec. 2
+  DisplayName: Brrrd
   Size: 1
-  BaseSprite: {fileID: 21300000, guid: d679956bbfd2d9241ac03d6b8958b246, type: 3}
-  BaseColor: {r: 1, g: 0, b: 0, a: 1}
-  CanFly: 0
-  Health: 5
-  Strength: 5
-  Magic: 5
-  Defense: 5
-  Speed: 5
-  PrimaryElement: 0
+  BaseSprite: {fileID: 21300000, guid: 117c42e355aa87a4197c779f98191e14, type: 3}
+  BaseColor: {r: 1, g: 0.71932966, b: 0.45911944, a: 1}
+  CanFly: 1
+  Health: 7
+  Strength: 7
+  Magic: 1
+  Defense: 4
+  Speed: 8
+  PrimaryElement: 4
   SecondaryElement: 0
   LearnableActions: []

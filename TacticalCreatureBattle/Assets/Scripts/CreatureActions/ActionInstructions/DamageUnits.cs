@@ -38,6 +38,9 @@ public class DamageUnits : ActionInstruction
         {
             damageMaxAmount = Action.Registers[(int)DamageMaxAmountSource];
         }
+		if (damageMaxAmount < damageMinAmount){
+			damageMaxAmount = damageMinAmount;
+		}
         foreach (UnitController target in targets)
         {
             target.TakeDamage(damageElement, Random.Range(damageMinAmount, damageMaxAmount + 1), IsPercentage);
