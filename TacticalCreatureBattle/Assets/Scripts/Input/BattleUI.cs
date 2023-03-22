@@ -22,6 +22,7 @@ public class BattleUI : MonoBehaviour
     public Text Button4Text;
     public Text ButtonBackText;
 
+    public Image ActiveUnitTeamIcon;
     public Image ActiveUnitImage;
     public Text ActiveUnitName;
     public Text ActiveUnitStats;
@@ -168,7 +169,15 @@ public class BattleUI : MonoBehaviour
     public void SetActiveUnit(UnitController unit)
     {
         _activeUnit = unit;
+        ActiveUnitTeamIcon.sprite = AssetLibrary.GetTeamIcon(unit.Team);
         ActiveUnitImage.sprite = unit.CreatureStats.Species.BaseSprite;
+        float spriteScale = unit.UnitSize switch
+        {
+            Size.Small => 0.25f,
+            Size.Medium => 0.5f,
+            _ => 1
+        };
+        ActiveUnitImage.transform.localScale = new Vector3(spriteScale, spriteScale);
         ActiveUnitImage.color = unit.CreatureStats.Species.BaseColor;
         ActiveUnitName.text = unit.CreatureStats.IndividualName;
         ActiveUnitStats.text = $"{unit.CurrentHP} / {unit.CreatureStats.MaximumHP} HP";
