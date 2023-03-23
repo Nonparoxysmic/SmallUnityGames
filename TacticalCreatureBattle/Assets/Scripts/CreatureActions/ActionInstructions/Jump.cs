@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Jump : ActionInstruction
 {
+    [SerializeField] ValueSource JumpValueSource = ValueSource.Value;
     public int JumpValue;
     public bool ValueIsAbsolute;
     public bool ConditionalJump;
@@ -76,6 +77,12 @@ public class Jump : ActionInstruction
 
     void DoJump()
     {
+        // Get the jump value from a register if applicable.
+        if (JumpValueSource != ValueSource.Value)
+        {
+            JumpValue = Action.Registers[(int)JumpValueSource];
+        }
+
         if (ValueIsAbsolute)
         {
             if (Action.CurrentInstruction == JumpValue)
