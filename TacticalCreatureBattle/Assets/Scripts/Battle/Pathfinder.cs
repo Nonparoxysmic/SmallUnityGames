@@ -28,13 +28,13 @@ public class Pathfinder
         switch (direction)
         {
             case Direction.Left:
-                if (cell.x < _levelBoundary.xMin)
+                if (cell.x <= _levelBoundary.xMin)
                 {
                     return false;
                 }
                 break;
             case Direction.Down:
-                if (cell.y < _levelBoundary.yMin)
+                if (cell.y <= _levelBoundary.yMin)
                 {
                     return false;
                 }
@@ -165,9 +165,9 @@ public class Pathfinder
 
     int[,] CalculateDistances(int x, int y, Size size, int maxRange)
     {
-        int[,] distances = new int[_levelBoundary.width, _levelBoundary.height];
+        int[,] distances = new int[_levelBoundary.width + 1, _levelBoundary.height + 1];
         distances.Fill(int.MaxValue);
-        SearchNode[,] nodes = SearchNode.CreateNodeArray(_levelBoundary.width, _levelBoundary.height);
+        SearchNode[,] nodes = SearchNode.CreateNodeArray(_levelBoundary.width + 1, _levelBoundary.height + 1);
         List<SearchNode> unvisited = SearchNode.ListNodes(nodes);
         // Initialize the source cells.
         int length = size == Size.Large ? 2 : 1;
