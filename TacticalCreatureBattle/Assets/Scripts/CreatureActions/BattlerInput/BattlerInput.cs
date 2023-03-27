@@ -9,9 +9,12 @@ public class BattlerInput : ActionInstruction
     protected bool _invalidInput;
     protected Transform _cursor;
 
+    readonly Color _colorTeamC = new Color(0, 0.5f, 1);
+    readonly Color _colorTeamH = new Color(1, 0.5f, 0);
+
     public override IEnumerator Execute()
     {
-        _cursor = CreateCursor(0);
+        _cursor = CreateCursor(0, Battle.ActiveUnit.Team);
         _invalidInput = false;
         Initialize();
         if (_invalidInput)
@@ -42,13 +45,14 @@ public class BattlerInput : ActionInstruction
         Battle.UI.ClearCellHighlights();
     }
 
-    Transform CreateCursor(int index)
+    Transform CreateCursor(int index, Team team)
     {
         GameObject cursor = new GameObject { name = "Cursor" };
         GameObject sprite = new GameObject { name = "Sprite" };
         sprite.transform.parent = cursor.transform;
         SpriteRenderer sr = sprite.AddComponent<SpriteRenderer>();
         sr.sprite = AssetLibrary.GetCursorSprite(index);
+        sr.color = team == Team.Computer ? _colorTeamC : _colorTeamH;
         sprite.transform.position += (Vector3)sr.sprite.rect.size / (2 * sr.sprite.pixelsPerUnit);
         cursor.transform.position += 9 * Vector3.back; // Camera is at -10
         return cursor.transform;
