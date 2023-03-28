@@ -28,10 +28,12 @@ public class BattlerInput : ActionInstruction
             KeyboardInput.DirectionalInput += OnDirectionalInput;
             KeyboardInput.KeyDown += OnKeyDown;
             Battle.UI.EndBattleButtonClick += OnEndBattleButtonClick;
+            Battle.UI.TurnEnded += OnTurnEnded;
             yield return new WaitUntil(() => _inputSubmitted);
             KeyboardInput.DirectionalInput -= OnDirectionalInput;
             KeyboardInput.KeyDown -= OnKeyDown;
             Battle.UI.EndBattleButtonClick -= OnEndBattleButtonClick;
+            Battle.UI.TurnEnded -= OnTurnEnded;
             if (_inputCancelled)
             {
                 Action.InstructionSuccess = false;
@@ -84,6 +86,14 @@ public class BattlerInput : ActionInstruction
 
     protected virtual void OnEndBattleButtonClick(object sender, EventArgs e)
     {
+        Action.ActionCanceled = true;
+        _inputCancelled = true;
+        _inputSubmitted = true;
+    }
+
+    private void OnTurnEnded(object sender, EventArgs e)
+    {
+        Battle.CurrentAction.TurnEnded = true;
         Action.ActionCanceled = true;
         _inputCancelled = true;
         _inputSubmitted = true;

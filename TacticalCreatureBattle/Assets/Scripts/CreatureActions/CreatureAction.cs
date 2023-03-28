@@ -11,6 +11,7 @@ public class CreatureAction : MonoBehaviour
 
     public bool ActionCompleted { get; private set; }
     public bool ActionCanceled { get; set; }
+    public bool TurnEnded { get; set; }
 
     public int CurrentInstruction { get; set; }
 

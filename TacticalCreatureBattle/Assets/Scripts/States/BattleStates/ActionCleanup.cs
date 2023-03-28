@@ -43,11 +43,14 @@ public class ActionCleanup : BattleState
         }
 
         // If the active unit is knocked out or cannot do any more actions, 
-        // or the opposing team has been elimnated, end the turn.
+        // or the opposing team has been eliminated, or the turn was ended
+        // during the action, go to the end of turn state.
         if (!Battle.ActiveUnit.InBattle ||
             (Battle.ActiveUnit.HasMoved && Battle.ActiveUnit.HasBasicAttacked)
-            || enemyTeamRemaining == 0)
+            || enemyTeamRemaining == 0
+            || Battle.CurrentAction.TurnEnded)
         {
+            Battle.CurrentAction.TurnEnded = false;
             StateMachine.ChangeState<EndOfTurn>();
         }
         // Otherwise, return to action selection.
