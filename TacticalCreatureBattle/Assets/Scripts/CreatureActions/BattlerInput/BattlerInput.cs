@@ -9,8 +9,8 @@ public class BattlerInput : ActionInstruction
     protected bool _invalidInput;
     protected Transform _cursor;
 
-    readonly Color _colorTeamC = new Color(0, 0.5f, 1);
-    readonly Color _colorTeamH = new Color(1, 0.5f, 0);
+    readonly Color _colorTeamC = new Color(0, 0.5f, 1, 0.5f);
+    readonly Color _colorTeamH = new Color(1, 0.5f, 0, 0.5f);
 
     public override IEnumerator Execute()
     {
@@ -55,6 +55,7 @@ public class BattlerInput : ActionInstruction
         sr.color = team == Team.Computer ? _colorTeamC : _colorTeamH;
         sprite.transform.position += (Vector3)sr.sprite.rect.size / (2 * sr.sprite.pixelsPerUnit);
         cursor.transform.position += 9 * Vector3.back; // Camera is at -10
+        sprite.AddComponent<SlowRotation>();
         return cursor.transform;
     }
 
