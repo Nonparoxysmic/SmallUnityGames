@@ -79,7 +79,7 @@ public class CreatureStats : ScriptableObject
             Stat.Strength => _Strength + Species.Strength,
             Stat.Magic    => _Magic + Species.Magic,
             Stat.Defense  => _Defense + Species.Defense,
-            Stat.Speed    => _Speed + Species.Defense,
+            Stat.Speed    => _Speed + Species.Speed,
             _ => -1,
         };
     }
