@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1da5cf89c4c54c4cb0140006709bb67, type: 3}
   m_Name: Slugg_Melton
   m_EditorClassIdentifier: 
-  DisplayName: Goober
+  DisplayName: Melton
   Size: 0
   BaseSprite: {fileID: 21300000, guid: 5d544e1e8ea5aa143bc7541629a78990, type: 3}
   BaseColor: {r: 0.8584906, g: 0.10933607, b: 0.10933607, a: 1}
