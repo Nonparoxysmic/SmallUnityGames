@@ -83,7 +83,7 @@ public class CreatureTeamPanel : MonoBehaviour
             _creatureImage.transform.localScale = new Vector3(0.25f, 0.25f);
         }
         _creatureName.text = creature.IndividualName;
-        _speciesName.text = creature.Species.DisplayName;
+        _speciesName.text = "Species: " + creature.Species.DisplayName;
         _onTeamC = Menagerie.ComputerTeam.Contains(creature);
         if (_onTeamC)
         {

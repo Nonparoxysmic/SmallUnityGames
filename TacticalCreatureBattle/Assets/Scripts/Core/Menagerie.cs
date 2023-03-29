@@ -96,6 +96,7 @@ public class Menagerie : MonoBehaviour
         {
             AllCreatures.Add(CreatureStats.Random());
         }
+        AllCreatures.Shuffle();
 
         // Initialize the team lists.
         HumanTeam = new List<CreatureStats> { AllCreatures[0], AllCreatures[2] };

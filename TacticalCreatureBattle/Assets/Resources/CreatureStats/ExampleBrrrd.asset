@@ -20,7 +20,7 @@ MonoBehaviour:
   _Defense: 0
   _Speed: 0
   MovementActionNames:
-  - Move_Teleport
+  - Move_Stride
   BasicActionNames:
-  - Basic_Slap
+  - Basic_Bash
   SpecialActionNames: []
