@@ -6,6 +6,7 @@ public class BattleEnd : BattleState
     {
         Battle.UI.SetButtons("Exit to Main Menu");
         Battle.UI.SetBackButtonInteractable(false);
+        Battle.UI.EndTurnPanel.SetActive(false);
 
         Battle.UI.ButtonClick += OnActionSelected;
         CameraController.AllowFreeMovement = true;

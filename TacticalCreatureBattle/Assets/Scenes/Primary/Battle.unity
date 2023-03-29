@@ -1110,6 +1110,7 @@ MonoBehaviour:
   ActiveUnitName: {fileID: 511880959}
   ActiveUnitStats: {fileID: 1899544131}
   EscapeMenuPanel: {fileID: 851739810}
+  EndTurnPanel: {fileID: 622933372}
 --- !u!4 &537937768
 Transform:
   m_ObjectHideFlags: 0

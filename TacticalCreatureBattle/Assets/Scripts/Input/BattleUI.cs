@@ -30,6 +30,8 @@ public class BattleUI : MonoBehaviour
     public GameObject EscapeMenuPanel;
     public bool IsPaused => EscapeMenuPanel.activeSelf;
 
+    public GameObject EndTurnPanel;
+
     public Tilemap HighlightTilemap { get; set; }
 
     Tile _highlightTile;
